@@ -3,6 +3,7 @@ import Input from "components/elements/Form/input";
 import Modal from ".";
 import { Formik } from "formik";
 import useModal from "./useModal";
+import useAuth from "hooks/useAuth";
 
 export const useRegisterModal = () => {
   const { isOpen, closeModal, openModal } = useModal();
@@ -15,10 +16,11 @@ export const useRegisterModal = () => {
 };
 
 const RegisterModal: React.FC<ModalProps> = ({ open, onClose }) => {
+  const { register } = useAuth();
   return (
     <Modal open={open} onClose={onClose}>
       <Formik
-        initialValues={{ email: "", password: "", full_name: "" }}
+        initialValues={{ email: "", password: "", name: "" }}
         validate={(values) => {
           const errors = {};
           if (!values.email) {
@@ -37,10 +39,7 @@ const RegisterModal: React.FC<ModalProps> = ({ open, onClose }) => {
           return errors;
         }}
         onSubmit={(values, { setSubmitting }) => {
-          setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
-            setSubmitting(false);
-          }, 400);
+          register(values as UserCreateInput, () => setSubmitting(false));
         }}
       >
         {({
@@ -72,10 +71,10 @@ const RegisterModal: React.FC<ModalProps> = ({ open, onClose }) => {
               type="text"
               label="Full Name"
               placeholder="tono subejo"
-              name="full_name"
+              name="name"
               onChange={handleChange}
               onBlur={handleBlur}
-              value={values.full_name}
+              value={values.name}
             />
             <Input
               type="password"

@@ -3,6 +3,9 @@ import Input from "components/elements/Form/input";
 import Modal from ".";
 import useModal from "./useModal";
 import { Formik } from "formik";
+import { LOGIN } from "schema/identities";
+import { useLazyQuery } from "@apollo/client";
+import useAuth from "hooks/useAuth";
 
 export const useLoginModal = () => {
   const { isOpen, closeModal, openModal } = useModal();
@@ -15,6 +18,7 @@ export const useLoginModal = () => {
 };
 
 const LoginModal: React.FC<ModalProps> = ({ open, onClose }) => {
+  const { login } = useAuth();
   return (
     <Modal open={open} onClose={onClose}>
       <Formik
@@ -37,10 +41,7 @@ const LoginModal: React.FC<ModalProps> = ({ open, onClose }) => {
           return errors;
         }}
         onSubmit={(values, { setSubmitting }) => {
-          setTimeout(() => {
-            alert(JSON.stringify(values, null, 2));
-            setSubmitting(false);
-          }, 400);
+          login(values as UserLoginInput, () => setSubmitting(false));
         }}
       >
         {({

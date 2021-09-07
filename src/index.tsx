@@ -5,11 +5,15 @@ import { BrowserRouter } from "react-router-dom";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import reportWebVitals from "./reportWebVitals";
 import AppRoute from "./pages/app";
+import client from "hooks/useApollo";
+import { ApolloProvider } from "@apollo/client";
 
 ReactDOM.render(
-  <BrowserRouter>
-    <AppRoute />
-  </BrowserRouter>,
+  <ApolloProvider client={client}>
+    <BrowserRouter>
+      <AppRoute />
+    </BrowserRouter>
+  </ApolloProvider>,
   document.getElementById("root")
 );
 

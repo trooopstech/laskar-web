@@ -1,4 +1,5 @@
 import Layout from "components/common/layout";
+import withAnon from "components/common/withAnon";
 import Landing from "components/containers/Landing";
 
 const LandingPage = () => {
@@ -9,4 +10,4 @@ const LandingPage = () => {
   );
 };
 
-export default LandingPage;
+export default withAnon(LandingPage);
