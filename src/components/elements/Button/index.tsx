@@ -36,7 +36,7 @@ const Button: React.FC<ButtonProps> = ({
       type={type}
       onClick={onClick}
       disabled={disabled}
-      className={`px-8 py-2 rounded ${
+      className={`px-8 py-2 rounded-md ${
         // @ts-ignore
         buttonTheme[variant as string]?.base
       } ${className}`}

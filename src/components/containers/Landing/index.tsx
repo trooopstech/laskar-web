@@ -1,6 +1,4 @@
-import Input from "components/elements/Form/input";
-
-const LandingPage = () => {
+const Landing = () => {
   return (
     <div className="container py-4">
       <h1>Ini Landing Page</h1>
@@ -8,4 +6,4 @@ const LandingPage = () => {
   );
 };
 
-export default LandingPage;
+export default Landing;

@@ -19,6 +19,6 @@ interface UserLoginInput {
 
 interface UserCreateInput {
   email: string;
-  name?: string;
+  name: string;
   password: string;
 }

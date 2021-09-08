@@ -3,43 +3,39 @@ import Input from "components/elements/Form/input";
 import Modal from ".";
 import useModal from "./useModal";
 import { Formik } from "formik";
-import useAuth from "hooks/useAuth";
+import useClass from "hooks/useClasses";
 
-export const useLoginModal = () => {
+export const useCreateClassModal = () => {
   const { isOpen, closeModal, openModal } = useModal();
 
   return {
-    isLoginOpen: isOpen,
-    closeLogin: closeModal,
-    openLogin: openModal,
+    isCreateClassOpen: isOpen,
+    closeCreateClass: closeModal,
+    openCreateClass: openModal,
   };
 };
 
-const LoginModal: React.FC<ModalProps> = ({ open, onClose }) => {
-  const { login } = useAuth();
+const CreateClassModal: React.FC<ModalProps> = ({ open, onClose }) => {
+  const { createClass } = useClass();
   return (
     <Modal open={open} onClose={onClose}>
       <Formik
-        initialValues={{ email: "", password: "" }}
+        initialValues={{ name: "", description: "" }}
         validate={(values) => {
           const errors = {};
-          if (!values.email) {
+          if (!values.name) {
             // @ts-ignore
             errors.email = "Required";
-          } else if (
-            !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(values.email)
-          ) {
-            // @ts-ignore
-            errors.email = "Invalid email address";
-          }
-          if (!values.password) {
-            // @ts-ignore
-            errors.password = "Required";
           }
           return errors;
         }}
         onSubmit={(values, { setSubmitting }) => {
-          login(values as UserLoginInput, () => setSubmitting(false));
+          const callback = () => {
+            setSubmitting(false);
+            onClose();
+          };
+          // @ts-ignore
+          createClass(values as CreateClassInput, () => callback());
         }}
       >
         {({
@@ -56,33 +52,33 @@ const LoginModal: React.FC<ModalProps> = ({ open, onClose }) => {
             onSubmit={handleSubmit}
             className="container p-4 flex flex-col items-center justify-center text-black md:w-80"
           >
-            <p className="text-lg">Masuk Akun Trooops</p>
+            <p className="text-lg">Buat Kelas Baru</p>
             <Input
-              type="email"
-              label="Email"
-              placeholder="user@trooops.id"
-              name="email"
+              type="text"
+              label="Class Name"
+              placeholder="Analisis Numerik"
+              name="name"
               onChange={handleChange}
               onBlur={handleBlur}
-              value={values.email}
+              value={values.name}
             />
-            {errors.email && touched.email && errors.email}
+            {errors.name && touched.name && errors.name}
             <Input
-              type="password"
-              label="Password"
-              name="password"
+              type="text"
+              label="Description"
+              placeholder=""
+              name="description"
               onChange={handleChange}
               onBlur={handleBlur}
-              value={values.password}
+              value={values.description}
             />
-            {errors.password && touched.password && errors.password}
             <Button
               variant="primary"
               className="mt-4 w-full"
               type="submit"
               disabled={isSubmitting}
             >
-              Masuk
+              Buat Kelas
             </Button>
           </form>
         )}
@@ -91,4 +87,4 @@ const LoginModal: React.FC<ModalProps> = ({ open, onClose }) => {
   );
 };
 
-export default LoginModal;
+export default CreateClassModal;

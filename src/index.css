@@ -5,3 +5,11 @@
 .no-overflow-x {
   overflow-x: hidden;
 }
+
+.no-overflow-y {
+  overflow-y: hidden;
+}
+
+.bg-gray-gradient {
+  background: linear-gradient(180deg, #050505 0%, #242424 100%);
+}
