@@ -5,41 +5,34 @@ import useModal from "./useModal";
 import { Formik } from "formik";
 import useClass from "hooks/useClasses";
 
-export const useCreateClassModal = () => {
+export const useJoinClassModal = () => {
   const { isOpen, closeModal, openModal } = useModal();
 
   return {
-    isCreateClassOpen: isOpen,
-    closeCreateClass: closeModal,
-    openCreateClass: openModal,
+    isJoinClassOpen: isOpen,
+    closeJoinClass: closeModal,
+    openJoinClass: openModal,
   };
 };
 
-const CreateClassModal: React.FC<ModalProps> = ({
-  open,
-  onClose,
-  openOther,
-}) => {
-  const { createClass } = useClass();
+const JoinClassModal: React.FC<ModalProps> = ({ open, onClose, openOther }) => {
+  const { joinByToken } = useClass();
   return (
     <Modal open={open} onClose={onClose}>
       <Formik
-        initialValues={{ name: "", description: "" }}
+        initialValues={{ token: "" }}
         validate={(values) => {
           const errors = {};
-          if (!values.name) {
+          if (!values.token) {
             // @ts-ignore
-            errors.email = "Required";
+            errors.token = "Required";
           }
           return errors;
         }}
-        onSubmit={(values, { setSubmitting }) => {
-          const callback = () => {
-            setSubmitting(false);
-            onClose();
-          };
-          // @ts-ignore
-          createClass(values as CreateClassInput, () => callback());
+        onSubmit={async (values, { setSubmitting }) => {
+          await joinByToken(values.token);
+          setSubmitting(false);
+          onClose();
         }}
       >
         {({
@@ -56,33 +49,24 @@ const CreateClassModal: React.FC<ModalProps> = ({
             onSubmit={handleSubmit}
             className="container p-4 flex flex-col items-center justify-center text-black md:w-80"
           >
-            <p className="text-lg">Buat Kelas Baru</p>
+            <p className="text-lg">Gabung Kelas dengan Token</p>
             <Input
               type="text"
-              label="Class Name"
-              placeholder="Analisis Numerik"
-              name="name"
+              label="Class Token"
+              placeholder="XXXXXX"
+              name="token"
               onChange={handleChange}
               onBlur={handleBlur}
-              value={values.name}
+              value={values.token}
             />
-            {errors.name && touched.name && errors.name}
-            <Input
-              type="text"
-              label="Description"
-              placeholder=""
-              name="description"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={values.description}
-            />
+            {errors.token && touched.token && errors.token}
             <Button
               variant="primary"
               className="mt-4 w-full"
               type="submit"
               disabled={isSubmitting}
             >
-              Buat Kelas
+              Gabung
             </Button>
             <Button
               variant="text"
@@ -94,7 +78,7 @@ const CreateClassModal: React.FC<ModalProps> = ({
                 }
               }}
             >
-              Gabung Kelas
+              Buat Kelas
             </Button>
           </form>
         )}
@@ -103,4 +87,4 @@ const CreateClassModal: React.FC<ModalProps> = ({
   );
 };
 
-export default CreateClassModal;
+export default JoinClassModal;

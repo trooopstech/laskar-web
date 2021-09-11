@@ -7,7 +7,7 @@ const Sidebar = () => {
   const { classId } = useParams();
 
   return (
-    <div className="h-full w-64 p-4 bg-gray-700 border-r-2 border-gray-800 border-l-1 flex flex-col relative">
+    <div className="h-full w-64 p-4 bg-gray-800 border-r-2 border-gray-600 border-l-2 flex flex-col relative">
       {classId ? <ClassSection /> : <HomeSection />}
     </div>
   );

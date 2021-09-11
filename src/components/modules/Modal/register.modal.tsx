@@ -15,7 +15,7 @@ export const useRegisterModal = () => {
   };
 };
 
-const RegisterModal: React.FC<ModalProps> = ({ open, onClose }) => {
+const RegisterModal: React.FC<ModalProps> = ({ open, onClose, openOther }) => {
   const { register } = useAuth();
   return (
     <Modal open={open} onClose={onClose}>
@@ -92,6 +92,18 @@ const RegisterModal: React.FC<ModalProps> = ({ open, onClose }) => {
               disabled={isSubmitting}
             >
               Daftar
+            </Button>
+            <Button
+              variant="text"
+              className="mt-4 w-full text-red-600"
+              onClick={() => {
+                onClose();
+                if (openOther) {
+                  openOther();
+                }
+              }}
+            >
+              Sudah punya akun? Masuk
             </Button>
           </form>
         )}

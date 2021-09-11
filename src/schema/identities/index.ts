@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
 export const LOGIN = gql`
-  query Login($data: UserLoginInput!) {
+  mutation Login($data: UserLoginInput!) {
     login(data: $data) {
       user {
         id

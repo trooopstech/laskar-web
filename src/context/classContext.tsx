@@ -1,13 +1,16 @@
-import { useQuery } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import useCreateClass from "hooks/useCreateClass";
 import { createContext, ReactNode, useEffect, useMemo, useState } from "react";
-import { GET_ALL_CLASS } from "schema/classes";
+import { useHistory } from "react-router-dom";
+import { GET_ALL_CLASS, JOIN_CLASS, JOIN_CLASS_BY_TOKEN } from "schema/classes";
 
 interface ClassContextType {
   classes: Class[];
   loadingClass: boolean;
   errorClass?: any;
   createClass?: (data: CreateClassInput, cb: () => void) => void;
+  joinByToken: (token: string) => void;
+  join: (classId: string) => void;
 }
 
 const ClassContext = createContext<ClassContextType>({} as ClassContextType);
@@ -17,10 +20,13 @@ export function ClassProvider({
 }: {
   children: ReactNode;
 }): JSX.Element {
+  const history = useHistory();
   const [classes, setClasses] = useState<Class[]>([]);
   const [errorClass, setError] = useState<any>();
   const [loadingClass, setLoading] = useState<boolean>(false);
   const { data, loading, error } = useQuery(GET_ALL_CLASS);
+  const [joinClassByToken] = useMutation(JOIN_CLASS_BY_TOKEN);
+  const [joinClass] = useMutation(JOIN_CLASS);
   const {
     createClassAction,
     createClassData,
@@ -30,7 +36,7 @@ export function ClassProvider({
 
   useEffect(() => {
     if (data) {
-      setClasses(data.getAllClass);
+      setClasses([...classes, ...data.getAllClass]);
     }
   }, [data]);
 
@@ -61,12 +67,40 @@ export function ClassProvider({
     cb();
   }
 
+  const joinByToken = async (token: string) => {
+    try {
+      const res = await joinClassByToken({ variables: { token } });
+
+      if (res) {
+        setClasses([...classes, res.data.joinClassByToken]);
+        history.replace(`/dashboard/class/${res.data.joinClassByToken.id}`);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const join = async (classId: string) => {
+    try {
+      const res = await joinClass({ variables: { classId } });
+
+      if (res) {
+        setClasses([...classes, res.data.joinClass]);
+        history.replace(`/dashboard/class/${res.data.joinClass.id}`);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const memoedValue = useMemo(
     () => ({
       classes,
       loadingClass,
       errorClass,
       createClass,
+      joinByToken,
+      join,
     }),
     [classes, loadingClass, errorClass]
   );

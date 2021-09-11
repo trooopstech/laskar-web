@@ -45,3 +45,61 @@ export const GET_CLASS = gql`
     }
   }
 `;
+
+export const GET_CLASS_TOKEN = gql`
+  query GetClassToken($classId: String!) {
+    getClassToken(classId: $classId) {
+      token
+      link_join
+    }
+  }
+`;
+
+export const GET_CLASS_BY_TOKEN = gql`
+  query GetClassByToken($token: String!) {
+    getClassByToken(token: $token) {
+      id
+      color
+      banner
+      description
+      name
+      class_member {
+        member {
+          id
+          email
+        }
+      }
+    }
+  }
+`;
+
+export const JOIN_CLASS = gql`
+  mutation JoinClass($classId: String!) {
+    joinClass(classId: $classId) {
+      id
+      name
+    }
+  }
+`;
+
+export const JOIN_CLASS_BY_TOKEN = gql`
+  mutation JoinClassByToken($token: String!) {
+    joinClassByToken(token: $token) {
+      id
+      color
+      banner
+      description
+      name
+    }
+  }
+`;
+
+export const JOIN_CLASS_SUBS = gql`
+  subscription NewMemberJoinOnClass($classId: String!) {
+    newMemberJoinOnClass(classId: $classId) {
+      id
+      name
+      email
+    }
+  }
+`;

@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 interface ButtonProps {
   onClick?: () => void;
   href?: string;
@@ -17,8 +19,8 @@ const buttonTheme = {
     text: "text-red-500",
   },
   text: {
-    base: "bg-transparent hover:bg-gray-700 hover:bg-opacity-50",
-    text: "text-white",
+    base: "bg-transparent hover:bg-opacity-50",
+    text: "",
   },
 };
 
@@ -31,21 +33,50 @@ const Button: React.FC<ButtonProps> = ({
   type,
   disabled,
 }) => {
+  if (href) {
+    return (
+      <Link
+        to={href}
+        className={`px-8 py-2 rounded-md ${
+          disabled
+            ? `bg-gray-500`
+            : // @ts-ignore
+              buttonTheme[variant as string]?.base
+        } ${className}`}
+      >
+        <p
+          className={`text-base font-bold text-center ${
+            disabled
+              ? `text-gray-600`
+              : // @ts-ignore
+                buttonTheme[variant as string]?.text
+          } `}
+        >
+          {children}
+        </p>
+      </Link>
+    );
+  }
+
   return (
     <button
       type={type}
       onClick={onClick}
       disabled={disabled}
       className={`px-8 py-2 rounded-md ${
-        // @ts-ignore
-        buttonTheme[variant as string]?.base
+        disabled
+          ? `bg-gray-500`
+          : // @ts-ignore
+            buttonTheme[variant as string]?.base
       } ${className}`}
     >
       <p
         className={`text-base font-bold ${
-          // @ts-ignore
-          buttonTheme[variant as string]?.text
-        }`}
+          disabled
+            ? `text-gray-600`
+            : // @ts-ignore
+              buttonTheme[variant as string]?.text
+        } `}
       >
         {children}
       </p>

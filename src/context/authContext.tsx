@@ -59,7 +59,9 @@ export function AuthProvider({
     if (token && rawUser) {
       setUser(JSON.parse(rawUser));
     } else {
-      history.push("/");
+      if (location.pathname.includes("dashboard")) {
+        history.push("/");
+      }
     }
     setLoadingInitial(false);
   }, []);

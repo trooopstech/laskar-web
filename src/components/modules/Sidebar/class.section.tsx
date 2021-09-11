@@ -6,7 +6,7 @@ const ClassSection = () => {
   const { classDetail } = useClassDetail();
   return (
     <div>
-      <header className="w-full p-4 flex justify-between items-center shadow-sm absolute top-0 left-0">
+      {/* <header className="w-full p-4 flex justify-between items-center shadow-sm absolute top-0 left-0">
         <h1 className="text-xl text-bold">{classDetail?.name}</h1>
         <div className="flex items-end">
           <Menu
@@ -30,7 +30,7 @@ const ClassSection = () => {
             </MenuItem>
           </Menu>
         </div>
-      </header>
+      </header> */}
     </div>
   );
 };

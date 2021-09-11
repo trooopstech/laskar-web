@@ -4,10 +4,10 @@ import Sidebar from "components/modules/Sidebar";
 const PageLayout: React.FC = ({ children }) => {
   return (
     <div className="flex flex-row w-full">
-      <Sidebar />
-      <div className="h-full w-full bg-gray-gradient">
+      <div className="h-full w-full bg-gray-800">
         <Header />
-        <div className="w-full overflow-y-auto" style={{ height: "92vh" }}>
+        <div className="w-full overflow-y-auto flex" style={{ height: "92vh" }}>
+          <Sidebar />
           {children}
         </div>
       </div>

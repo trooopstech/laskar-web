@@ -15,7 +15,7 @@ export const useLoginModal = () => {
   };
 };
 
-const LoginModal: React.FC<ModalProps> = ({ open, onClose }) => {
+const LoginModal: React.FC<ModalProps> = ({ open, onClose, openOther }) => {
   const { login } = useAuth();
   return (
     <Modal open={open} onClose={onClose}>
@@ -83,6 +83,18 @@ const LoginModal: React.FC<ModalProps> = ({ open, onClose }) => {
               disabled={isSubmitting}
             >
               Masuk
+            </Button>
+            <Button
+              variant="text"
+              className="mt=4 w-full text-red-500"
+              onClick={() => {
+                onClose();
+                if (openOther) {
+                  openOther();
+                }
+              }}
+            >
+              Belum punya akun? Daftar
             </Button>
           </form>
         )}

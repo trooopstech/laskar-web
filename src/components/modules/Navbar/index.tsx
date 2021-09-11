@@ -35,8 +35,16 @@ const Navbar = () => {
           </div>
         )}
       </div>
-      <LoginModal open={isLoginOpen} onClose={closeLogin} />
-      <RegisterModal open={isRegisterOpen} onClose={closeRegister} />
+      <LoginModal
+        open={isLoginOpen}
+        onClose={closeLogin}
+        openOther={openRegister}
+      />
+      <RegisterModal
+        open={isRegisterOpen}
+        onClose={closeRegister}
+        openOther={openLogin}
+      />
     </div>
   );
 };

@@ -13,7 +13,7 @@ const HomeSection = () => {
           }
           return false;
         }}
-        activeClassName="bg-gray-900 text-red-400"
+        activeClassName="bg-gray-600"
       >
         <p className="text-xl flex items-center">
           <MdDashboard style={{ fontSize: "32px" }} />
@@ -30,7 +30,7 @@ const HomeSection = () => {
           return false;
         }}
         className="my-2 p-2 rounded-sm"
-        activeClassName="bg-gray-900 text-red-400"
+        activeClassName="bg-gray-600"
       >
         <p className="text-xl flex">
           <MdClass style={{ fontSize: "32px" }} />
