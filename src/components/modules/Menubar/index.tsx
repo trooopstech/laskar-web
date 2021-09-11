@@ -14,8 +14,6 @@ const Menubar = () => {
   const { openJoinClass, isJoinClassOpen, closeJoinClass } =
     useJoinClassModal();
 
-  console.log(classes);
-
   return (
     <div className="p-2 h-full bg-gray-800 shadow">
       <Link
@@ -25,7 +23,12 @@ const Menubar = () => {
         <p className="text-base uppercase font-bold text-center">logo</p>
       </Link>
       {classes.map((data) => (
-        <Classes id={data?.id} name={data?.name} color={`#${data?.color}`} />
+        <Classes
+          id={data?.id}
+          key={data?.id}
+          name={data?.name}
+          color={`#${data?.color}`}
+        />
       ))}
       <div
         className="w-12 h-12 bg-gray-500 rounded-md transition-all hover:bg-red-400 shadow-sm cursor-pointer flex items-center justify-center mt-2"

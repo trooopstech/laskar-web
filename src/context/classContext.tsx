@@ -10,7 +10,7 @@ interface ClassContextType {
   errorClass?: any;
   createClass?: (data: CreateClassInput, cb: () => void) => void;
   joinByToken: (token: string) => void;
-  join: (classId: string) => void;
+  join: (classId: string, allClass: Class[]) => void;
 }
 
 const ClassContext = createContext<ClassContextType>({} as ClassContextType);
@@ -36,7 +36,12 @@ export function ClassProvider({
 
   useEffect(() => {
     if (data) {
-      setClasses([...classes, ...data.getAllClass]);
+      if (window.localStorage.getItem("class")) {
+        join(window.localStorage.getItem("class") as string, data.getAllClass);
+        window.localStorage.removeItem("class");
+      } else {
+        setClasses([...classes, ...data.getAllClass]);
+      }
     }
   }, [data]);
 
@@ -80,12 +85,12 @@ export function ClassProvider({
     }
   };
 
-  const join = async (classId: string) => {
+  const join = async (classId: string, allClass: Class[]) => {
     try {
       const res = await joinClass({ variables: { classId } });
 
       if (res) {
-        setClasses([...classes, res.data.joinClass]);
+        setClasses([...classes, ...allClass, res.data.joinClass]);
         history.replace(`/dashboard/class/${res.data.joinClass.id}`);
       }
     } catch (error) {

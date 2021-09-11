@@ -35,7 +35,7 @@ const TitleSection = () => {
               />
             </button>
           }
-          menuClassName="bg-gray-600 pr-2"
+          menuClassName="bg-gray-600 p-2"
         >
           <MenuItem
             className={({ hover, active }) =>

@@ -41,6 +41,7 @@ export const GET_CLASS = gql`
           id
           email
         }
+        last_online
       }
     }
   }
@@ -77,6 +78,9 @@ export const JOIN_CLASS = gql`
   mutation JoinClass($classId: String!) {
     joinClass(classId: $classId) {
       id
+      color
+      banner
+      description
       name
     }
   }
@@ -97,6 +101,16 @@ export const JOIN_CLASS_BY_TOKEN = gql`
 export const JOIN_CLASS_SUBS = gql`
   subscription NewMemberJoinOnClass($classId: String!) {
     newMemberJoinOnClass(classId: $classId) {
+      id
+      name
+      email
+    }
+  }
+`;
+
+export const ONLINE_MEMBER_SUBS = gql`
+  subscription MemberOnline($classId: String!) {
+    memberOnline(classId: $classId) {
       id
       name
       email

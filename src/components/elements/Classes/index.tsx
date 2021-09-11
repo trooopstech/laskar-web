@@ -1,4 +1,4 @@
-import { useSubscription } from "@apollo/client/react";
+import { useSubscription } from "@apollo/client/react/hooks";
 import { useEffect } from "react";
 import { NavLink } from "react-router-dom";
 import { JOIN_CLASS_SUBS } from "schema/classes";
@@ -11,14 +11,6 @@ interface ClassesProps {
 }
 
 const Classes: React.FC<ClassesProps> = ({ id, name, photo, color }) => {
-  const { data, loading } = useSubscription(JOIN_CLASS_SUBS, {
-    variables: { classId: id },
-  });
-
-  useEffect(() => {
-    console.log(data);
-  }, [data]);
-
   return (
     <NavLink
       className="my-2 rounded-md shadow-sm cursor-pointer w-12 h-12 flex items-center justify-center transform hover:scale-110"

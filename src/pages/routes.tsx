@@ -34,12 +34,12 @@ const PrivateRoute: React.FC<RouteProps> = ({ children, path, exact }) => {
 
 // route configuration
 const routes: JSX.Element[] = [
-  <Route exact path="/" component={LandingPage} />,
-  <Route path="/join-class" component={JoinClassPage} />,
-  <PrivateRoute path="/dashboard">
+  <Route key="index" exact path="/" component={LandingPage} />,
+  <Route key="join" path="/join-class" component={JoinClassPage} />,
+  <PrivateRoute key="private-dashboard" path="/dashboard">
     <DashboardPage />
   </PrivateRoute>,
-  <Route path="*">
+  <Route path="*" key="404">
     <NotFound />
   </Route>,
 ];
