@@ -1,7 +1,5 @@
-import { useSubscription } from "@apollo/client/react/hooks";
-import { useEffect } from "react";
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
-import { JOIN_CLASS_SUBS } from "schema/classes";
 
 interface ClassesProps {
   id: string;
@@ -11,19 +9,28 @@ interface ClassesProps {
 }
 
 const Classes: React.FC<ClassesProps> = ({ id, name, photo, color }) => {
+  const [isHovered, setHover] = useState<boolean>(false);
+  const [isClicked, setClicked] = useState<boolean>(false);
+
   return (
     <NavLink
-      className="my-2 rounded-md shadow-sm cursor-pointer w-12 h-12 flex items-center justify-center transform hover:scale-110"
-      style={{ backgroundColor: color }}
+      className="my-2 rounded-lg shadow-sm cursor-pointer flex items-center justify-center transform relative"
+      onMouseEnter={() => setHover(true)}
+      onMouseLeave={() => setHover(false)}
+      style={{ backgroundColor: color, height: "42px", width: "42px" }}
       to={`/dashboard/class/${id}`}
       isActive={(_, location) => {
         if (location?.pathname.includes(id)) {
+          setClicked(true);
           return true;
         }
+        setClicked(false);
         return false;
       }}
-      activeClassName="rounded-3xl"
     >
+      {(isHovered || isClicked) && (
+        <div className=" bg-white w-1 h-2/3 absolute -left-2 rounded-r-lg" />
+      )}
       <p className="text-base uppercase font-bold text-center text-white">
         {name?.slice(0, 2)}
       </p>

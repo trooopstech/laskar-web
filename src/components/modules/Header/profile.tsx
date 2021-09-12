@@ -13,7 +13,7 @@ const ProfileBadge = () => {
             <p className="text-xs uppercase">{user.email.slice(0, 2)}</p>
           </button>
         }
-        menuClassName="bg-gray-600"
+        menuClassName="bg-gray-600 p-2"
       >
         <MenuItem
           className={({ hover, active }) =>

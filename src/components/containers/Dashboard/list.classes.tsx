@@ -5,9 +5,9 @@ const ListClasses = () => {
   const { classes } = useClass();
 
   return (
-    <div className="container p-4">
-      <h1 className="text-2xl">Kelas Saya</h1>
-      <div className="flex flex-wrap">
+    <div className="container px-4 py-6">
+      <h1 className="text-xl font-bold">Kelas</h1>
+      <div className="flex flex-wrap -ml-3">
         {classes.map((data) => (
           <ClassCard data={data} />
         ))}

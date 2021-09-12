@@ -15,8 +15,8 @@ const HomeSection = () => {
         }}
         activeClassName="bg-gray-600"
       >
-        <p className="text-xl flex items-center">
-          <MdDashboard style={{ fontSize: "32px" }} />
+        <p className="flex items-center">
+          <MdDashboard style={{ fontSize: "24px" }} />
           <div className="ml-2" />
           Dashboard
         </p>
@@ -32,8 +32,8 @@ const HomeSection = () => {
         className="my-2 p-2 rounded-sm"
         activeClassName="bg-gray-600"
       >
-        <p className="text-xl flex">
-          <MdClass style={{ fontSize: "32px" }} />
+        <p className="flex">
+          <MdClass style={{ fontSize: "24px" }} />
           <div className="ml-2" />
           Kelas
         </p>

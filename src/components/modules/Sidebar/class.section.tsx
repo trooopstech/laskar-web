@@ -9,7 +9,7 @@ const ClassSection = () => {
   const [collapse, setCollapse] = useState(false);
 
   return (
-    <div>
+    <div className="py-2">
       {/* category wannabe */}
       <div
         className="category flex items-center justify-between cursor-pointer text-gray-300 hover:text-white"
@@ -26,19 +26,19 @@ const ClassSection = () => {
       </div>
       {!collapse && (
         <div className="channel flex flex-col">
-          <div className="flex items-center cursor-pointer text-gray-300 hover:text-white my-1 hover:bg-gray-600 rounded-sm pl-2">
+          <div className="flex items-center cursor-pointer text-gray-300 hover:text-white my-1 hover:bg-gray-600 rounded-sm pl-4">
             <p className="text-base text-gray-500 mr-2">
               <FiHash />
             </p>
             <p className="text-base">Tugas Besar 1</p>
           </div>
-          <div className="flex items-center cursor-pointer text-gray-300 hover:text-white my-1 hover:bg-gray-600 rounded-sm pl-2">
+          <div className="flex items-center cursor-pointer text-gray-300 hover:text-white my-1 hover:bg-gray-600 rounded-sm pl-4">
             <p className="text-base text-gray-500 mr-2">
               <FiHash />
             </p>
             <p className="text-base">Tugas Besar 2</p>
           </div>
-          <div className="flex items-center cursor-pointer text-gray-300 hover:text-white my-1 hover:bg-gray-600 rounded-sm pl-2">
+          <div className="flex items-center cursor-pointer text-gray-300 hover:text-white my-1 hover:bg-gray-600 rounded-sm pl-4">
             <p className="text-base text-gray-500 mr-2">
               <FiHash />
             </p>

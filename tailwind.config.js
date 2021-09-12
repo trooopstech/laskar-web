@@ -3,11 +3,14 @@ module.exports = {
   darkMode: false,
   important: true, // or 'media' or 'class'
   theme: {
+    fontFamily: {
+      sans: ["Roboto", "sans-serif"],
+    },
     extend: {
       colors: {
         gray: {
           600: "#2C2C2E",
-          800: "#1C1C1E",
+          800: "#0B0B0B",
         },
       },
     },

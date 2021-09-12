@@ -17,11 +17,7 @@ const TitleSection = () => {
 
   return (
     <div className="flex items-center">
-      {classDetail?.name ? (
-        <MdClass style={{ fontSize: "32px", color: `#${classDetail.color}` }} />
-      ) : (
-        HOMEPAGE_ICON[headerTitles(pathname)]
-      )}
+      {classDetail?.name ? "" : HOMEPAGE_ICON[headerTitles(pathname)]}
       <p className="ml-2 text-xl">
         {classDetail?.name ? classDetail?.name : headerTitles(pathname)}
       </p>

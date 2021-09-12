@@ -6,7 +6,6 @@ const AppLayout: React.FC = ({ children }) => {
   return (
     <ClassProvider>
       <div className="w-screen h-screen flex flex-row text-white no-overflow-x no-overflow-y">
-        <Menubar />
         {children}
       </div>
     </ClassProvider>

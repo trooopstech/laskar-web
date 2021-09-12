@@ -1,4 +1,5 @@
 import Header from "components/modules/Header";
+import Menubar from "components/modules/Menubar";
 import Sidebar from "components/modules/Sidebar";
 
 const PageLayout: React.FC = ({ children }) => {
@@ -7,6 +8,7 @@ const PageLayout: React.FC = ({ children }) => {
       <div className="h-full w-full bg-gray-800">
         <Header />
         <div className="w-full overflow-y-auto flex" style={{ height: "92vh" }}>
+          <Menubar />
           <Sidebar />
           {children}
         </div>

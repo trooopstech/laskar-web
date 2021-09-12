@@ -1,10 +1,20 @@
+import { Link } from "react-router-dom";
 import ProfileBadge from "./profile";
 import TitleSection from "./title";
 
 const Header = () => {
   return (
-    <header className="w-full py-4 px-2 bg-gray-800 flex justify-between items-center shadow-sm border-b-2 border-l-2 border-gray-600">
-      <TitleSection />
+    <header className="w-full py-2 px-3 bg-gray-800 flex justify-between items-center shadow-sm border-b border-gray-600">
+      <div className="flex">
+        <Link
+          to={"/dashboard"}
+          style={{ height: "42px", width: "42px" }}
+          className="bg-gray-400 rounded-lg shadow-sm cursor-pointer flex items-center justify-center mr-4"
+        >
+          <p className="font-bold text-center">logo</p>
+        </Link>
+        <TitleSection />
+      </div>
       <ProfileBadge />
     </header>
   );
