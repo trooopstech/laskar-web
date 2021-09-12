@@ -36,6 +36,14 @@ export const GET_CLASS = gql`
         id
         email
       }
+      channel_category {
+        id
+        name
+        channels {
+          id
+          name
+        }
+      }
       class_member {
         member {
           id

@@ -9,9 +9,9 @@ import { WebSocketLink } from "@apollo/client/link/ws";
 import { setContext } from "@apollo/client/link/context";
 import { getMainDefinition } from "@apollo/client/utilities";
 
-const BASE_API = "http://localhost:8000";
+const BASE_API = process.env.BASE_API || "http://localhost:8000";
 
-const BASE_WS = "ws://localhost:8000";
+const BASE_WS = process.env.BASE_WS || "ws://localhost:8000";
 
 const httpLink = createHttpLink({
   uri: `${BASE_API}/graphql`,
