@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import "@szhsin/react-menu/dist/index.css";
+import "emoji-mart/css/emoji-mart.css";
 import { BrowserRouter } from "react-router-dom";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import reportWebVitals from "./reportWebVitals";

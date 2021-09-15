@@ -39,6 +39,7 @@ export const GET_CLASS = gql`
       channel_category {
         id
         name
+        hidden
         channels {
           id
           name
@@ -49,6 +50,7 @@ export const GET_CLASS = gql`
           id
           email
         }
+        oid
         last_online
       }
     }

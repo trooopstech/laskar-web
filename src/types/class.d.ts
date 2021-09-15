@@ -6,6 +6,8 @@ type Class = {
   description: string;
   color: string;
   banner?: string;
+  channel_category: ChannelCategory[];
+  class_member?: ClassMember[];
 };
 
 type ClassMember = {

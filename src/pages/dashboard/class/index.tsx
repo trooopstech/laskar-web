@@ -1,6 +1,6 @@
 import PageLayout from "components/common/pageLayout";
 import ClassDetail from "components/containers/Classes";
-import { ClassDetailProvider } from "context/classDetailContext";
+import { ClassDetailProvider } from "context/ClassDetail";
 import { useParams } from "react-router";
 
 const ClassDetailPage = () => {

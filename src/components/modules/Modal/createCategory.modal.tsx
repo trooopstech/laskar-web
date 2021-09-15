@@ -3,44 +3,44 @@ import Input from "components/elements/Form/input";
 import Modal from ".";
 import useModal from "./useModal";
 import { Formik } from "formik";
-import useClass from "hooks/useClasses";
+import useClassDetail from "hooks/useDetailClass";
+import { useParams } from "react-router";
 
-export const useCreateClassModal = () => {
+export const useCreateCategoryModal = () => {
   const { isOpen, closeModal, openModal } = useModal();
 
   return {
-    isCreateClassOpen: isOpen,
-    closeCreateClass: closeModal,
-    openCreateClass: openModal,
+    isCategoryOpen: isOpen,
+    closeCategory: closeModal,
+    openCategory: openModal,
   };
 };
 
-const CreateClassModal: React.FC<ModalProps> = ({
+const CreateCategoryModal: React.FC<ModalProps> = ({
   open,
   onClose,
   openOther,
 }) => {
-  const { createClass } = useClass();
+  const { createCategoryChannel } = useClassDetail();
+  // @ts-ignore
+  const { classId } = useParams();
 
   return (
     <Modal open={open} onClose={onClose}>
       <Formik
-        initialValues={{ name: "", description: "" }}
+        initialValues={{ name: "" }}
         validate={(values) => {
           const errors = {};
           if (!values.name) {
             // @ts-ignore
-            errors.email = "Required";
+            errors.className = "Required";
           }
           return errors;
         }}
-        onSubmit={(values, { setSubmitting }) => {
-          const callback = () => {
-            setSubmitting(false);
-            onClose();
-          };
-          // @ts-ignore
-          createClass(values as CreateClassInput, () => callback());
+        onSubmit={async (values, { setSubmitting }) => {
+          await createCategoryChannel({ ...values, class_id: classId });
+          setSubmitting(false);
+          onClose();
         }}
       >
         {({
@@ -57,45 +57,24 @@ const CreateClassModal: React.FC<ModalProps> = ({
             onSubmit={handleSubmit}
             className="container p-4 flex flex-col items-center justify-center text-black md:w-80"
           >
-            <p className="text-lg">Buat Kelas Baru</p>
+            <p className="text-lg">Buat Kategory Baru</p>
             <Input
               type="text"
-              label="Class Name"
-              placeholder="Analisis Numerik"
+              label="Category Name"
+              placeholder="General"
               name="name"
               onChange={handleChange}
               onBlur={handleBlur}
               value={values.name}
             />
             {errors.name && touched.name && errors.name}
-            <Input
-              type="text"
-              label="Description"
-              placeholder=""
-              name="description"
-              onChange={handleChange}
-              onBlur={handleBlur}
-              value={values.description}
-            />
             <Button
               variant="primary"
               className="mt-4 w-full"
               type="submit"
               disabled={isSubmitting}
             >
-              Buat Kelas
-            </Button>
-            <Button
-              variant="text"
-              className="mt=4 w-full text-red-500"
-              onClick={() => {
-                onClose();
-                if (openOther) {
-                  openOther();
-                }
-              }}
-            >
-              Gabung Kelas
+              Buat Kategori
             </Button>
           </form>
         )}
@@ -104,4 +83,4 @@ const CreateClassModal: React.FC<ModalProps> = ({
   );
 };
 
-export default CreateClassModal;
+export default CreateCategoryModal;

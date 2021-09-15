@@ -1,4 +1,4 @@
-import ClassDetailContext from "context/classDetailContext";
+import ClassDetailContext from "context/ClassDetail";
 import { useContext } from "react";
 
 const useClassDetail = () => {

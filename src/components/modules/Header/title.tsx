@@ -4,6 +4,9 @@ import { useLocation } from "react-router";
 import { headerTitles } from "utils/titleMaker";
 import { Menu, MenuDivider, MenuItem } from "@szhsin/react-menu";
 import ClassTokenModal, { useClassTokenModal } from "../Modal/tokenClass.modal";
+import CreateCategoryModal, {
+  useCreateCategoryModal,
+} from "../Modal/createCategory.modal";
 
 const HOMEPAGE_ICON: { [key: string]: JSX.Element } = {
   Kelas: <MdClass style={{ fontSize: "32px" }} />,
@@ -14,6 +17,8 @@ const TitleSection = () => {
   const { pathname } = useLocation();
   const { classDetail } = useClassDetail();
   const { isTokenOpen, closeToken, openToken } = useClassTokenModal();
+  const { isCategoryOpen, closeCategory, openCategory } =
+    useCreateCategoryModal();
 
   return (
     <div className="flex items-center">
@@ -55,7 +60,7 @@ const TitleSection = () => {
                 ? "bg-gray-500 text-white rounded-sm p-2"
                 : "bg-gray-600 text-white p-2"
             }
-            onClick={() => console.log("wkwk")}
+            onClick={openCategory}
           >
             Tambah Kategori
           </MenuItem>
@@ -64,6 +69,7 @@ const TitleSection = () => {
       {isTokenOpen > 0 && (
         <ClassTokenModal open={isTokenOpen} onClose={closeToken} />
       )}
+      <CreateCategoryModal open={isCategoryOpen} onClose={closeCategory} />
     </div>
   );
 };

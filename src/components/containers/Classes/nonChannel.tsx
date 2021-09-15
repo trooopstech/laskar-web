@@ -1,11 +1,9 @@
 import useClassDetail from "hooks/useDetailClass";
 import { useEffect } from "react";
-import { Route, Switch, useHistory, useRouteMatch } from "react-router";
-import ChatContainer from "./Chat";
-import NonChannel from "./nonChannel";
+import { useRouteMatch, useHistory } from "react-router-dom";
 
-const ClassDetail = () => {
-  const { path, url } = useRouteMatch();
+const NonChannel = () => {
+  const { url } = useRouteMatch();
   const history = useHistory();
   const { classDetail } = useClassDetail();
 
@@ -20,20 +18,12 @@ const ClassDetail = () => {
         return history.replace(`${url}/${firstChannel}`);
       }
     }
-
-    return history.replace(url);
   }, [classDetail, history, url]);
-
   return (
-    <Switch>
-      <Route exact path={path}>
-        <NonChannel />
-      </Route>
-      <Route path={`${path}/:channelId`}>
-        <ChatContainer />
-      </Route>
-    </Switch>
+    <div className="container p-4">
+      <h1>Kelas {classDetail?.name}</h1>
+    </div>
   );
 };
 
-export default ClassDetail;
+export default NonChannel;

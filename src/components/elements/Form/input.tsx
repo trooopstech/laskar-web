@@ -2,6 +2,7 @@ interface InputProps {
   label?: string;
   type: string;
   placeholder?: string;
+  className?: string;
   onChange?: (res: any) => void;
   onBlur?: (res: any) => void;
   value?: string;
@@ -15,6 +16,7 @@ const Input: React.FC<InputProps> = ({
   onChange,
   onBlur,
   value,
+  className,
   name,
 }) => {
   return (
@@ -22,7 +24,7 @@ const Input: React.FC<InputProps> = ({
       <span>{label}</span>
       <input
         type={type}
-        className="form-input rounded-sm border-0 bg-gray-300 text-black"
+        className={`form-input rounded-sm border-0 bg-gray-300 text-black ${className}`}
         placeholder={placeholder}
         onChange={onChange}
         onBlur={onBlur}

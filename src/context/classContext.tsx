@@ -67,10 +67,10 @@ export function ClassProvider({
     setError(createClassError);
   }, [createClassError]);
 
-  function createClass(data: CreateClassInput, cb: () => void): void {
+  const createClass = (data: CreateClassInput, cb: () => void): void => {
     createClassAction({ variables: { data } });
     cb();
-  }
+  };
 
   const joinByToken = async (token: string) => {
     try {

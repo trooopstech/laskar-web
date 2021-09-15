@@ -7,7 +7,10 @@ const PageLayout: React.FC = ({ children }) => {
     <div className="flex flex-row w-full">
       <div className="h-full w-full bg-gray-800">
         <Header />
-        <div className="w-full overflow-y-auto flex" style={{ height: "92vh" }}>
+        <div
+          className="w-full overflow-y-auto flex"
+          style={{ height: "calc(100% - 4rem)" }}
+        >
           <Menubar />
           <Sidebar />
           {children}

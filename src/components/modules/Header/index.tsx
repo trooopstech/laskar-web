@@ -4,7 +4,7 @@ import TitleSection from "./title";
 
 const Header = () => {
   return (
-    <header className="w-full py-2 px-3 bg-gray-800 flex justify-between items-center shadow-sm border-b border-gray-600">
+    <header className="w-full  px-3 h-16 bg-gray-800 flex justify-between items-center shadow-sm border-b border-gray-600">
       <div className="flex">
         <Link
           to={"/dashboard"}
