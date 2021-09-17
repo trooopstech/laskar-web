@@ -8,6 +8,11 @@ export const GET_CHAT_GROUP = gql`
       channel {
         id
         name
+        channel_granted_role {
+          role {
+            name
+          }
+        }
       }
       group_messages {
         created_at

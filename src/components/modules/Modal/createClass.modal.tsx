@@ -55,7 +55,7 @@ const CreateClassModal: React.FC<ModalProps> = ({
         }) => (
           <form
             onSubmit={handleSubmit}
-            className="container p-4 flex flex-col items-center justify-center text-black md:w-80"
+            className="container p-4 flex flex-col items-center justify-center text-gray-50 md:w-80"
           >
             <p className="text-lg">Buat Kelas Baru</p>
             <Input
@@ -71,7 +71,7 @@ const CreateClassModal: React.FC<ModalProps> = ({
             <Input
               type="text"
               label="Description"
-              placeholder=""
+              placeholder="Deskripsi Kelas ...."
               name="description"
               onChange={handleChange}
               onBlur={handleBlur}
@@ -87,7 +87,7 @@ const CreateClassModal: React.FC<ModalProps> = ({
             </Button>
             <Button
               variant="text"
-              className="mt=4 w-full text-red-500"
+              className="mt=4 w-full text-gray-400"
               onClick={() => {
                 onClose();
                 if (openOther) {

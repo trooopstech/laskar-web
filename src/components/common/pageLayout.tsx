@@ -1,5 +1,6 @@
 import Header from "components/modules/Header";
 import Menubar from "components/modules/Menubar";
+import Rightbar from "components/modules/Rightbar";
 import Sidebar from "components/modules/Sidebar";
 
 const PageLayout: React.FC = ({ children }) => {
@@ -14,6 +15,7 @@ const PageLayout: React.FC = ({ children }) => {
           <Menubar />
           <Sidebar />
           {children}
+          <Rightbar />
         </div>
       </div>
     </div>

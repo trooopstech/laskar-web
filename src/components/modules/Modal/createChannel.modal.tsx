@@ -70,7 +70,7 @@ const CreateChannelModal: React.FC<CreateChannelModalProps> = ({
         }) => (
           <form
             onSubmit={handleSubmit}
-            className="container p-4 flex flex-col items-center justify-center text-black md:w-80"
+            className="container p-4 flex flex-col items-center justify-center text-gray-50 md:w-80"
           >
             <p className="text-lg">Buat Channel Baru</p>
             <Input

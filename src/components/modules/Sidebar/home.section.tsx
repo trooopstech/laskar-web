@@ -6,7 +6,7 @@ const HomeSection = () => {
     <>
       <NavLink
         to="/dashboard"
-        className="my-2 p-2 rounded-sm"
+        className="my-2 p-2 rounded-md"
         isActive={(match, location) => {
           if (location?.pathname === match?.url) {
             return true;
@@ -29,7 +29,7 @@ const HomeSection = () => {
           }
           return false;
         }}
-        className="my-2 p-2 rounded-sm"
+        className="my-2 p-2 rounded-md"
         activeClassName="bg-gray-600"
       >
         <p className="flex">

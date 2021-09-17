@@ -4,14 +4,14 @@ import TitleSection from "./title";
 
 const Header = () => {
   return (
-    <header className="w-full  px-3 h-16 bg-gray-800 flex justify-between items-center shadow-sm border-b border-gray-600">
+    <header className="w-full  px-3 h-16 bg-gray-800 flex justify-between items-center shadow-md border-b border-gray-700">
       <div className="flex">
         <Link
           to={"/dashboard"}
           style={{ height: "42px", width: "42px" }}
           className="bg-gray-400 rounded-lg shadow-sm cursor-pointer flex items-center justify-center mr-4"
         >
-          <p className="font-bold text-center">logo</p>
+          <p className="font-bold text-center text-black">logo</p>
         </Link>
         <TitleSection />
       </div>

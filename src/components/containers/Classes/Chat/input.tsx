@@ -64,7 +64,7 @@ const ChatInput = () => {
   };
 
   return (
-    <div className="p-2 w-full flex items-center justify-center border-gray-600 border-t relative">
+    <div className="p-2 w-full flex items-center justify-center border-gray-700 border-t relative">
       <div className="w-full flex">
         <div className="flex bg-gray-700  px-2 rounded-lg w-full items-center">
           <MdAddCircle className="text-3xl mr-2" />

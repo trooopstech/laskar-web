@@ -13,15 +13,15 @@ const ProfileBadge = () => {
             <p className="text-xs uppercase">{user.email.slice(0, 2)}</p>
           </button>
         }
-        menuClassName="bg-gray-600 p-2"
+        menuClassName="bg-gray-700 p-2"
       >
         <MenuItem
           className={({ hover, active }) =>
             active
-              ? "bg-gray-600 text-white p-2"
+              ? "bg-gray-700 text-white p-2"
               : hover
-              ? "bg-gray-500 text-white rounded-sm p-2"
-              : "bg-gray-600 text-white p-2"
+              ? "bg-gray-600 text-white rounded-sm p-2"
+              : "bg-gray-700 text-white p-2"
           }
           onClick={logout}
         >
@@ -30,10 +30,10 @@ const ProfileBadge = () => {
         <MenuItem
           className={({ hover, active }) =>
             active
-              ? "bg-gray-600 text-white p-2"
+              ? "bg-gray-700 text-white p-2"
               : hover
-              ? "bg-gray-500 text-white rounded-sm p-2"
-              : "bg-gray-600 text-white p-2"
+              ? "bg-gray-600 text-white rounded-sm p-2"
+              : "bg-gray-700 text-white p-2"
           }
           onClick={logout}
         >

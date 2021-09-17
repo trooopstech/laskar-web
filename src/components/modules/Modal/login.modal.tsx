@@ -54,7 +54,7 @@ const LoginModal: React.FC<ModalProps> = ({ open, onClose, openOther }) => {
         }) => (
           <form
             onSubmit={handleSubmit}
-            className="container p-4 flex flex-col items-center justify-center text-black md:w-80"
+            className="container p-4 flex flex-col items-center justify-center text-gray-50 md:w-80"
           >
             <p className="text-lg">Masuk Akun Trooops</p>
             <Input
@@ -86,7 +86,7 @@ const LoginModal: React.FC<ModalProps> = ({ open, onClose, openOther }) => {
             </Button>
             <Button
               variant="text"
-              className="mt=4 w-full text-red-500"
+              className="mt=4 w-full text-gray-50"
               onClick={() => {
                 onClose();
                 if (openOther) {

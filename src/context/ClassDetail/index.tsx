@@ -24,6 +24,7 @@ interface ClassDetailContextType {
   createChannel: (data: CreateChannelInput) => void;
   deleteCategoryChannel: (categoryId: string) => void;
   getUserClassMember: () => ClassMember;
+  isAdministrator: () => boolean;
 }
 
 const ClassDetailContext = createContext<ClassDetailContextType>(
@@ -114,6 +115,27 @@ export function ClassDetailProvider({
     return {} as ClassMember;
   };
 
+  const isAdministrator = (): boolean => {
+    const classMember = getUserClassMember();
+
+    const isStudent =
+      classMember.member_role.filter(
+        (memberRole: MemberRole) => memberRole.role.name === "STUDENT"
+      ).length > 0;
+
+    const notStudent =
+      classMember.member_role.filter(
+        (memberRole: MemberRole) => memberRole.role.name !== "STUDENT"
+      ).length > 0;
+
+    if (isStudent && notStudent) {
+      return true;
+    } else if (notStudent) {
+      return true;
+    }
+    return !isStudent;
+  };
+
   const deleteCategoryChannel = async (categoryId: string) => {
     try {
       await deleteCategory({ variables: { categoryId } });
@@ -131,6 +153,7 @@ export function ClassDetailProvider({
       deleteCategoryChannel,
       createChannel,
       getUserClassMember,
+      isAdministrator,
     }),
     [classDetail, loadingClass, errorClass]
   );

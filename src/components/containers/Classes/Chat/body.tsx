@@ -54,7 +54,7 @@ const ChatBody = React.memo(() => {
 
   return (
     <div
-      className="flex-grow overflow-y-scroll overflow-x-hidden w-full p-4"
+      className="flex-grow overflow-y-scroll overflow-x-hidden w-full p-4  border-gray-700"
       key={chatGroup?.id}
       style={{ maxHeight: "calc(100% - 7rem)" }}
     >

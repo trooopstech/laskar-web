@@ -24,7 +24,7 @@ const Input: React.FC<InputProps> = ({
       <span>{label}</span>
       <input
         type={type}
-        className={`form-input rounded-sm border-0 bg-gray-300 text-black ${className}`}
+        className={`form-input rounded-lg border-0 text-gray-50 bg-gray-700 ${className}`}
         placeholder={placeholder}
         onChange={onChange}
         onBlur={onBlur}

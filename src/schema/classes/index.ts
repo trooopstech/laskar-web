@@ -43,6 +43,11 @@ export const GET_CLASS = gql`
         channels {
           id
           name
+          channel_granted_role {
+            role {
+              name
+            }
+          }
         }
       }
       class_member {
@@ -52,6 +57,11 @@ export const GET_CLASS = gql`
         }
         oid
         last_online
+        member_role {
+          role {
+            name
+          }
+        }
       }
     }
   }

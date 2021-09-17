@@ -9,8 +9,11 @@ module.exports = {
     extend: {
       colors: {
         gray: {
+          400: "#E2E2E2",
           600: "#2C2C2E",
+          700: "#1C1C1E",
           800: "#0B0B0B",
+          modal: "#363940",
         },
       },
     },

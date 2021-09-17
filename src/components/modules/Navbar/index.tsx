@@ -9,7 +9,7 @@ const Navbar = () => {
   const { user, logout } = useAuth();
 
   return (
-    <div className="lg:px-20 px-4 md:px-15 bg-gray-900 w-screen fixed top-0 left-0 lg:h-20 h-16 flex items-center">
+    <div className="lg:px-20 px-4 md:px-15 bg-gray-700 w-screen fixed top-0 left-0 lg:h-20 h-16 flex items-center">
       <div className="w-full">
         <h1 className="text-lg">Troops</h1>
       </div>

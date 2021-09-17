@@ -1,5 +1,10 @@
 import useClassDetail from "hooks/useDetailClass";
-import { MdAdd, MdExpandMore, MdExpandLess } from "react-icons/md";
+import {
+  MdAdd,
+  MdExpandMore,
+  MdExpandLess,
+  MdAnnouncement,
+} from "react-icons/md";
 import { FiHash } from "react-icons/fi";
 import { Menu, MenuDivider, MenuItem } from "@szhsin/react-menu";
 import { useState } from "react";
@@ -19,12 +24,12 @@ const ChannelMenu: React.FC<ChannelMenuProps> = ({ channels }) => {
     <div className="channel flex flex-col">
       {channels?.map((channel) => (
         <NavLink
-          className="flex items-center cursor-pointer text-gray-300 hover:text-white my-1 hover:bg-gray-600 rounded-sm pl-4"
+          className="flex items-center cursor-pointer text-gray-400 hover:text-gray-300 my-1 hover:bg-gray-600 rounded-md pl-4"
           key={channel.id}
           to={`${url}/${channel?.id}`}
-          activeClassName="text-white bg-gray-600"
+          activeClassName="text-white bg-gray-700"
         >
-          <p className="text-base text-gray-500 mr-2">
+          <p className="text-base text-gray-400 mr-2">
             <FiHash />
           </p>
           <p className="text-base">{channel.name}</p>
@@ -40,7 +45,7 @@ interface CategoryMenuProps {
 
 const CategoryMenu: React.FC<CategoryMenuProps> = ({ category }) => {
   const [collapse, setCollapse] = useState(false);
-  const { deleteCategoryChannel } = useClassDetail();
+  const { deleteCategoryChannel, isAdministrator } = useClassDetail();
   const { isChannelOpen, closeChannel, openChannel } = useCreateChannelModal();
 
   if (category.hidden) {
@@ -50,47 +55,49 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({ category }) => {
   return (
     <>
       <div
-        className="category w-full flex items-center justify-between cursor-pointer text-gray-300 hover:text-white"
+        className="category w-full flex items-center justify-between cursor-pointer text-gray-400 hover:text-gray-300 px-1"
         onClick={() => setCollapse(!collapse)}
       >
         <div className="flex items-center w-full cursor-pointer">
           {collapse ? <MdExpandLess /> : <MdExpandMore />}
           <p className="uppercase noselect">{category.name}</p>
         </div>
-        <Menu
-          menuButton={
-            <button>
-              <MdAdd style={{ fontWeight: "bold" }} />
-            </button>
-          }
-          menuClassName="bg-gray-600 p-2"
-        >
-          <MenuItem
-            className={({ hover, active }) =>
-              active
-                ? "bg-gray-600 text-white p-2"
-                : hover
-                ? "bg-gray-500 text-white rounded-sm p-2"
-                : "bg-gray-600 text-white p-2"
+        {isAdministrator() && (
+          <Menu
+            menuButton={
+              <button>
+                <MdAdd style={{ fontWeight: "bold" }} />
+              </button>
             }
-            onClick={openChannel}
+            menuClassName="bg-gray-700 p-2 rounded-md"
           >
-            Buat Channel
-          </MenuItem>
-          <MenuDivider className="bg-gray-500" />
-          <MenuItem
-            className={({ hover, active }) =>
-              active
-                ? "bg-gray-600 text-white p-2"
-                : hover
-                ? "bg-gray-500 text-white rounded-sm p-2"
-                : "bg-gray-600 text-white p-2"
-            }
-            onClick={() => deleteCategoryChannel(category.id)}
-          >
-            Hapus Kategori
-          </MenuItem>
-        </Menu>
+            <MenuItem
+              className={({ hover, active }) =>
+                active
+                  ? "bg-gray-700 text-white p-2"
+                  : hover
+                  ? "bg-gray-600 text-white rounded-md p-2"
+                  : "bg-gray-700 text-white p-2"
+              }
+              onClick={openChannel}
+            >
+              Buat Channel
+            </MenuItem>
+            <MenuDivider className="bg-gray-700" />
+            <MenuItem
+              className={({ hover, active }) =>
+                active
+                  ? "bg-gray-700 text-white p-2"
+                  : hover
+                  ? "bg-gray-600 text-white rounded-md p-2"
+                  : "bg-gray-700 text-white p-2"
+              }
+              onClick={() => deleteCategoryChannel(category.id)}
+            >
+              Hapus Kategori
+            </MenuItem>
+          </Menu>
+        )}
       </div>
       {!collapse && <ChannelMenu channels={category.channels} />}
       <CreateChannelModal
@@ -107,6 +114,10 @@ const ClassSection = () => {
 
   return (
     <div className="py-2">
+      <div className="flex items-center mb-4 mt-2 w-full hover:bg-gray-600 rounded-md px-2 py-1">
+        <MdAnnouncement className="mr-3" />
+        <p className="text-gray-400 hover:text-gray-300">Pengumuman</p>
+      </div>
       {classDetail?.channel_category.map((category) => (
         <CategoryMenu category={category} key={category.id} />
       ))}

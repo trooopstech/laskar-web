@@ -13,6 +13,16 @@ type Class = {
 type ClassMember = {
   member: User;
   oid: string;
+  member_role: MemberRole[];
+};
+
+type MemberRole = {
+  role: Role;
+};
+
+type Role = {
+  id?: string;
+  name: string;
 };
 
 interface CreateClassInput {

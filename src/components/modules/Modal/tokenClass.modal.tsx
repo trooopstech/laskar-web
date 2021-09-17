@@ -35,8 +35,8 @@ const ClassTokenModal: React.FC<ModalProps> = ({ open, onClose }) => {
 
   return (
     <Modal open={open} onClose={onClose}>
-      <h1 className="text-black">INI TOKEN KELAS: {tokens.token}</h1>
-      <h1 className="text-black">Link: {tokens.link_join}</h1>
+      <h1 className="text-gray-50">INI TOKEN KELAS: {tokens.token}</h1>
+      <h1 className="text-gray-50">Link: {tokens.link_join}</h1>
     </Modal>
   );
 };

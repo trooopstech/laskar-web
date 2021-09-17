@@ -7,7 +7,7 @@ interface ClassCardProps {
 const ClassCard: React.FC<ClassCardProps> = ({ data }) => {
   const renderClassName = (): string => {
     if (data?.name) {
-      if (data?.name.length > 20) {
+      if (data?.name.length > 18) {
         return `${data?.name.slice(0, 15)}...`;
       }
       return data?.name;

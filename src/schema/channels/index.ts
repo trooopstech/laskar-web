@@ -10,6 +10,12 @@ export const CREATE_CATEGORY = gql`
       channels {
         id
         name
+        channel_granted_role {
+          role {
+            id
+            name
+          }
+        }
       }
     }
   }
@@ -70,6 +76,12 @@ export const CREATE_CHANNEL = gql`
         id
         name
       }
+      channel_granted_role {
+        role {
+          id
+          name
+        }
+      }
     }
   }
 `;
@@ -84,6 +96,12 @@ export const ON_NEW_CHANNEL_CREATED = gql`
       channel_category {
         id
         name
+      }
+      channel_granted_role {
+        role {
+          id
+          name
+        }
       }
     }
   }
