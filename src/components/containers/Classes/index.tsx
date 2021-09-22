@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import { Route, Switch, useHistory, useRouteMatch } from "react-router";
 import ChatContainer from "./Chat";
 import NonChannel from "./nonChannel";
+import MemberContainer from "./Member";
 
 const ClassDetail = () => {
   const { path, url } = useRouteMatch();
@@ -28,6 +29,9 @@ const ClassDetail = () => {
     <Switch>
       <Route exact path={path}>
         <NonChannel />
+      </Route>
+      <Route exact path={`${path}/member`}>
+        <MemberContainer />
       </Route>
       <Route path={`${path}/:channelId`}>
         <ChatContainer />

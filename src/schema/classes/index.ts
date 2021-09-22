@@ -53,6 +53,7 @@ export const GET_CLASS = gql`
       class_member {
         member {
           id
+          name
           email
         }
         oid

@@ -43,3 +43,7 @@
   border-radius: 50px;
   margin: 5px;
 }
+
+.szh-menu__submenu > .szh-menu__item {
+  background-color: transparent;
+}

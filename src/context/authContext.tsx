@@ -12,7 +12,7 @@ import { useHistory, useLocation } from "react-router-dom";
 interface AuthContextType {
   user?: User;
   loading: boolean;
-  error?: any;
+  error?: string;
   login: (data: UserLoginInput, cb: () => void) => void;
   register: (data: UserCreateInput, cb: () => void) => void;
   logout: () => void;
@@ -73,7 +73,7 @@ export function AuthProvider({
     ) as UserWithJWT;
     if (data) {
       if (data.user === null) {
-        setError(data.error);
+        setError(data.error.message);
       } else {
         window.localStorage.setItem("token", data.token);
         window.localStorage.setItem("user", JSON.stringify(data.user));
@@ -87,7 +87,7 @@ export function AuthProvider({
   }, [loginLoading]);
 
   useEffect(() => {
-    setError(loginError);
+    setError(loginError?.message);
   }, [loginError]);
 
   useEffect(() => {
@@ -95,10 +95,11 @@ export function AuthProvider({
   }, [registerLoading]);
 
   useEffect(() => {
-    setError(registerError);
+    setError(registerError?.message);
   }, [registerError]);
 
   function login(data: UserLoginInput, cb: () => void): void {
+    setError(null);
     loginAction({ variables: { data } });
     cb();
   }

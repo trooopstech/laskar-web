@@ -22,6 +22,11 @@ export const GET_CHAT_GROUP = gql`
         chat_group_id
         sender {
           oid
+          member_role {
+            role {
+              name
+            }
+          }
           member {
             id
             name
@@ -47,6 +52,11 @@ export const CREATE_GROUP_MESSAGE = gql`
       chat_group_id
       sender {
         oid
+        member_role {
+          role {
+            name
+          }
+        }
         member {
           id
           name
@@ -68,6 +78,11 @@ export const ON_NEW_MESSAGES = gql`
       chat_group_id
       sender {
         oid
+        member_role {
+          role {
+            name
+          }
+        }
         member {
           id
           name

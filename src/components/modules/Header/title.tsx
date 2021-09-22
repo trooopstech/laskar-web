@@ -23,7 +23,7 @@ const TitleSection = () => {
   return (
     <div className="flex items-center">
       {classDetail?.name ? "" : HOMEPAGE_ICON[headerTitles(pathname)]}
-      <p className="ml-2 text-xl">
+      <p className="ml-2 text-xl overflow-ellipsis">
         {classDetail?.name ? classDetail?.name : headerTitles(pathname)}
       </p>
       {classDetail?.name && (

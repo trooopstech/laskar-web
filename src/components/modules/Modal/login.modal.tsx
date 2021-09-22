@@ -16,7 +16,10 @@ export const useLoginModal = () => {
 };
 
 const LoginModal: React.FC<ModalProps> = ({ open, onClose, openOther }) => {
-  const { login } = useAuth();
+  const { login, error, loading } = useAuth();
+
+  console.log(error);
+
   return (
     <Modal open={open} onClose={onClose}>
       <Formik
@@ -76,14 +79,19 @@ const LoginModal: React.FC<ModalProps> = ({ open, onClose, openOther }) => {
               value={values.password}
             />
             {errors.password && touched.password && errors.password}
-            <Button
-              variant="primary"
-              className="mt-4 w-full"
-              type="submit"
-              disabled={isSubmitting}
-            >
-              Masuk
-            </Button>
+            {error && error}
+            {loading ? (
+              <p>Loading...</p>
+            ) : (
+              <Button
+                variant="primary"
+                className="mt-4 w-full"
+                type="submit"
+                disabled={isSubmitting}
+              >
+                Masuk
+              </Button>
+            )}
             <Button
               variant="text"
               className="mt=4 w-full text-gray-50"

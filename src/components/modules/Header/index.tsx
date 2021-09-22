@@ -1,11 +1,12 @@
 import { Link } from "react-router-dom";
+import Navigation from "./navigation";
 import ProfileBadge from "./profile";
 import TitleSection from "./title";
 
 const Header = () => {
   return (
     <header className="w-full  px-3 h-16 bg-gray-800 flex justify-between items-center shadow-md border-b border-gray-700">
-      <div className="flex">
+      <div className="flex w-1/3">
         <Link
           to={"/dashboard"}
           style={{ height: "42px", width: "42px" }}
@@ -15,6 +16,7 @@ const Header = () => {
         </Link>
         <TitleSection />
       </div>
+      <Navigation />
       <ProfileBadge />
     </header>
   );

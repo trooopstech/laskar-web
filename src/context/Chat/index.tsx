@@ -1,4 +1,4 @@
-import { useMutation, useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import {
   createContext,
   ReactNode,
@@ -7,14 +7,18 @@ import {
   useMemo,
   useState,
 } from "react";
-import { CREATE_GROUP_MESSAGE, GET_CHAT_GROUP } from "schema/channels/chat";
+import { GET_CHAT_GROUP } from "schema/channels/chat";
+import { ChatGroup, GroupMessages, GroupMessagesInput } from "types/chat";
+import useSendMessage from "./hooks/useSendMessage";
 import useOnNewMessage from "./subscription/useOnNewMessage";
 
 interface ChatContextType {
   chatGroup?: ChatGroup;
   loading: boolean;
+  createMessagesLoading: boolean;
   error?: any;
   sendMessages: (data: GroupMessagesInput) => void;
+  getSenderRole: (message: GroupMessages) => string;
 }
 
 const ChatContext = createContext<ChatContextType>({} as ChatContextType);
@@ -34,7 +38,7 @@ export function ChatProvider({
     fetchPolicy: "cache-and-network",
   });
   const { message } = useOnNewMessage(id);
-  const [createMessages] = useMutation(CREATE_GROUP_MESSAGE);
+  const { createMessages, createMessagesLoading } = useSendMessage();
 
   useEffect(() => {
     if (data) {
@@ -70,14 +74,36 @@ export function ChatProvider({
     }
   };
 
+  const getSenderRole = (message: GroupMessages): string => {
+    const student = message.sender.member_role.filter(
+      (member) => member.role.name === "STUDENT"
+    );
+
+    if (student.length > 0) {
+      return "STUDENT";
+    }
+
+    const assistant = message.sender.member_role.filter(
+      (member) => member.role.name === "ASSISTANT"
+    );
+
+    if (assistant.length > 0) {
+      return "ASSISTANT";
+    }
+
+    return "TEACHER";
+  };
+
   const memoedValue = useMemo(
     () => ({
       chatGroup,
       loading,
       error,
+      createMessagesLoading,
       sendMessages,
+      getSenderRole,
     }),
-    [chatGroup, loading, error]
+    [chatGroup, loading, error, createMessagesLoading]
   );
 
   return (

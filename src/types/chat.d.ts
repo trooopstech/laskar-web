@@ -1,3 +1,5 @@
+import { Descendant } from "slate";
+
 type ChatGroup = {
   id: string;
   name: string;
@@ -9,7 +11,7 @@ type ChatGroup = {
 type GroupMessages = {
   created_at: Date;
   id: string;
-  text: string;
+  text: Descendant[];
   html: string;
   sender: ClassMember;
 };
