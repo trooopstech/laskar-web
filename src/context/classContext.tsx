@@ -77,8 +77,10 @@ export function ClassProvider({
       const res = await joinClassByToken({ variables: { token } });
 
       if (res) {
-        setClasses([...classes, res.data.joinClassByToken]);
-        history.replace(`/dashboard/class/${res.data.joinClassByToken.id}`);
+        setClasses([...classes, res.data.joinClassByToken.class]);
+        history.replace(
+          `/dashboard/class/${res.data.joinClassByToken.class.id}`
+        );
       }
     } catch (error) {
       console.log(error);
@@ -90,8 +92,8 @@ export function ClassProvider({
       const res = await joinClass({ variables: { classId } });
 
       if (res) {
-        setClasses([...classes, ...allClass, res.data.joinClass]);
-        history.replace(`/dashboard/class/${res.data.joinClass.id}`);
+        setClasses([...classes, ...allClass, res.data.joinClass.class]);
+        history.replace(`/dashboard/class/${res.data.joinClass.class.id}`);
       }
     } catch (error) {
       console.log(error);

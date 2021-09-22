@@ -15,6 +15,7 @@ import { GroupMessages } from "types/chat";
 import { Virtuoso } from "react-virtuoso";
 import { Element } from "components/modules/Editor/Chat/element";
 import { Leaf } from "components/modules/Editor/Chat/toolbar";
+import { getInitials } from "utils/getInitial";
 
 interface MessageProps {
   message: GroupMessages;
@@ -49,7 +50,14 @@ const Message: React.FC<MessageProps> = React.memo(({ message }) => {
   return (
     <div className="flex m-2 items-start hover:bg-gray-600 p-2 rounded-md">
       <div className="w-13">
-        <div className="avatar h-12 w-12 rounded-full bg-red-300 mr-2"></div>
+        <div
+          className="avatar h-12 w-12 rounded-full mr-2 flex items-center justify-center"
+          style={{ backgroundColor: message.sender.member.color }}
+        >
+          <p className="text-xl uppercase font-bold text-center text-white">
+            {getInitials(message.sender.member.name as string)}
+          </p>
+        </div>
       </div>
       <div className="w-full flex flex-col">
         <div className="flex items-center">

@@ -1,16 +1,23 @@
 import { MdExpandMore } from "react-icons/md";
 import { Menu, MenuItem } from "@szhsin/react-menu";
 import useAuth from "hooks/useAuth";
+import { getInitials } from "utils/getInitial";
 
 const ProfileBadge = () => {
   const { user, logout } = useAuth();
+
+  console.log(user);
+
   return (
     <div className="flex items-center w-1/3 justify-end">
       <Menu
         menuButton={
-          <button className="py-2 px-2 rounded-md bg-red-500 cursor-pointer">
+          <button
+            className="py-2 px-2 rounded-md cursor-pointer"
+            style={{ backgroundColor: user?.color ?? "red" }}
+          >
             {/* @ts-ignore */}
-            <p className="text-xs uppercase">{user.email.slice(0, 2)}</p>
+            <p className="text-xs uppercase">{getInitials(user?.name)}</p>
           </button>
         }
         menuClassName="bg-gray-700 p-2"

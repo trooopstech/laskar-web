@@ -31,6 +31,7 @@ export const GET_CHAT_GROUP = gql`
             id
             name
             email
+            color
           }
         }
       }
@@ -61,6 +62,7 @@ export const CREATE_GROUP_MESSAGE = gql`
           id
           name
           email
+          color
         }
       }
     }
@@ -87,6 +89,7 @@ export const ON_NEW_MESSAGES = gql`
           id
           name
           email
+          color
         }
       }
     }

@@ -55,6 +55,7 @@ export const GET_CLASS = gql`
           id
           name
           email
+          color
         }
         oid
         last_online
@@ -89,6 +90,8 @@ export const GET_CLASS_BY_TOKEN = gql`
         member {
           id
           email
+          name
+          color
         }
       }
     }
@@ -98,11 +101,26 @@ export const GET_CLASS_BY_TOKEN = gql`
 export const JOIN_CLASS = gql`
   mutation JoinClass($classId: String!) {
     joinClass(classId: $classId) {
-      id
-      color
-      banner
-      description
-      name
+      class {
+        id
+        color
+        banner
+        description
+        name
+      }
+      member {
+        id
+        name
+        email
+        color
+      }
+      oid
+      last_online
+      member_role {
+        role {
+          name
+        }
+      }
     }
   }
 `;
@@ -110,21 +128,53 @@ export const JOIN_CLASS = gql`
 export const JOIN_CLASS_BY_TOKEN = gql`
   mutation JoinClassByToken($token: String!) {
     joinClassByToken(token: $token) {
-      id
-      color
-      banner
-      description
-      name
+      class {
+        id
+        color
+        banner
+        description
+        name
+      }
+      member {
+        id
+        name
+        email
+        color
+      }
+      oid
+      last_online
+      member_role {
+        role {
+          name
+        }
+      }
     }
   }
 `;
 
-export const JOIN_CLASS_SUBS = gql`
+export const ON_NEW_MEMBER_JOIN = gql`
   subscription NewMemberJoinOnClass($classId: String!) {
     newMemberJoinOnClass(classId: $classId) {
-      id
-      name
-      email
+      class {
+        id
+        color
+        banner
+        description
+        name
+      }
+      member {
+        id
+        name
+        email
+        color
+      }
+      oid
+      last_online
+      member_role {
+        role {
+          name
+        }
+      }
     }
   }
 `;

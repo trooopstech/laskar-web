@@ -15,6 +15,7 @@ import {
 import { DELETE_CATEGORY } from "schema/channels";
 import { GET_CLASS } from "schema/classes";
 import { ClassDetailReducer, initialState } from "./reducer";
+import useOnNewMember from "./subscription/onNewMemberJoin";
 
 interface ClassDetailContextType {
   classDetail?: Class;
@@ -51,12 +52,27 @@ export function ClassDetailProvider({
   const { channel } = useOnNewChannel(id);
   const [deleteCategory] = useMutation(DELETE_CATEGORY);
   useOnCategoryDeleted(id);
+  const { member } = useOnNewMember(id);
 
   useEffect(() => {
     if (data) {
       dispatch({ type: "initial", payload: data.getClass });
     }
   }, [data]);
+
+  useEffect(() => {
+    if (member) {
+      dispatch({
+        type: "new-member",
+        payload: {
+          member: member.newMemberJoinOnClass.member,
+          oid: member.newMemberJoinOnClass.oid,
+          last_online: member.newMemberJoinOnClass.last_online,
+          member_role: member.newMemberJoinOnClass.member_role,
+        },
+      });
+    }
+  }, [member]);
 
   useEffect(() => {
     setError(error);

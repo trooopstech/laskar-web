@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
+import { getInitials } from "utils/getInitial";
 
 interface ClassesProps {
   id: string;
@@ -32,7 +33,7 @@ const Classes: React.FC<ClassesProps> = ({ id, name, photo, color }) => {
         <div className=" bg-white w-1 h-2/3 absolute -left-2 rounded-r-lg" />
       )}
       <p className="text-base uppercase font-bold text-center text-white">
-        {name?.slice(0, 2)}
+        {getInitials(name)}
       </p>
     </NavLink>
   );

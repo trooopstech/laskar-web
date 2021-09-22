@@ -3,6 +3,7 @@ type User = {
   email: string;
   name?: string;
   photo?: string;
+  color?: string;
   is_verified?: boolean;
 };
 

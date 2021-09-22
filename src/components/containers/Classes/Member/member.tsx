@@ -1,6 +1,7 @@
 import { Menu, SubMenu, MenuItem, MenuRadioGroup } from "@szhsin/react-menu";
 import { useState } from "react";
 import { HiOutlineDotsVertical } from "react-icons/hi";
+import { getInitials } from "utils/getInitial";
 
 const MemberCard = ({ member }: { member: ClassMember }) => {
   const [showDot, setShowDot] = useState(false);
@@ -21,8 +22,17 @@ const MemberCard = ({ member }: { member: ClassMember }) => {
       onMouseEnter={() => setShowDot(true)}
       onMouseLeave={() => setShowDot(false)}
     >
-      <div className="rounded-full bg-red-100 p-8"></div>
-      <div className="w-full m-2">{member.member.name}</div>
+      <div>
+        <div
+          className="avatar h-12 w-12 rounded-full mr-2 flex items-center justify-center"
+          style={{ backgroundColor: member.member.color }}
+        >
+          <p className="text-xl uppercase font-bold text-center text-white">
+            {getInitials(member.member.name as string)}
+          </p>
+        </div>
+      </div>
+      <div className="w-full m-2 flex justify-start">{member.member.name}</div>
       <div className="w-1/3 flex justify-end h-full">
         {isAdmin() && <h1 className="text-gray-500">Admin</h1>}
         {showDot && (

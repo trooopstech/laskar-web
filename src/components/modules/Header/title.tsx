@@ -46,27 +46,46 @@ const TitleSection = () => {
                 ? "bg-gray-600 text-white rounded-md p-2"
                 : "bg-gray-700 text-white p-2"
             }
+          >
+            Pengaturan
+          </MenuItem>
+          <MenuItem
+            className={({ hover, active }) =>
+              active
+                ? "bg-gray-700 text-white p-2"
+                : hover
+                ? "bg-gray-600 text-white rounded-md p-2"
+                : "bg-gray-700 text-white p-2"
+            }
             onClick={openToken}
           >
-            Undang Member
+            Undang Teman
           </MenuItem>
           {isAdministrator() && (
-            <>
-              <MenuDivider className="bg-gray-700" />
-              <MenuItem
-                className={({ hover, active }) =>
-                  active
-                    ? "bg-gray-700 text-white p-2"
-                    : hover
-                    ? "bg-gray-600 text-white rounded-md p-2"
-                    : "bg-gray-700 text-white p-2"
-                }
-                onClick={openCategory}
-              >
-                Tambah Kategori
-              </MenuItem>
-            </>
+            <MenuItem
+              className={({ hover, active }) =>
+                active
+                  ? "bg-gray-700 text-white p-2"
+                  : hover
+                  ? "bg-gray-600 text-white rounded-md p-2"
+                  : "bg-gray-700 text-white p-2"
+              }
+              onClick={openCategory}
+            >
+              Tambah Kategori
+            </MenuItem>
           )}
+          <MenuItem
+            className={({ hover, active }) =>
+              active
+                ? "bg-gray-700 text-white p-2"
+                : hover
+                ? "bg-gray-600 text-white rounded-md p-2"
+                : "bg-gray-700 text-white p-2"
+            }
+          >
+            Tinggalkan Kelas
+          </MenuItem>
         </Menu>
       )}
       {isTokenOpen > 0 && (

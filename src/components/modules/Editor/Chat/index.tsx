@@ -104,6 +104,7 @@ const ChatEditor = () => {
       !createMessagesLoading &&
       serialize(value).length > 0
     ) {
+      event.preventDefault();
       await sendMessages({
         text: JSON.stringify(value),
         html: ``,
@@ -115,6 +116,11 @@ const ChatEditor = () => {
         focus: { path: [0, 0], offset: 0 },
       };
       setValue(initialValue);
+      return;
+    }
+
+    if (event.key === "Enter" && !event.shiftKey) {
+      event.preventDefault();
       return;
     }
 

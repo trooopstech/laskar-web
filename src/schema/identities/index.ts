@@ -7,6 +7,8 @@ export const LOGIN = gql`
         id
         email
         photo
+        color
+        name
       }
       token
       error {
@@ -24,6 +26,8 @@ export const REGISTER = gql`
         id
         email
         photo
+        color
+        name
       }
       token
       error {

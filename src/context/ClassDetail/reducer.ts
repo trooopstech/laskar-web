@@ -1,6 +1,9 @@
 export const ClassDetailReducer = (
   state: Class,
-  action: { type: "initial" | "add-category" | "add-channel"; payload: any }
+  action: {
+    type: "initial" | "add-category" | "add-channel" | "new-member";
+    payload: any;
+  }
 ): Class => {
   switch (action.type) {
     case "initial":
@@ -11,6 +14,14 @@ export const ClassDetailReducer = (
         channel_category: [
           ...(state?.channel_category as unknown as ChannelCategory[]),
           action.payload,
+        ],
+      };
+    case "new-member":
+      return {
+        ...state,
+        class_member: [
+          ...(state.class_member as unknown as ClassMember[]),
+          action.payload as ClassMember,
         ],
       };
     case "add-channel":
