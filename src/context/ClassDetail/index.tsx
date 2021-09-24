@@ -21,7 +21,8 @@ import {
 import { GET_CLASS } from "schema/classes";
 import { ClassDetailReducer, initialState } from "./reducer";
 import useOnNewMember from "./subscription/onNewMemberJoin";
-import useOnChangedRole from "./subscription/useOnChangedRole";
+import useOnChangedRole from "./subscription/onChangedRole";
+import useMemberLeaveClass from "./subscription/onMemberLeaveClass";
 
 interface ClassDetailContextType {
   classDetail?: Class;
@@ -69,12 +70,19 @@ export function ClassDetailProvider({
   const { memberWithNewRole } = useOnChangedRole(id);
   useOnCategoryDeleted(id);
   const { member } = useOnNewMember(id);
+  const { memberLeave } = useMemberLeaveClass(id);
 
   useEffect(() => {
     if (data) {
       dispatch({ type: "initial", payload: data.getClass });
     }
   }, [data]);
+
+  useEffect(() => {
+    if (memberLeave) {
+      dispatch({ type: "leave-member", payload: memberLeave.memberLeaveClass });
+    }
+  }, [memberLeave]);
 
   useEffect(() => {
     if (member) {

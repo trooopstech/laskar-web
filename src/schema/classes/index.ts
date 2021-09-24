@@ -188,3 +188,25 @@ export const ONLINE_MEMBER_SUBS = gql`
     }
   }
 `;
+
+export const LEAVE_CLASS = gql`
+  mutation LeaveClass($classId: String!) {
+    leaveClass(classId: $classId) {
+      oid
+      class {
+        id
+      }
+    }
+  }
+`;
+
+export const ON_LEAVE_CLASS = gql`
+  subscription MemberLeaveClass($classId: String!) {
+    memberLeaveClass(classId: $classId) {
+      oid
+      class {
+        id
+      }
+    }
+  }
+`;

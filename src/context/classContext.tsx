@@ -2,7 +2,12 @@ import { useMutation, useQuery } from "@apollo/client";
 import useCreateClass from "hooks/useCreateClass";
 import { createContext, ReactNode, useEffect, useMemo, useState } from "react";
 import { useHistory } from "react-router-dom";
-import { GET_ALL_CLASS, JOIN_CLASS, JOIN_CLASS_BY_TOKEN } from "schema/classes";
+import {
+  GET_ALL_CLASS,
+  JOIN_CLASS,
+  JOIN_CLASS_BY_TOKEN,
+  LEAVE_CLASS,
+} from "schema/classes";
 
 interface ClassContextType {
   classes: Class[];
@@ -11,6 +16,7 @@ interface ClassContextType {
   createClass?: (data: CreateClassInput, cb: () => void) => void;
   joinByToken: (token: string) => void;
   join: (classId: string, allClass: Class[]) => void;
+  leavingClass: (classId: string) => void;
 }
 
 const ClassContext = createContext<ClassContextType>({} as ClassContextType);
@@ -26,6 +32,7 @@ export function ClassProvider({
   const [loadingClass, setLoading] = useState<boolean>(false);
   const { data, loading, error } = useQuery(GET_ALL_CLASS);
   const [joinClassByToken] = useMutation(JOIN_CLASS_BY_TOKEN);
+  const [leaveClass] = useMutation(LEAVE_CLASS);
   const [joinClass] = useMutation(JOIN_CLASS);
   const {
     createClassAction,
@@ -100,6 +107,20 @@ export function ClassProvider({
     }
   };
 
+  const leavingClass = async (classId: string) => {
+    try {
+      const res = await leaveClass({ variables: { classId } });
+      if (res) {
+        setClasses(
+          classes.filter((c) => c.id !== res.data.leaveClass.class.id)
+        );
+        history.replace(`/dashboard`);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const memoedValue = useMemo(
     () => ({
       classes,
@@ -108,6 +129,7 @@ export function ClassProvider({
       createClass,
       joinByToken,
       join,
+      leavingClass,
     }),
     [classes, loadingClass, errorClass]
   );

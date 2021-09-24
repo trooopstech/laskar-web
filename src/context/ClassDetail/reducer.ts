@@ -6,6 +6,7 @@ export const ClassDetailReducer = (
       | "add-category"
       | "add-channel"
       | "new-member"
+      | "leave-member"
       | "role-changed";
     payload: any;
   }
@@ -55,16 +56,6 @@ export const ClassDetailReducer = (
     case "role-changed":
       const targetMember = action.payload as ClassMember;
 
-      console.log({
-        ...state,
-        class_member: [
-          ...(state.class_member?.filter(
-            (classMember: ClassMember) => classMember.oid !== targetMember.oid
-          ) as ClassMember[]),
-          targetMember,
-        ],
-      });
-
       return {
         ...state,
         class_member: [
@@ -73,6 +64,13 @@ export const ClassDetailReducer = (
           ) as ClassMember[]),
           targetMember,
         ],
+      };
+    case "leave-member":
+      return {
+        ...state,
+        class_member: state.class_member?.filter(
+          (classMember: ClassMember) => classMember.oid !== action.payload.oid
+        ),
       };
     default:
       return state;
