@@ -18,7 +18,15 @@ export const useClassTokenModal = () => {
   };
 };
 
-const ClassTokenModal: React.FC<ModalProps> = ({ open, onClose }) => {
+interface ClassTokenModalProps extends ModalProps {
+  keyword: string;
+}
+
+const ClassTokenModal: React.FC<ClassTokenModalProps> = ({
+  open,
+  onClose,
+  keyword,
+}) => {
   const { classDetail } = useClassDetail();
   const [tokens, setTokens] = useState({
     token: "",
@@ -27,6 +35,7 @@ const ClassTokenModal: React.FC<ModalProps> = ({ open, onClose }) => {
   const { data } = useQuery(GET_CLASS_TOKEN, {
     variables: {
       classId: classDetail?.id,
+      keyword,
     },
   });
 

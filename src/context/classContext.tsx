@@ -37,7 +37,7 @@ export function ClassProvider({
   useEffect(() => {
     if (data) {
       if (window.localStorage.getItem("class")) {
-        join(window.localStorage.getItem("class") as string, data.getAllClass);
+        joinByToken(window.localStorage.getItem("class") as string);
         window.localStorage.removeItem("class");
       } else {
         setClasses([...classes, ...data.getAllClass]);

@@ -89,7 +89,11 @@ const TitleSection = () => {
         </Menu>
       )}
       {isTokenOpen > 0 && (
-        <ClassTokenModal open={isTokenOpen} onClose={closeToken} />
+        <ClassTokenModal
+          open={isTokenOpen}
+          onClose={closeToken}
+          keyword="STUDENT"
+        />
       )}
       <CreateCategoryModal open={isCategoryOpen} onClose={closeCategory} />
     </div>

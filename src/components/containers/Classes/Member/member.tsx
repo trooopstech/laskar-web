@@ -1,14 +1,30 @@
 import { Menu, SubMenu, MenuItem, MenuRadioGroup } from "@szhsin/react-menu";
+import useClassDetail from "hooks/useDetailClass";
 import { useState } from "react";
 import { HiOutlineDotsVertical } from "react-icons/hi";
 import { getInitials } from "utils/getInitial";
 
 const MemberCard = ({ member }: { member: ClassMember }) => {
   const [showDot, setShowDot] = useState(false);
+  const {
+    isAdministrator,
+    changeMemberRole,
+    classDetail,
+    addMemberAsAdmin,
+    removeMemberAsAdmin,
+  } = useClassDetail();
+  const { id } = classDetail as Class;
 
   const isAdmin = (): boolean => {
     return member?.member_role.map((r) => r.role.name).includes("ADMIN");
   };
+
+  const isStudent = (): boolean => {
+    return member?.member_role.map((r) => r.role.name).includes("STUDENT");
+  };
+
+  const memberIsAdmin = isAdmin();
+  const memberIsStudent = isStudent();
 
   const getRole = (): string => {
     return member?.member_role
@@ -34,8 +50,8 @@ const MemberCard = ({ member }: { member: ClassMember }) => {
       </div>
       <div className="w-full m-2 flex justify-start">{member.member.name}</div>
       <div className="w-1/3 flex justify-end h-full">
-        {isAdmin() && <h1 className="text-gray-500">Admin</h1>}
-        {showDot && (
+        {memberIsAdmin && <h1 className="text-gray-500">Admin</h1>}
+        {showDot && isAdministrator() && (
           <Menu
             menuButton={
               <button>
@@ -57,6 +73,46 @@ const MemberCard = ({ member }: { member: ClassMember }) => {
             >
               Hapus
             </MenuItem>
+            {!memberIsAdmin && !memberIsStudent && (
+              <MenuItem
+                className={({ hover, active }) =>
+                  active
+                    ? "bg-gray-700 text-white p-2"
+                    : hover
+                    ? "bg-gray-600 text-white rounded-md p-2"
+                    : "bg-gray-700 text-white p-2"
+                }
+                onClick={() =>
+                  addMemberAsAdmin({
+                    oid: member.oid,
+                    role_name: "ADMIN",
+                    classId: id,
+                  })
+                }
+              >
+                Jadikan Admin
+              </MenuItem>
+            )}
+            {memberIsAdmin && (
+              <MenuItem
+                className={({ hover, active }) =>
+                  active
+                    ? "bg-gray-700 text-white p-2"
+                    : hover
+                    ? "bg-gray-600 text-white rounded-md p-2"
+                    : "bg-gray-700 text-white p-2"
+                }
+                onClick={() =>
+                  removeMemberAsAdmin({
+                    oid: member.oid,
+                    role_name: "ADMIN",
+                    classId: id,
+                  })
+                }
+              >
+                Cabut akses Admin
+              </MenuItem>
+            )}
             <SubMenu
               label={<h1 className="-ml-6">Ubah Akses</h1>}
               direction="left"
@@ -66,7 +122,13 @@ const MemberCard = ({ member }: { member: ClassMember }) => {
               <MenuRadioGroup
                 value={getRole()}
                 className="form-radio"
-                onRadioChange={(e) => console.log(e.value)}
+                onRadioChange={(e) =>
+                  changeMemberRole({
+                    oid: member.oid,
+                    role_name: e.value,
+                    classId: id,
+                  })
+                }
               >
                 <MenuItem
                   className={({ hover, active, checked }) =>
@@ -96,20 +158,22 @@ const MemberCard = ({ member }: { member: ClassMember }) => {
                 >
                   Assistant
                 </MenuItem>
-                <MenuItem
-                  className={({ hover, active, checked }) =>
-                    active
-                      ? "bg-gray-700 text-white"
-                      : hover
-                      ? "bg-gray-600 text-white rounded-md"
-                      : checked
-                      ? "bg-gray-700 text-yellow-500"
-                      : "bg-gray-700 text-white"
-                  }
-                  value={"STUDENT"}
-                >
-                  Siswa
-                </MenuItem>
+                {!memberIsAdmin && (
+                  <MenuItem
+                    className={({ hover, active, checked }) =>
+                      active
+                        ? "bg-gray-700 text-white"
+                        : hover
+                        ? "bg-gray-600 text-white rounded-md"
+                        : checked
+                        ? "bg-gray-700 text-yellow-500"
+                        : "bg-gray-700 text-white"
+                    }
+                    value={"STUDENT"}
+                  >
+                    Siswa
+                  </MenuItem>
+                )}
               </MenuRadioGroup>
             </SubMenu>
           </Menu>

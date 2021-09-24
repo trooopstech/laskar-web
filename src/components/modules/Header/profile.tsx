@@ -6,8 +6,6 @@ import { getInitials } from "utils/getInitial";
 const ProfileBadge = () => {
   const { user, logout } = useAuth();
 
-  console.log(user);
-
   return (
     <div className="flex items-center w-1/3 justify-end">
       <Menu

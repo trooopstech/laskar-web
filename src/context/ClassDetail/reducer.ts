@@ -1,7 +1,12 @@
 export const ClassDetailReducer = (
   state: Class,
   action: {
-    type: "initial" | "add-category" | "add-channel" | "new-member";
+    type:
+      | "initial"
+      | "add-category"
+      | "add-channel"
+      | "new-member"
+      | "role-changed";
     payload: any;
   }
 ): Class => {
@@ -47,6 +52,28 @@ export const ClassDetailReducer = (
       } else {
         return state;
       }
+    case "role-changed":
+      const targetMember = action.payload as ClassMember;
+
+      console.log({
+        ...state,
+        class_member: [
+          ...(state.class_member?.filter(
+            (classMember: ClassMember) => classMember.oid !== targetMember.oid
+          ) as ClassMember[]),
+          targetMember,
+        ],
+      });
+
+      return {
+        ...state,
+        class_member: [
+          ...(state.class_member?.filter(
+            (classMember: ClassMember) => classMember.oid !== targetMember.oid
+          ) as ClassMember[]),
+          targetMember,
+        ],
+      };
     default:
       return state;
   }

@@ -12,10 +12,16 @@ import {
   useReducer,
   useState,
 } from "react";
-import { DELETE_CATEGORY } from "schema/channels";
+import { DELETE_CATEGORY, DELETE_CHANNEL } from "schema/channels";
+import {
+  ADD_ADMIN_ROLE,
+  CHANGE_MEMBER_ROLE,
+  REMOVE_ADMIN_ROLE,
+} from "schema/channels/role";
 import { GET_CLASS } from "schema/classes";
 import { ClassDetailReducer, initialState } from "./reducer";
 import useOnNewMember from "./subscription/onNewMemberJoin";
+import useOnChangedRole from "./subscription/useOnChangedRole";
 
 interface ClassDetailContextType {
   classDetail?: Class;
@@ -24,8 +30,13 @@ interface ClassDetailContextType {
   createCategoryChannel: (data: CreateCategoryInput) => void;
   createChannel: (data: CreateChannelInput) => void;
   deleteCategoryChannel: (categoryId: string) => void;
+  deleteClassChannel: (channelId: string) => void;
   getUserClassMember: () => ClassMember;
   isAdministrator: () => boolean;
+  isRoleEqualParam: (role: string) => boolean;
+  changeMemberRole: (data: RoleManagement) => void;
+  removeMemberAsAdmin: (data: RoleManagement) => void;
+  addMemberAsAdmin: (data: RoleManagement) => void;
 }
 
 const ClassDetailContext = createContext<ClassDetailContextType>(
@@ -51,6 +62,11 @@ export function ClassDetailProvider({
   const { category } = useOnNewCategory(id);
   const { channel } = useOnNewChannel(id);
   const [deleteCategory] = useMutation(DELETE_CATEGORY);
+  const [deleteChannel] = useMutation(DELETE_CHANNEL);
+  const [addMemberRole] = useMutation(CHANGE_MEMBER_ROLE);
+  const [addMemberAdmin] = useMutation(ADD_ADMIN_ROLE);
+  const [removeMemberAdmin] = useMutation(REMOVE_ADMIN_ROLE);
+  const { memberWithNewRole } = useOnChangedRole(id);
   useOnCategoryDeleted(id);
   const { member } = useOnNewMember(id);
 
@@ -73,6 +89,15 @@ export function ClassDetailProvider({
       });
     }
   }, [member]);
+
+  useEffect(() => {
+    if (memberWithNewRole) {
+      dispatch({
+        type: "role-changed",
+        payload: memberWithNewRole.roleChangedActivity,
+      });
+    }
+  }, [memberWithNewRole]);
 
   useEffect(() => {
     setError(error);
@@ -131,30 +156,65 @@ export function ClassDetailProvider({
     return {} as ClassMember;
   };
 
-  const isAdministrator = (): boolean => {
-    const classMember = getUserClassMember();
-
-    const isStudent =
-      classMember.member_role.filter(
-        (memberRole: MemberRole) => memberRole.role.name === "STUDENT"
-      ).length > 0;
-
-    const notStudent =
-      classMember.member_role.filter(
-        (memberRole: MemberRole) => memberRole.role.name !== "STUDENT"
-      ).length > 0;
-
-    if (isStudent && notStudent) {
-      return true;
-    } else if (notStudent) {
-      return true;
-    }
-    return !isStudent;
-  };
-
   const deleteCategoryChannel = async (categoryId: string) => {
     try {
       await deleteCategory({ variables: { categoryId } });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const deleteClassChannel = async (channelId: string) => {
+    try {
+      await deleteChannel({ variables: { channelId } });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const isAdministrator = (): boolean => {
+    const classMember = getUserClassMember();
+
+    const isAdmin =
+      classMember?.member_role?.filter(
+        (memberRole: MemberRole) => memberRole.role.name === "ADMIN"
+      ).length > 0;
+
+    return isAdmin;
+  };
+
+  const isRoleEqualParam = (role: string): boolean => {
+    const classMember = getUserClassMember();
+
+    const isSame =
+      classMember?.member_role?.filter(
+        (memberRole: MemberRole) => memberRole.role.name === role.toUpperCase()
+      ).length > 0;
+
+    return isSame;
+  };
+
+  const changeMemberRole = async (data: RoleManagement) => {
+    try {
+      await addMemberRole({
+        variables: { data },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const removeMemberAsAdmin = async (data: RoleManagement) => {
+    try {
+      await removeMemberAdmin({ variables: { data } });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const addMemberAsAdmin = async (data: RoleManagement) => {
+    try {
+      await addMemberAdmin({ variables: { data } });
     } catch (error) {
       console.log(error);
     }
@@ -167,9 +227,14 @@ export function ClassDetailProvider({
       errorClass,
       createCategoryChannel,
       deleteCategoryChannel,
+      deleteClassChannel,
       createChannel,
       getUserClassMember,
       isAdministrator,
+      isRoleEqualParam,
+      changeMemberRole,
+      addMemberAsAdmin,
+      removeMemberAsAdmin,
     }),
     [classDetail, loadingClass, errorClass]
   );

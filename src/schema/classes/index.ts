@@ -70,8 +70,8 @@ export const GET_CLASS = gql`
 `;
 
 export const GET_CLASS_TOKEN = gql`
-  query GetClassToken($classId: String!) {
-    getClassToken(classId: $classId) {
+  query GetClassToken($classId: String!, $keyword: String!) {
+    getClassToken(classId: $classId, keyword: $keyword) {
       token
       link_join
     }

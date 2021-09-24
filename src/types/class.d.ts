@@ -29,3 +29,9 @@ interface CreateClassInput {
   name: string;
   description?: string;
 }
+
+interface RoleManagement {
+  classId: string;
+  oid: string;
+  role_name: string;
+}

@@ -18,6 +18,8 @@ const NonChannel = () => {
         return history.replace(`${url}/${firstChannel}`);
       }
     }
+
+    return history.replace(url);
   }, [classDetail, history, url]);
   return (
     <div className="container p-4">

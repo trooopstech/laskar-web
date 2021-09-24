@@ -19,7 +19,7 @@ const JoinClass = () => {
   const [isMember, setIsMember] = useState(false);
   const { isLoginOpen, closeLogin, openLogin } = useLoginModal();
   const { isRegisterOpen, closeRegister, openRegister } = useRegisterModal();
-  const { join } = useJoinClass();
+  const { joinByToken } = useJoinClass();
   const { data } = useQuery(GET_CLASS_BY_TOKEN, {
     variables: { token: query.get("token") },
   });
@@ -44,9 +44,9 @@ const JoinClass = () => {
 
   const joinAction = () => {
     if (user) {
-      join(data.getClassByToken.id);
+      joinByToken(query.get("token") as string);
     } else {
-      window.localStorage.setItem("class", data.getClassByToken.id);
+      window.localStorage.setItem("class", query.get("token") as string);
       openRegister();
     }
   };
