@@ -2,6 +2,7 @@ import Button from "components/elements/Button";
 import useAuth from "hooks/useAuth";
 import LoginModal, { useLoginModal } from "../Modal/login.modal";
 import RegisterModal, { useRegisterModal } from "../Modal/register.modal";
+import logo from "assets/full_logo_white.png";
 
 const Navbar = () => {
   const { isLoginOpen, closeLogin, openLogin } = useLoginModal();
@@ -9,16 +10,16 @@ const Navbar = () => {
   const { user, logout } = useAuth();
 
   return (
-    <div className="lg:px-20 px-4 md:px-15 bg-gray-700 w-screen fixed top-0 left-0 lg:h-20 h-16 flex items-center">
+    <div className="lg:px-20 px-4 md:px-15 bg-transparent w-screen fixed top-0 left-0 h-16 flex items-center z-20">
       <div className="w-full">
-        <h1 className="text-lg">Troops</h1>
+        <img src={logo} alt="logo" width="25%" />
       </div>
       <div className="w-full flex justify-end">
         {!user ? (
           <>
             <div className="m-2">
               <Button variant="text" onClick={openLogin}>
-                Login
+                Masuk
               </Button>
             </div>
             <div className="mt-2 ml-2 mb-2">

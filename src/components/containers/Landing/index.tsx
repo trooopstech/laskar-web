@@ -1,7 +1,15 @@
+import Benefit from "./benefit";
+import Faq from "./faq";
+import Feature from "./feature";
+import Hero from "./hero";
+
 const Landing = () => {
   return (
-    <div className="container py-4">
-      <h1>Ini Landing Page</h1>
+    <div className="w-full">
+      <Hero />
+      <Feature />
+      <Benefit />
+      <Faq />
     </div>
   );
 };

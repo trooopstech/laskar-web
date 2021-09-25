@@ -47,3 +47,10 @@
 .szh-menu__submenu > .szh-menu__item {
   background-color: transparent;
 }
+
+#hero-section {
+  background: url('assets/landing/hero.jpg');
+  background-blend-mode: normal;
+  background-size: cover;
+  backdrop-filter: opacity(0.5);
+}
