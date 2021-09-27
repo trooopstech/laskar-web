@@ -30,9 +30,11 @@ const FAQ_CONTENT = [
 
 const Faq = () => {
   return (
-    <div className="w-screen flex lg:px-20 px-4 md:px-15 py-16">
+    <div className="w-screen flex lg:px-20 px-4 md:px-15 py-16 flex-col md:flex-row">
       <div className="w-full">
-        <h1 className="text-5xl">Pertanyaan yang sering ditanyakan.</h1>
+        <h1 className="text-2xl md:text-5xl font-bold md:mb-0 mb-4">
+          Pertanyaan yang sering ditanyakan.
+        </h1>
       </div>
       <div className="w-full">
         <Accordion item={FAQ_CONTENT} />

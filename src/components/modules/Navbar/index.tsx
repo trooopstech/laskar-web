@@ -10,20 +10,25 @@ const Navbar = () => {
   const { user, logout } = useAuth();
 
   return (
-    <div className="lg:px-20 px-4 md:px-15 bg-transparent w-screen fixed top-0 left-0 h-16 flex items-center z-20">
+    <div className="lg:px-20 px-4 md:px-15 bg-transparent bg-gray-800 w-screen fixed top-0 left-0 h-16 flex items-center z-20">
       <div className="w-full">
-        <img src={logo} alt="logo" width="25%" />
+        <img
+          src={logo}
+          alt="logo"
+          className="w-1/2 md:w-1/5 lg:w-1/4"
+          style={{ minWidth: "50px", maxWidth: "120px" }}
+        />
       </div>
       <div className="w-full flex justify-end">
         {!user ? (
           <>
             <div className="m-2">
-              <Button variant="text" onClick={openLogin}>
+              <Button variant="text" onClick={openLogin} small>
                 Masuk
               </Button>
             </div>
             <div className="mt-2 ml-2 mb-2">
-              <Button variant="primary" onClick={openRegister}>
+              <Button variant="primary" onClick={openRegister} small>
                 Daftar
               </Button>
             </div>

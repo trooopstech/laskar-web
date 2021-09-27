@@ -7,6 +7,7 @@ interface ButtonProps {
   variant?: string;
   type?: "button" | "submit";
   disabled?: boolean;
+  small?: boolean;
 }
 
 const buttonTheme = {
@@ -31,6 +32,7 @@ const Button: React.FC<ButtonProps> = ({
   variant,
   children,
   type,
+  small,
   disabled,
 }) => {
   if (href) {
@@ -63,12 +65,12 @@ const Button: React.FC<ButtonProps> = ({
       type={type}
       onClick={onClick}
       disabled={disabled}
-      className={`px-8 py-2 rounded-lg ${
+      className={`rounded-lg ${
         disabled
           ? `bg-gray-500`
           : // @ts-ignore
             buttonTheme[variant as string]?.base
-      } ${className}`}
+      } ${small ? "md:px-8 py-2 px-4" : "px-8 py-2"} ${className}`}
     >
       <p
         className={`text-base font-bold ${
