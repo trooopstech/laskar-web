@@ -11,6 +11,7 @@ import { BiComment, BiUpArrowAlt } from "react-icons/bi";
 
 import { useHistory, useRouteMatch } from "react-router";
 import { Link } from "react-router-dom";
+import useClassDetail from "hooks/useDetailClass";
 
 interface PostBubbleProps {
   post: Post;
@@ -21,6 +22,9 @@ const PostBubble: React.FC<PostBubbleProps> = React.memo(({ post }) => {
   const editor = useMemo(() => withReact(createEditor()), []);
   const history = useHistory();
   const { url } = useRouteMatch();
+  const { votePost, voteLoading } = useQnA();
+  const { getUserClassMember } = useClassDetail();
+  const member = getUserClassMember();
 
   useEffect(() => {
     editor.selection = {
@@ -87,10 +91,14 @@ const PostBubble: React.FC<PostBubbleProps> = React.memo(({ post }) => {
               <BiComment />
             </div>
             <div
-              className="mx-2 z-10 flex items-center"
-              onClick={() => console.log("vote")}
+              className="mx-2 flex items-center"
+              onClick={() =>
+                votePost({ voter_id: member.oid, post_id: post.id as string })
+              }
             >
-              <span className="text-sm font-light mr-1">0</span>
+              <span className="text-sm font-light mr-1">
+                {post.voter.length}
+              </span>
               <BiUpArrowAlt className="text-xl" />
             </div>
           </div>

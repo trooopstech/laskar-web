@@ -8,8 +8,12 @@ import {
   useState,
 } from "react";
 import { GET_QNA } from "schema/channels/qna";
-import { Post, PostInput } from "types/post";
+import { Post, PostInput, UpvotePost } from "types/post";
 import useSendPost from "./hooks/sendPost";
+import useUpvotePost from "./hooks/sendVote";
+import useOnNewPost from "./subscription/useOnNewPost";
+import useOnPostCommented from "./subscription/useOnPostCommented";
+import useOnPostUpvoted from "./subscription/useOnPostUpvoted";
 
 interface QnAContextType {
   qna?: QnA;
@@ -17,6 +21,8 @@ interface QnAContextType {
   error?: any;
   createPostLoading: boolean;
   sendPost: (data: PostInput) => void;
+  voteLoading: boolean;
+  votePost: (data: UpvotePost) => void;
 }
 
 const QnAContext = createContext<QnAContextType>({} as QnAContextType);
@@ -36,6 +42,10 @@ export function QnAProvider({
     fetchPolicy: "cache-and-network",
   });
   const { createPost, createPostLoading } = useSendPost();
+  const { sendUpvote, voteLoading } = useUpvotePost();
+  const { newPost } = useOnNewPost(id);
+  useOnPostCommented(id);
+  useOnPostUpvoted(id);
 
   useEffect(() => {
     if (data) {
@@ -43,25 +53,42 @@ export function QnAProvider({
     }
   }, [data]);
 
+  useEffect(() => {
+    if (newPost) {
+      setQna({
+        ...qna,
+        post: [...(qna?.post as Post[]), newPost.onNewPost as Post] as Post[],
+      });
+    }
+  }, [newPost]);
+
   const sendPost = async (data: PostInput) => {
     try {
-      const res = await createPost({
+      await createPost({
         variables: {
           data: {
             ...data,
             qna_id: qna?.id,
           },
+          channelId: id,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const votePost = async (data: UpvotePost) => {
+    try {
+      const res = await sendUpvote({
+        variables: {
+          channelId: id,
+          data,
         },
       });
 
       if (res) {
-        setQna({
-          ...qna,
-          post: [
-            ...(qna?.post as Post[]),
-            res.data.createPost as Post,
-          ] as Post[],
-        });
+        console.log(res);
       }
     } catch (error) {
       console.log(error);
@@ -75,8 +102,10 @@ export function QnAProvider({
       error,
       createPostLoading,
       sendPost,
+      voteLoading,
+      votePost,
     }),
-    [qna, loading, error, createPostLoading]
+    [qna, loading, error, createPostLoading, voteLoading]
   );
 
   return (

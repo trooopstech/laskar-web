@@ -24,9 +24,11 @@ const PostContext = createContext<PostContextType>({} as PostContextType);
 
 export function PostProvider({
   id,
+  channelId,
   children,
 }: {
   id: string;
+  channelId: string;
   children: ReactNode;
 }): JSX.Element {
   const [post, setPost] = useState<Post>();
@@ -52,6 +54,8 @@ export function PostProvider({
             ...data,
             post_id: id,
           },
+          postId: id,
+          channelId,
         },
       });
 
