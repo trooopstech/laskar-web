@@ -15,7 +15,7 @@ const NonChannel = () => {
     if (visibleCategory.length > 0) {
       if (visibleCategory[0].channels.length > 0) {
         const firstChannel = visibleCategory[0].channels[0].id;
-        return history.replace(`${url}/${firstChannel}`);
+        return history.replace(`${url}/chat/${firstChannel}`);
       }
     }
 

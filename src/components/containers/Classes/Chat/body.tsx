@@ -13,8 +13,8 @@ import { Descendant, createEditor } from "slate";
 import { Editable, Slate, withReact } from "slate-react";
 import { GroupMessages } from "types/chat";
 import { Virtuoso } from "react-virtuoso";
-import { Element } from "components/modules/Editor/Chat/element";
-import { Leaf } from "components/modules/Editor/Chat/toolbar";
+import { Element } from "components/modules/Editor/Common/element";
+import { Leaf } from "components/modules/Editor/Common/toolbar";
 import { getInitials } from "utils/getInitial";
 
 interface MessageProps {
@@ -27,6 +27,11 @@ const Message: React.FC<MessageProps> = React.memo(({ message }) => {
   const editor = useMemo(() => withReact(createEditor()), []);
 
   const senderRole = getSenderRole(message);
+
+  editor.selection = {
+    anchor: { path: [0, 0], offset: 0 },
+    focus: { path: [0, 0], offset: 0 },
+  };
 
   const renderElement = useCallback((props) => <Element {...props} />, []);
 
@@ -110,7 +115,7 @@ const ChatBody = React.memo(() => {
           return (
             <Message
               message={message}
-              key={message.id + classMember.oid + index}
+              key={message.id + classMember?.oid + index}
             />
           );
         }}

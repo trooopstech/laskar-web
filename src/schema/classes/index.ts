@@ -43,6 +43,7 @@ export const GET_CLASS = gql`
         channels {
           id
           name
+          channel_type
           channel_granted_role {
             role {
               name

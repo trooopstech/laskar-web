@@ -8,6 +8,7 @@ interface ButtonProps {
   type?: "button" | "submit";
   disabled?: boolean;
   small?: boolean;
+  smaller?: boolean;
 }
 
 const buttonTheme = {
@@ -34,6 +35,7 @@ const Button: React.FC<ButtonProps> = ({
   type,
   small,
   disabled,
+  smaller,
 }) => {
   if (href) {
     return (
@@ -70,7 +72,9 @@ const Button: React.FC<ButtonProps> = ({
           ? `bg-gray-500`
           : // @ts-ignore
             buttonTheme[variant as string]?.base
-      } ${small ? "md:px-8 py-2 px-4" : "px-8 py-2"} ${className}`}
+      } ${
+        small ? "md:px-8 py-2 px-4" : smaller ? "py-2 px-4" : "px-8 py-2"
+      } ${className}`}
     >
       <p
         className={`text-base font-bold ${

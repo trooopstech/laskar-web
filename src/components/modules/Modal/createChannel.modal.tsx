@@ -92,6 +92,7 @@ const CreateChannelModal: React.FC<CreateChannelModalProps> = ({
               option={[
                 { key: "", value: "Pilih Channel" },
                 { key: "CHAT", value: "Chat" },
+                { key: "QNA", value: "QnA" },
               ]}
             />
             {errors.channel_type && touched.channel_type && errors.channel_type}

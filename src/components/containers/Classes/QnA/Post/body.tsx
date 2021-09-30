@@ -1,0 +1,97 @@
+import { Leaf } from "components/modules/Editor/Common/toolbar";
+import moment from "moment";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import { Descendant, createEditor } from "slate";
+import { withReact, Slate, Editable } from "slate-react";
+import { Element } from "components/modules/Editor/Common/element";
+import { getInitials } from "utils/getInitial";
+import { useHistory, useRouteMatch } from "react-router";
+import { Comment } from "types/comment";
+import usePost from "context/QnA/Post";
+
+interface CommentBubbleProps {
+  comment: Comment;
+}
+
+const CommentBubble: React.FC<CommentBubbleProps> = React.memo(
+  ({ comment }) => {
+    const [value, setValue] = useState<Descendant[]>(comment.text);
+    const editor = useMemo(() => withReact(createEditor()), []);
+
+    useEffect(() => {
+      editor.selection = {
+        anchor: { path: [0, 0], offset: 0 },
+        focus: { path: [0, 0], offset: 0 },
+      };
+    }, []);
+
+    const renderElement = useCallback((props) => <Element {...props} />, []);
+
+    const renderLeaf = useCallback((props) => {
+      return <Leaf {...props} />;
+    }, []);
+
+    return (
+      <div className="flex m-2 items-start px-2 py-4 rounded-md hover:bg-gray-600 cursor-pointer">
+        <div className="w-13">
+          <div
+            className="avatar h-12 w-12 rounded-full mr-2 flex items-center justify-center"
+            style={{
+              backgroundColor: comment.is_anon
+                ? "pink"
+                : comment?.sender?.member.color,
+            }}
+          >
+            <p className="text-xl uppercase font-bold text-center text-white">
+              {comment?.is_anon
+                ? "?"
+                : getInitials(comment?.sender.member.name as string)}
+            </p>
+          </div>
+        </div>
+        <div className="w-full flex flex-col">
+          <div className="flex items-center">
+            <p className={`text-bold`}>
+              {comment.is_anon ? "Anonim" : comment?.sender.member.name}
+            </p>
+            <p className="text-xs text-gray-500 ml-4">
+              {moment(new Date(comment?.created_at)).format("ll hh:mm A")}
+            </p>
+          </div>
+          <div className="w-full flex">
+            <div className="w-4/5">
+              <p className="break-words break-all">
+                <Slate
+                  editor={editor}
+                  value={value}
+                  onChange={(value) => setValue(value)}
+                >
+                  <Editable
+                    readOnly
+                    renderElement={renderElement}
+                    renderLeaf={renderLeaf}
+                  />
+                </Slate>
+              </p>
+            </div>
+            <div className="w-1/5 h-full flex items-center justify-end"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+);
+
+const PostBody = () => {
+  const { post } = usePost();
+
+  return (
+    <div className="h-full p-2 w-full overflow-y-auto">
+      {post?.comment.map((comment: Comment) => (
+        <CommentBubble comment={comment} key={comment.id} />
+      ))}
+    </div>
+  );
+};
+
+export default PostBody;

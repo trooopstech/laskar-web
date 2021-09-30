@@ -12,6 +12,9 @@ const AnnouncementSection = () => {
           style={{ fontWeight: "bolder", fontSize: "20px", strokeWidth: "1" }}
         />
       </div>
+      <div className="h-1/2 flex items-end justify-center">
+        <h1 className="text-gray-500">Dalam pengembangan.</h1>
+      </div>
     </div>
   );
 };

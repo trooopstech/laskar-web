@@ -10,6 +10,8 @@ import {
 import ChatContainer from "./Chat";
 import NonChannel from "./nonChannel";
 import MemberContainer from "./Member";
+import QnAContainer from "./QnA";
+import PostContainer from "./QnA/Post";
 
 const ClassDetail = () => {
   const { path, url } = useRouteMatch();
@@ -26,7 +28,7 @@ const ClassDetail = () => {
       if (visibleCategory.length > 0) {
         if (visibleCategory[0].channels.length > 0) {
           const firstChannel = visibleCategory[0].channels[0].id;
-          return history.replace(`${url}/${firstChannel}`);
+          return history.replace(`${url}/chat/${firstChannel}`);
         }
       }
 
@@ -42,8 +44,14 @@ const ClassDetail = () => {
       <Route exact path={`${path}/member`}>
         <MemberContainer />
       </Route>
-      <Route path={`${path}/:channelId`}>
+      <Route path={`${path}/chat/:channelId`}>
         <ChatContainer />
+      </Route>
+      <Route exact path={`${path}/qna/:channelId`}>
+        <QnAContainer />
+      </Route>
+      <Route path={`${path}/qna/:channelId/:postId`}>
+        <PostContainer />
       </Route>
     </Switch>
   );

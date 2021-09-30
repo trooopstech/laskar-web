@@ -15,8 +15,8 @@ import useOnNewMessage from "./subscription/useOnNewMessage";
 interface ChatContextType {
   chatGroup?: ChatGroup;
   loading: boolean;
-  createMessagesLoading: boolean;
   error?: any;
+  createMessagesLoading: boolean;
   sendMessages: (data: GroupMessagesInput) => void;
   getSenderRole: (message: GroupMessages) => string;
 }

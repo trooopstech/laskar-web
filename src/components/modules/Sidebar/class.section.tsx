@@ -5,7 +5,7 @@ import {
   MdExpandLess,
   MdAnnouncement,
 } from "react-icons/md";
-import { FiHash } from "react-icons/fi";
+import { FaQuestion, FaHashtag } from "react-icons/fa";
 import { Menu, MenuDivider, MenuItem } from "@szhsin/react-menu";
 import { useState } from "react";
 import CreateChannelModal, {
@@ -20,17 +20,33 @@ interface ChannelMenuProps {
 
 const ChannelMenu: React.FC<ChannelMenuProps> = ({ channels }) => {
   const { url } = useRouteMatch();
+
+  const makeRouteByChannelType = (channel: Channel) => {
+    switch (channel.channel_type as unknown as string) {
+      case "CHAT":
+        return "chat";
+      case "QNA":
+        return "qna";
+      default:
+        return "chat";
+    }
+  };
+
   return (
     <div className="channel flex flex-col">
       {channels?.map((channel) => (
         <NavLink
           className="flex items-center cursor-pointer text-gray-400 hover:text-gray-300 my-1 hover:bg-gray-600 rounded-md pl-4"
           key={channel.id}
-          to={`${url}/${channel?.id}`}
+          to={`${url}/${makeRouteByChannelType(channel)}/${channel?.id}`}
           activeClassName="text-white bg-gray-700"
         >
           <p className="text-base text-gray-400 mr-2">
-            <FiHash />
+            {makeRouteByChannelType(channel) === "chat" ? (
+              <FaHashtag />
+            ) : (
+              <FaQuestion />
+            )}
           </p>
           <p className="text-base">{channel.name}</p>
         </NavLink>

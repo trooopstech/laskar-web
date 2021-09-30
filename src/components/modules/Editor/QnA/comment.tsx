@@ -9,24 +9,19 @@ import React, {
 import { Editor, Transforms, createEditor, Descendant } from "slate";
 
 import isHotkey from "is-hotkey";
-import {
-  AiOutlineBold,
-  AiOutlineUnderline,
-  AiOutlineSmile,
-  AiOutlineItalic,
-  AiOutlineSend,
-} from "react-icons/ai";
+import { AiOutlineSend, AiOutlineSmile } from "react-icons/ai";
 import { withHistory } from "slate-history";
 import { Slate, Editable, withReact } from "slate-react";
 import { Picker } from "emoji-mart";
-import useChat from "context/Chat";
-import useClassDetail from "hooks/useDetailClass";
 import { withShortcuts } from "../Common/plugin";
-import { isMarkActive, Leaf, toggleMark } from "../Common/toolbar";
+import { Leaf, toggleMark } from "../Common/toolbar";
 import { Element } from "../Common/element";
-import { MessageType } from "types/chat";
 
 import { Node } from "slate";
+import Button from "components/elements/Button";
+import useQnA from "context/QnA";
+import useClassDetail from "hooks/useDetailClass";
+import usePost from "context/QnA/Post";
 
 const HOTKEYS = {
   "mod+b": "bold",
@@ -42,14 +37,15 @@ const serialize = (nodes: any[]) => {
     .replace(/ /g, "");
 };
 
-const ChatEditor = () => {
+const CommentEditor = () => {
   const [value, setValue] = useState<Descendant[]>(initialValue);
   const [height, setHeight] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
-  const [showEmoji, setShowEmoji] = useState(0);
   const { getUserClassMember } = useClassDetail();
-  const { sendMessages, createMessagesLoading } = useChat();
-  const classMember: ClassMember = getUserClassMember();
+  const [showEmoji, setShowEmoji] = useState(0);
+  const { sendComment, createCommentLoading } = usePost();
+  const member = getUserClassMember();
+  const [isAnon, setIsAnon] = useState(false);
 
   useEffect(() => {
     if (ref.current) {
@@ -78,12 +74,11 @@ const ChatEditor = () => {
   };
 
   const onSend = async () => {
-    if (!createMessagesLoading && serialize(value).length > 0) {
-      await sendMessages({
+    if (!createCommentLoading && serialize(value).length > 0) {
+      sendComment({
         text: JSON.stringify(value),
-        html: ``,
-        type: "REGULAR" as unknown as MessageType,
-        sender_id: classMember.oid,
+        sender_id: member.oid,
+        is_anon: isAnon,
       });
       editor.selection = {
         anchor: { path: [0, 0], offset: 0 },
@@ -101,15 +96,13 @@ const ChatEditor = () => {
     if (
       event.key === "Enter" &&
       !event.shiftKey &&
-      !createMessagesLoading &&
       serialize(value).length > 0
     ) {
       event.preventDefault();
-      await sendMessages({
+      sendComment({
         text: JSON.stringify(value),
-        html: ``,
-        type: "REGULAR" as unknown as MessageType,
-        sender_id: classMember.oid,
+        sender_id: member.oid,
+        is_anon: isAnon,
       });
       editor.selection = {
         anchor: { path: [0, 0], offset: 0 },
@@ -136,19 +129,18 @@ const ChatEditor = () => {
 
   return (
     <Slate editor={editor} value={value} onChange={(value) => setValue(value)}>
-      <div className="w-full bg-gray-700  px-2 rounded-lg">
+      <div className="w-full px-2">
         <div
-          className="flex  w-full items-center border-b border-gray-600"
+          className="flex  w-full items-center"
           style={{
             maxHeight: "200px",
             overflowY: height > 200 ? "scroll" : "unset",
           }}
         >
-          <div className="w-full max-w-full py-2" ref={ref}>
+          <div className="w-full max-w-full pt-2" ref={ref}>
             <Editable
               renderLeaf={renderLeaf}
-              placeholder="Tulis pesan..."
-              style={{ padding: "8px" }}
+              placeholder="Tulis komentarmu..."
               renderElement={renderElement}
               onKeyDown={onEnter}
               spellCheck
@@ -156,55 +148,46 @@ const ChatEditor = () => {
             />
           </div>
         </div>
-        <div className="w-full py-2 flex justify-between">
-          <div id="toolbar" className="flex items-center">
-            <AiOutlineBold
-              className={`text-xl ${
-                isMarkActive(editor, "bold") ? "text-gray-100" : "text-gray-500"
-              } hover:text-gray-100 mr-2`}
-              onMouseDown={(event) => {
-                event.preventDefault();
-                toggleMark(editor, "bold");
-              }}
-            />
-            <AiOutlineUnderline
-              className={`text-xl ${
-                isMarkActive(editor, "underline")
-                  ? "text-gray-100"
-                  : "text-gray-500"
-              } hover:text-gray-100 mr-2`}
-              onMouseDown={(event) => {
-                event.preventDefault();
-                toggleMark(editor, "underline");
-              }}
-            />
-            <AiOutlineItalic
-              className={`text-xl ${
-                isMarkActive(editor, "italic")
-                  ? "text-gray-100"
-                  : "text-gray-500"
-              } hover:text-gray-100 mr-2`}
-              onMouseDown={(event) => {
-                event.preventDefault();
-                toggleMark(editor, "italic");
-              }}
-            />
-          </div>
-          <div className="flex items-center">
+        <div className="w-full flex justify-between">
+          <div id="toolbar" className="flex pt-2 items-center">
             <AiOutlineSmile
               className="text-xl text-gray-500 hover:text-gray-100 mr-2"
               onClick={() => setShowEmoji(1)}
             />
-            {createMessagesLoading ? (
-              <div className=" flex justify-center items-center">
-                <div className="animate-spin rounded-full h-4 w-4 border-l-2 border-b-2 border-gray-500"></div>
-              </div>
-            ) : (
-              <AiOutlineSend
-                className="text-xl text-gray-500 hover:text-gray-100"
-                onClick={onSend}
+            <div className="flex items-center justify-center ">
+              <input
+                type="checkbox"
+                name="toggle"
+                className="hidden"
+                readOnly
+                checked={isAnon}
               />
-            )}
+              <label
+                className="relative w-8 h-4 flex select-none cursor-pointer items-center"
+                htmlFor="toggle"
+                onClick={() => setIsAnon(!isAnon)}
+              >
+                <span
+                  className={`absolute left-0 top-0 h-full w-full rounded-full border border-gray-500 ${
+                    isAnon
+                      ? "bg-green-500 border-gray-300"
+                      : "bg-gray-800 border-gray-500"
+                  }`}
+                ></span>
+                <span
+                  className={`h-3 w-3 absolute z-10 rounded-full  transition-transform duration-300 ease-in-out flex justify-center items-center  transform mx-1 ${
+                    isAnon ? "translate-x-3 bg-gray-50" : "bg-gray-300"
+                  }`}
+                ></span>
+              </label>
+              <span className="text-xs text-gray-500 ml-1">Anonim</span>
+            </div>
+          </div>
+          <div className="flex items-center">
+            <AiOutlineSend
+              className="text-xl text-gray-500 hover:text-gray-100"
+              onClick={onSend}
+            />
           </div>
         </div>
       </div>
@@ -256,4 +239,4 @@ const EmojiPicker = ({
   return null;
 };
 
-export default ChatEditor;
+export default CommentEditor;
