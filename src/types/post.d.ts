@@ -19,6 +19,7 @@ type Post = {
   is_anon: boolean;
   comment: Comment[];
   voter: PostVoter[];
+  approved_by: ApprovedBy[];
 };
 
 interface PostInput {

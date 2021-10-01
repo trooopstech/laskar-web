@@ -12,6 +12,7 @@ import { BiComment, BiUpArrowAlt } from "react-icons/bi";
 import { useHistory, useRouteMatch } from "react-router";
 import { Link } from "react-router-dom";
 import useClassDetail from "hooks/useDetailClass";
+import { FaCheck } from "react-icons/fa";
 
 interface PostBubbleProps {
   post: Post;
@@ -103,6 +104,17 @@ const PostBubble: React.FC<PostBubbleProps> = React.memo(({ post }) => {
             </div>
           </div>
         </div>
+        {post.approved_by.length > 0 && (
+          <div className="flex items-center">
+            <FaCheck className="text-green-500 text-small font-bold mr-1" />
+            <h1 className="text-green-500 text-small font-thin">
+              Jawaban disetujui{" "}
+              {post.approved_by
+                .map((a) => `${a.approver.member.name}`)
+                .join(",")}
+            </h1>
+          </div>
+        )}
       </div>
     </div>
   );

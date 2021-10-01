@@ -81,9 +81,6 @@ export const GET_POST = gql`
       is_anon
       comment {
         id
-      }
-      comment {
-        id
         is_anon
         text
         created_at
@@ -168,6 +165,86 @@ export const UPVOTE_POST = gql`
       }
       sender {
         oid
+        member {
+          id
+          name
+          color
+        }
+      }
+    }
+  }
+`;
+
+export const APPROVE_COMMENT = gql`
+  mutation ApproveComment($channelId: String!, $data: ApproveCommentInput!) {
+    approveComment(channelId: $channelId, data: $data) {
+      id
+      text
+      created_at
+      is_anon
+      comment {
+        id
+        is_anon
+        text
+        created_at
+        sender {
+          oid
+          member {
+            id
+            name
+            color
+          }
+        }
+        approved_by {
+          approver {
+            member {
+              id
+              name
+            }
+          }
+        }
+      }
+      sender {
+        member {
+          id
+          name
+          color
+        }
+      }
+    }
+  }
+`;
+
+export const UNAPPROVE_COMMENT = gql`
+  mutation UnapproveComment($channelId: String!, $data: ApproveCommentInput!) {
+    unapproveComment(channelId: $channelId, data: $data) {
+      id
+      text
+      created_at
+      is_anon
+      comment {
+        id
+        is_anon
+        text
+        created_at
+        sender {
+          oid
+          member {
+            id
+            name
+            color
+          }
+        }
+        approved_by {
+          approver {
+            member {
+              id
+              name
+            }
+          }
+        }
+      }
+      sender {
         member {
           id
           name

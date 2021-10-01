@@ -5,9 +5,11 @@ import { Descendant, createEditor } from "slate";
 import { withReact, Slate, Editable } from "slate-react";
 import { Element } from "components/modules/Editor/Common/element";
 import { getInitials } from "utils/getInitial";
-import { useHistory, useRouteMatch } from "react-router";
 import { Comment } from "types/comment";
 import usePost from "context/QnA/Post";
+import { BsStar, BsStarFill } from "react-icons/bs";
+import useClassDetail from "hooks/useDetailClass";
+import { FaCheck } from "react-icons/fa";
 
 interface CommentBubbleProps {
   comment: Comment;
@@ -17,6 +19,13 @@ const CommentBubble: React.FC<CommentBubbleProps> = React.memo(
   ({ comment }) => {
     const [value, setValue] = useState<Descendant[]>(comment.text);
     const editor = useMemo(() => withReact(createEditor()), []);
+    const [fillStar, setFillStar] = useState(comment.approved_by.length > 0);
+    const { isRoleEqualParam, getUserClassMember } = useClassDetail();
+    const { sendApprove, commentIsApprovedByMe, sendUnapprove } = usePost();
+    const member = getUserClassMember();
+    const isTeacher = isRoleEqualParam("teacher");
+    const isAssistant = isRoleEqualParam("assistant");
+    const commentIsApprovedByOwn = commentIsApprovedByMe(comment, member);
 
     useEffect(() => {
       editor.selection = {
@@ -30,6 +39,15 @@ const CommentBubble: React.FC<CommentBubbleProps> = React.memo(
     const renderLeaf = useCallback((props) => {
       return <Leaf {...props} />;
     }, []);
+
+    const approveOrUnapprove = () => {
+      if (!fillStar) {
+        setFillStar(true);
+        return sendApprove;
+      }
+      setFillStar(false);
+      return sendUnapprove;
+    };
 
     return (
       <div className="flex m-2 items-start px-2 py-4 rounded-md hover:bg-gray-600 cursor-pointer">
@@ -74,8 +92,35 @@ const CommentBubble: React.FC<CommentBubbleProps> = React.memo(
                 </Slate>
               </p>
             </div>
-            <div className="w-1/5 h-full flex items-center justify-end"></div>
+            {(isAssistant || isTeacher) && (
+              <div
+                className="w-1/5 h-full flex items-center justify-end"
+                onClick={() =>
+                  approveOrUnapprove()({
+                    comment_id: comment.id as string,
+                    approver_id: member.oid,
+                  })
+                }
+              >
+                {fillStar || commentIsApprovedByOwn ? (
+                  <BsStarFill className="text-yellow-500" />
+                ) : (
+                  <BsStar />
+                )}
+              </div>
+            )}
           </div>
+          {!commentIsApprovedByOwn && comment.approved_by.length > 0 && (
+            <div className="flex items-center">
+              <FaCheck className="text-green-500 text-small font-bold mr-1" />
+              <h1 className="text-green-500 text-small font-thin">
+                Disetujui{" "}
+                {comment.approved_by
+                  .map((a) => `${a.approver.member.name}`)
+                  .join(",")}
+              </h1>
+            </div>
+          )}
         </div>
       </div>
     );

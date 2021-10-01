@@ -8,16 +8,23 @@ import {
   useState,
 } from "react";
 import { GET_POST } from "schema/channels/qna";
-import { Comment, CommentInput } from "types/comment";
+import { ApproveCommentInput, Comment, CommentInput } from "types/comment";
 import { Post } from "types/post";
+import useSendApprove from "../hooks/sendApprove";
 import useSendComment from "../hooks/sendComment";
+import useSendUnapprove from "../hooks/sendUnapprove";
 
 interface PostContextType {
   post?: Post;
   loading: boolean;
   error?: any;
   createCommentLoading: boolean;
+  approveLoading: boolean;
+  unapproveLoading: boolean;
   sendComment: (data: CommentInput) => void;
+  sendApprove: (data: ApproveCommentInput) => void;
+  sendUnapprove: (data: ApproveCommentInput) => void;
+  commentIsApprovedByMe: (comment: Comment, member: ClassMember) => boolean;
 }
 
 const PostContext = createContext<PostContextType>({} as PostContextType);
@@ -39,6 +46,8 @@ export function PostProvider({
     fetchPolicy: "cache-and-network",
   });
   const { createComment, createCommentLoading } = useSendComment();
+  const { approveComment, approveLoading } = useSendApprove();
+  const { unapproveComment, unapproveLoading } = useSendUnapprove();
 
   useEffect(() => {
     if (data) {
@@ -73,6 +82,51 @@ export function PostProvider({
     }
   };
 
+  const sendApprove = async (data: ApproveCommentInput) => {
+    try {
+      await approveComment({
+        variables: {
+          data: {
+            ...data,
+            post_id: id,
+          },
+          channelId,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const sendUnapprove = async (data: ApproveCommentInput) => {
+    try {
+      await unapproveComment({
+        variables: {
+          data: {
+            ...data,
+            post_id: id,
+          },
+          channelId,
+        },
+      });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const commentIsApprovedByMe = (
+    comment: Comment,
+    member: ClassMember
+  ): boolean => {
+    const approver = comment.approved_by;
+
+    if (approver.filter((a) => a.approver.oid === member.oid).length > 0) {
+      return true;
+    }
+
+    return false;
+  };
+
   const memoedValue = useMemo(
     () => ({
       post,
@@ -80,8 +134,13 @@ export function PostProvider({
       error,
       createCommentLoading,
       sendComment,
+      sendApprove,
+      sendUnapprove,
+      unapproveLoading,
+      approveLoading,
+      commentIsApprovedByMe,
     }),
-    [post, loading, error, createCommentLoading]
+    [post, loading, error, createCommentLoading, approveLoading]
   );
 
   return (
