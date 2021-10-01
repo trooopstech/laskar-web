@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import Navigation from "./navigation";
 import ProfileBadge from "./profile";
 import TitleSection from "./title";
+import logo from "assets/logo_white.png";
 
 const Header = () => {
   return (
@@ -10,9 +11,9 @@ const Header = () => {
         <Link
           to={"/dashboard"}
           style={{ height: "42px", width: "42px" }}
-          className="bg-gray-400 rounded-lg shadow-sm cursor-pointer flex items-center justify-center mr-4"
+          className="bg-gray-700 rounded-lg shadow-sm cursor-pointer flex items-center justify-center mr-4"
         >
-          <p className="font-bold text-center text-black">logo</p>
+          <img src={logo} alt="logo" width="75%" />
         </Link>
         <TitleSection />
       </div>

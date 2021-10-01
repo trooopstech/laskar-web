@@ -1,14 +1,12 @@
 import useClassDetail from "hooks/useDetailClass";
-import { MdDashboard, MdClass, MdExpandMore, MdGroupAdd } from "react-icons/md";
-import { useHistory, useLocation } from "react-router";
+import { MdDashboard, MdClass, MdExpandMore } from "react-icons/md";
+import { useLocation } from "react-router";
 import { headerTitles } from "utils/titleMaker";
-import { Menu, MenuDivider, MenuItem } from "@szhsin/react-menu";
+import { Menu, MenuItem } from "@szhsin/react-menu";
 import ClassTokenModal, { useClassTokenModal } from "../Modal/tokenClass.modal";
 import CreateCategoryModal, {
   useCreateCategoryModal,
 } from "../Modal/createCategory.modal";
-import { useMutation } from "@apollo/client";
-import { LEAVE_CLASS } from "schema/classes";
 import useClass from "hooks/useClasses";
 
 const HOMEPAGE_ICON: { [key: string]: JSX.Element } = {
@@ -19,7 +17,6 @@ const HOMEPAGE_ICON: { [key: string]: JSX.Element } = {
 const TitleSection = () => {
   const { pathname } = useLocation();
   const { classDetail, isAdministrator } = useClassDetail();
-  const history = useHistory();
   const { isTokenOpen, closeToken, openToken } = useClassTokenModal();
   const { isCategoryOpen, closeCategory, openCategory } =
     useCreateCategoryModal();
