@@ -9,7 +9,7 @@ import React, {
 import { Editor, Transforms, createEditor, Descendant } from "slate";
 
 import isHotkey from "is-hotkey";
-import { AiOutlineSmile } from "react-icons/ai";
+import { AiOutlineSend, AiOutlineSmile } from "react-icons/ai";
 import { withHistory } from "slate-history";
 import { Slate, Editable, withReact } from "slate-react";
 import { Picker } from "emoji-mart";
@@ -18,9 +18,11 @@ import { Leaf, toggleMark } from "../Common/toolbar";
 import { Element } from "../Common/element";
 
 import { Node } from "slate";
-import Button from "components/elements/Button";
 import useQnA from "context/QnA";
 import useClassDetail from "hooks/useDetailClass";
+import useMyPost from "context/QnA/MyPost";
+import Button from "components/elements/Button";
+import { Post } from "types/post";
 
 const HOTKEYS = {
   "mod+b": "bold",
@@ -36,12 +38,23 @@ const serialize = (nodes: any[]) => {
     .replace(/ /g, "");
 };
 
-const QnAEditor = () => {
-  const [value, setValue] = useState<Descendant[]>(initialValue);
+const QnAEditor = ({
+  defaultValue,
+  editMode,
+  onCancel,
+}: {
+  defaultValue?: Descendant[];
+  editMode?: Post;
+  onCancel?: () => void;
+}) => {
+  const [value, setValue] = useState<Descendant[]>(
+    defaultValue ?? initialValue
+  );
   const [height, setHeight] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
   const { getUserClassMember } = useClassDetail();
   const { sendPost, createPostLoading } = useQnA();
+  const { updatingPost, updateLoading } = useMyPost();
   const [showEmoji, setShowEmoji] = useState(0);
   const member = getUserClassMember();
   const [isAnon, setIsAnon] = useState(false);
@@ -51,6 +64,12 @@ const QnAEditor = () => {
       setHeight(ref.current.clientHeight);
     }
   }, [value]);
+
+  useEffect(() => {
+    if (editMode) {
+      setIsAnon(editMode.is_anon);
+    }
+  }, [editMode]);
 
   const editor = useMemo(
     () => withShortcuts(withReact(withHistory(createEditor()))),
@@ -87,29 +106,64 @@ const QnAEditor = () => {
     }
   };
 
+  const onUpdate = async () => {
+    if (!updateLoading && serialize(value).length > 0) {
+      updatingPost(
+        {
+          text: JSON.stringify(value),
+          id: editMode?.id ?? "",
+          is_anon: isAnon,
+        },
+        editMode?.qna.channel?.id ?? ""
+      );
+      onCancel && onCancel();
+    }
+  };
+
   const onEnter = async (event: {
     key: string;
     shiftKey: boolean;
     preventDefault: () => void;
   }) => {
-    if (
-      event.key === "Enter" &&
-      !event.shiftKey &&
-      !createPostLoading &&
-      serialize(value).length > 0
-    ) {
-      event.preventDefault();
-      sendPost({
-        text: JSON.stringify(value),
-        sender_id: member.oid,
-        is_anon: isAnon,
-      });
-      editor.selection = {
-        anchor: { path: [0, 0], offset: 0 },
-        focus: { path: [0, 0], offset: 0 },
-      };
-      setValue(initialValue);
-      return;
+    if (!editMode) {
+      if (
+        event.key === "Enter" &&
+        !event.shiftKey &&
+        !createPostLoading &&
+        serialize(value).length > 0
+      ) {
+        event.preventDefault();
+        sendPost({
+          text: JSON.stringify(value),
+          sender_id: member.oid,
+          is_anon: isAnon,
+        });
+        editor.selection = {
+          anchor: { path: [0, 0], offset: 0 },
+          focus: { path: [0, 0], offset: 0 },
+        };
+        setValue(initialValue);
+        return;
+      }
+    } else {
+      if (
+        event.key === "Enter" &&
+        !event.shiftKey &&
+        !updateLoading &&
+        serialize(value).length > 0
+      ) {
+        event.preventDefault();
+        updatingPost(
+          {
+            text: JSON.stringify(value),
+            id: editMode?.id ?? "",
+            is_anon: isAnon,
+          },
+          editMode?.qna.channel?.id ?? ""
+        );
+        onCancel && onCancel();
+        return;
+      }
     }
 
     if (event.key === "Enter" && !event.shiftKey) {
@@ -184,9 +238,21 @@ const QnAEditor = () => {
             </div>
           </div>
           <div className="flex items-center">
-            <Button variant="primary" onClick={onSend} smaller>
-              Kirim
-            </Button>
+            {editMode && (
+              <Button smaller onClick={onCancel}>
+                Batal
+              </Button>
+            )}
+            {editMode && (
+              <Button smaller variant="primary" onClick={onUpdate}>
+                Ubah
+              </Button>
+            )}
+            {!editMode && (
+              <Button variant="primary" onClick={onSend} smaller>
+                Kirim
+              </Button>
+            )}
           </div>
         </div>
       </div>

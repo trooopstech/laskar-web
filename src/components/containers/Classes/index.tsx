@@ -12,6 +12,7 @@ import NonChannel from "./nonChannel";
 import MemberContainer from "./Member";
 import QnAContainer from "./QnA";
 import PostContainer from "./QnA/Post";
+import MyPostContainer from "./MyPost";
 
 const ClassDetail = () => {
   const { path, url } = useRouteMatch();
@@ -52,6 +53,9 @@ const ClassDetail = () => {
       </Route>
       <Route path={`${path}/qna/:channelId/:postId`}>
         <PostContainer />
+      </Route>
+      <Route path={`${path}/post`}>
+        <MyPostContainer />
       </Route>
     </Switch>
   );

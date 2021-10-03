@@ -80,7 +80,9 @@ const PostSection = () => {
           </p>
         </div>
         <div className="my-2 flex items-center">
-          <span className="text-sm font-light mr-1 text-gray-500">0</span>
+          <span className="text-sm font-light mr-1 text-gray-500">
+            {post?.comment.length}
+          </span>
           <BiComment />
         </div>
       </div>

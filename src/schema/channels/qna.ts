@@ -112,6 +112,91 @@ export const GET_POST = gql`
   }
 `;
 
+export const GET_MY_POST = gql`
+  query GetUserPost($memberId: String!) {
+    getUserPost(memberId: $memberId) {
+      id
+      text
+      qna {
+        id
+        channel {
+          id
+        }
+      }
+      created_at
+      is_anon
+      comment {
+        id
+      }
+      voter {
+        voter {
+          oid
+        }
+      }
+      approved_by {
+        approver {
+          member {
+            name
+          }
+        }
+      }
+      sender {
+        member {
+          id
+          name
+          color
+        }
+      }
+    }
+  }
+`;
+
+export const DELETE_POST = gql`
+  mutation DeletePost($postId: String!, $channelId: String!) {
+    deletePost(postId: $postId, channelId: $channelId)
+  }
+`;
+
+export const UPDATE_POST = gql`
+  mutation UpdatePost($data: PostUpdate!, $channelId: String!) {
+    updatePost(data: $data, channelId: $channelId) {
+      id
+      text
+      created_at
+      is_anon
+      comment {
+        id
+      }
+      voter {
+        voter {
+          oid
+        }
+      }
+      qna {
+        id
+        channel {
+          id
+        }
+      }
+      approved_by {
+        approver {
+          member {
+            name
+          }
+        }
+      }
+      sender {
+        oid
+        member {
+          id
+          name
+          color
+        }
+      }
+    }
+  }
+`;
+
 export const CREATE_COMMENT = gql`
   mutation CreateComment(
     $data: CommentInput!

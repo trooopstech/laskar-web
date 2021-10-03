@@ -1,10 +1,6 @@
 import useClassDetail from "hooks/useDetailClass";
-import {
-  MdAdd,
-  MdExpandMore,
-  MdExpandLess,
-  MdAnnouncement,
-} from "react-icons/md";
+import { MdAdd, MdExpandMore, MdExpandLess } from "react-icons/md";
+import { CgFeed } from "react-icons/cg";
 import { FaQuestion, FaHashtag } from "react-icons/fa";
 import { Menu, MenuDivider, MenuItem } from "@szhsin/react-menu";
 import { useState } from "react";
@@ -70,11 +66,11 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({ category }) => {
 
   return (
     <>
-      <div
-        className="category w-full flex items-center justify-between cursor-pointer text-gray-400 hover:text-gray-300 px-1"
-        onClick={() => setCollapse(!collapse)}
-      >
-        <div className="flex items-center w-full cursor-pointer">
+      <div className="category w-full flex items-center justify-between cursor-pointer text-gray-400 hover:text-gray-300 px-1">
+        <div
+          className="flex items-center w-full cursor-pointer"
+          onClick={() => setCollapse(!collapse)}
+        >
           {collapse ? <MdExpandLess /> : <MdExpandMore />}
           <p className="uppercase noselect">{category.name}</p>
         </div>
@@ -127,13 +123,18 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({ category }) => {
 
 const ClassSection = () => {
   const { classDetail } = useClassDetail();
+  const { url } = useRouteMatch();
 
   return (
     <div className="py-2">
-      <div className="flex items-center mb-4 mt-2 w-full hover:bg-gray-600 rounded-md px-2 py-1">
-        <MdAnnouncement className="mr-3" />
-        <p className="text-gray-400 hover:text-gray-300">Pengumuman</p>
-      </div>
+      <NavLink
+        to={`${url}/post`}
+        activeClassName="text-white bg-gray-700"
+        className="flex items-center mb-4 mt-2 w-full hover:bg-gray-600 rounded-md px-2 py-1 cursor-pointer"
+      >
+        <CgFeed className="mr-3" />
+        <p className="text-gray-400 hover:text-gray-300">halamanku</p>
+      </NavLink>
       {classDetail?.channel_category.map((category) => (
         <CategoryMenu category={category} key={category.id} />
       ))}

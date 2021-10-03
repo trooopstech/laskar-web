@@ -20,12 +20,19 @@ type Post = {
   comment: Comment[];
   voter: PostVoter[];
   approved_by: ApprovedBy[];
+  qna: QnA;
 };
 
 interface PostInput {
   text: string;
   qna_id?: string;
   sender_id: string;
+  is_anon: boolean;
+}
+
+interface PostUpdate {
+  text: string;
+  id: string;
   is_anon: boolean;
 }
 

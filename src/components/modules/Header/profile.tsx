@@ -11,7 +11,7 @@ const ProfileBadge = () => {
       <Menu
         menuButton={
           <button
-            className="py-2 px-2 rounded-md cursor-pointer"
+            className="py-2 px-2 rounded-full cursor-pointer"
             style={{ backgroundColor: user?.color ?? "red" }}
           >
             {/* @ts-ignore */}
@@ -33,7 +33,6 @@ const ProfileBadge = () => {
           Keluar
         </MenuItem>
       </Menu>
-      <MdExpandMore className="ml-1" />
     </div>
   );
 };

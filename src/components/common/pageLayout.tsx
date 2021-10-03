@@ -22,7 +22,7 @@ const PageLayout: React.FC = ({ children }) => {
           <Menubar />
           {!isOnMemberPage() && <Sidebar />}
           {children}
-          {!isOnMemberPage() && <Rightbar />}
+          {/* {!isOnMemberPage() && <Rightbar />} */}
         </div>
       </div>
     </div>
