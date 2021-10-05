@@ -1,11 +1,9 @@
 import Classes from "components/elements/Classes";
 import useClass from "hooks/useClasses";
 import { Link } from "react-router-dom";
-import { MdAddCircle } from "react-icons/md";
-import CreateClassModal, {
-  useCreateClassModal,
-} from "../Modal/createClass.modal";
-import JoinClassModal, { useJoinClassModal } from "../Modal/joinClass.modal";
+import { MdAdd } from "react-icons/md";
+import CreateClassModal, { useCreateClassModal } from "../Modal/CreateClass";
+import JoinClassModal, { useJoinClassModal } from "../Modal/JoinClass";
 
 const Menubar = () => {
   const { classes } = useClass();
@@ -25,11 +23,11 @@ const Menubar = () => {
         />
       ))}
       <div
-        className="bg-gray-500 rounded-lg transition-all hover:bg-red-400 shadow-sm cursor-pointer flex items-center justify-center mt-2"
+        className="bg-gray-700 rounded-lg transition-all hover:bg-gray-600 shadow-sm cursor-pointer flex items-center justify-center mt-2"
         onClick={openCreateClass}
         style={{ height: "42px", width: "42px" }}
       >
-        <MdAddCircle />
+        <MdAdd />
       </div>
       <CreateClassModal
         open={isCreateClassOpen}

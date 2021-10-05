@@ -3,7 +3,7 @@ import { MdDashboard, MdClass, MdExpandMore } from "react-icons/md";
 import { useLocation } from "react-router";
 import { headerTitles } from "utils/titleMaker";
 import { Menu, MenuItem } from "@szhsin/react-menu";
-import ClassTokenModal, { useClassTokenModal } from "../Modal/tokenClass.modal";
+import ClassTokenModal, { useClassTokenModal } from "../Modal/TokenClass";
 import CreateCategoryModal, {
   useCreateCategoryModal,
 } from "../Modal/createCategory.modal";

@@ -54,9 +54,9 @@ const RegisterModal: React.FC<ModalProps> = ({ open, onClose, openOther }) => {
         }) => (
           <form
             onSubmit={handleSubmit}
-            className="container p-4 flex flex-col items-center justify-center text-gray-50 md:w-80"
+            className="container p-4 flex flex-col items-center justify-center text-gray-50 md:w-96"
           >
-            <p className="text-lg">Buat Akun Trooops</p>
+            <p className="text-xl font-bold">Buat Akun Trooops</p>
             <Input
               type="email"
               label="Email"

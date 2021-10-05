@@ -7,13 +7,16 @@ module.exports = {
       sans: ["Roboto", "sans-serif"],
     },
     extend: {
+      width: {
+        120: "26rem",
+      },
       colors: {
         gray: {
           400: "#E2E2E2",
           600: "#2C2C2E",
           700: "#1C1C1E",
           800: "#0B0B0B",
-          modal: "#363940",
+          modal: "#252529",
         },
       },
     },

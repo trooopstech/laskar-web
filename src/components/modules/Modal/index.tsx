@@ -6,7 +6,7 @@ const Modal: React.FC<ModalProps> = ({ open, onClose, children }) => {
         onClick={onClose}
       >
         <div
-          className="p-10 bg-gray-modal rounded-md z-100"
+          className="bg-gray-modal rounded-md z-100"
           onClick={(e) => e.stopPropagation()}
         >
           {children}

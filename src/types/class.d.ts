@@ -25,9 +25,19 @@ type Role = {
   name: string;
 };
 
+enum ClassPurposes {
+  SCHOOL,
+  TUTORIAL,
+  COURSES,
+  COMMUNITY,
+  OTHERS,
+}
+
 interface CreateClassInput {
   name: string;
   description?: string;
+  institution: string;
+  purposes: ClassPurposes;
 }
 
 interface RoleManagement {

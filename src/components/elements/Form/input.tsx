@@ -21,10 +21,10 @@ const Input: React.FC<InputProps> = ({
 }) => {
   return (
     <div className="flex flex-col my-2 w-full">
-      <span>{label}</span>
+      <span className="font-bold mb-1">{label}</span>
       <input
         type={type}
-        className={`form-input rounded-lg border-0 text-gray-50 bg-gray-700 ${className}`}
+        className={`form-input rounded-lg border-0 text-gray-50 bg-gray-700 p-3 ${className}`}
         placeholder={placeholder}
         onChange={onChange}
         onBlur={onBlur}

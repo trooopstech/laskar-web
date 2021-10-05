@@ -4,7 +4,7 @@ import { AiOutlineUserAdd } from "react-icons/ai";
 import MemberCard from "./member";
 import ClassTokenModal, {
   useClassTokenModal,
-} from "components/modules/Modal/tokenClass.modal";
+} from "components/modules/Modal/TokenClass";
 
 const ROLE_MAP: { [key: string]: string } = {
   asisten: "ASSISTANT",

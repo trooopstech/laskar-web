@@ -1,7 +1,7 @@
 import Button from "components/elements/Button";
 import Input from "components/elements/Form/input";
-import Modal from ".";
-import useModal from "./useModal";
+import Modal from "..";
+import useModal from "../useModal";
 import { Formik } from "formik";
 import useClass from "hooks/useClasses";
 
@@ -47,39 +47,40 @@ const JoinClassModal: React.FC<ModalProps> = ({ open, onClose, openOther }) => {
         }) => (
           <form
             onSubmit={handleSubmit}
-            className="container p-4 flex flex-col items-center justify-center text-gray-50 md:w-80"
+            className="container p-4 flex flex-col items-center justify-center text-gray-50 md:w-120"
           >
-            <p className="text-lg">Gabung Kelas dengan Token</p>
+            <p className="text-xl font-bold">Gabung Kelas</p>
             <Input
               type="text"
-              label="Class Token"
+              label="Kode Kelas"
               placeholder="XXXXXX"
               name="token"
               onChange={handleChange}
               onBlur={handleBlur}
               value={values.token}
             />
+            <span className="text-xs font-thin">
+              Gunakan kode kelas berupa 5-7 huruf atau angka, tanpa spasi maupun
+              simbol
+            </span>
             {errors.token && touched.token && errors.token}
-            <Button
-              variant="primary"
-              className="mt-4 w-full"
-              type="submit"
-              disabled={isSubmitting}
-            >
-              Gabung
-            </Button>
-            <Button
-              variant="text"
-              className="mt-4 w-full text-gray-50"
-              onClick={() => {
-                onClose();
-                if (openOther) {
-                  openOther();
-                }
-              }}
-            >
-              Buat Kelas
-            </Button>
+            <div className="w-full flex justify-end mt-4">
+              <Button
+                variant="text"
+                className="mr-2 text-gray-500 hover:text-gray-50"
+                onClick={() => {
+                  onClose();
+                  if (openOther) {
+                    openOther();
+                  }
+                }}
+              >
+                Buat Kelas
+              </Button>
+              <Button variant="primary" type="submit" disabled={isSubmitting}>
+                Gabung
+              </Button>
+            </div>
           </form>
         )}
       </Formik>
