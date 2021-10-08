@@ -6,9 +6,12 @@ import { Menu, MenuDivider, MenuItem } from "@szhsin/react-menu";
 import { useState } from "react";
 import CreateChannelModal, {
   useCreateChannelModal,
-} from "../Modal/createChannel.modal";
+} from "../Modal/CreateChannel";
 import { useRouteMatch } from "react-router";
 import { NavLink } from "react-router-dom";
+import InviteChannelModal, {
+  useInviteChannelModal,
+} from "../Modal/InviteChannelMember";
 
 interface ChannelMenuProps {
   channels: Channel[];
@@ -59,10 +62,17 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({ category }) => {
   const [collapse, setCollapse] = useState(false);
   const { deleteCategoryChannel, isAdministrator } = useClassDetail();
   const { isChannelOpen, closeChannel, openChannel } = useCreateChannelModal();
+  const { isInviteOpen, closeInvite, openInvite } = useInviteChannelModal();
+  const [newChannel, setChannel] = useState<Channel>();
 
   if (category.hidden) {
     return <div />;
   }
+
+  const openInviteModal = (channel: Channel) => {
+    setChannel(channel);
+    openInvite();
+  };
 
   return (
     <>
@@ -115,7 +125,13 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({ category }) => {
       <CreateChannelModal
         open={isChannelOpen}
         onClose={closeChannel}
-        data={{ categoryId: category.id }}
+        data={{ categoryId: category.id, name: category.name }}
+        openOther={openInviteModal}
+      />
+      <InviteChannelModal
+        open={isInviteOpen}
+        onClose={closeInvite}
+        channel={newChannel}
       />
     </>
   );

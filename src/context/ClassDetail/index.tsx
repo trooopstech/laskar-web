@@ -12,7 +12,11 @@ import {
   useReducer,
   useState,
 } from "react";
-import { DELETE_CATEGORY, DELETE_CHANNEL } from "schema/channels";
+import {
+  DELETE_CATEGORY,
+  DELETE_CHANNEL,
+  INVITE_MEMBER,
+} from "schema/channels";
 import {
   ADD_ADMIN_ROLE,
   CHANGE_MEMBER_ROLE,
@@ -29,7 +33,7 @@ interface ClassDetailContextType {
   loadingClass: boolean;
   errorClass?: any;
   createCategoryChannel: (data: CreateCategoryInput) => void;
-  createChannel: (data: CreateChannelInput) => void;
+  createChannel: (data: CreateChannelInput) => Promise<Channel>;
   deleteCategoryChannel: (categoryId: string) => void;
   deleteClassChannel: (channelId: string) => void;
   getUserClassMember: () => ClassMember;
@@ -38,6 +42,7 @@ interface ClassDetailContextType {
   changeMemberRole: (data: RoleManagement) => void;
   removeMemberAsAdmin: (data: RoleManagement) => void;
   addMemberAsAdmin: (data: RoleManagement) => void;
+  inviteMemberChannel: (data: InviteInput) => void;
 }
 
 const ClassDetailContext = createContext<ClassDetailContextType>(
@@ -67,6 +72,7 @@ export function ClassDetailProvider({
   const [addMemberRole] = useMutation(CHANGE_MEMBER_ROLE);
   const [addMemberAdmin] = useMutation(ADD_ADMIN_ROLE);
   const [removeMemberAdmin] = useMutation(REMOVE_ADMIN_ROLE);
+  const [inviteMember] = useMutation(INVITE_MEMBER);
   const { memberWithNewRole } = useOnChangedRole(id);
   useOnCategoryDeleted(id);
   const { member } = useOnNewMember(id);
@@ -126,10 +132,18 @@ export function ClassDetailProvider({
 
   useEffect(() => {
     if (channel) {
-      dispatch({
-        type: "add-channel",
-        payload: channel.onNewChannelCreated,
-      });
+      const member = getUserClassMember();
+      if (
+        !channel.onNewChannelCreated.is_private ||
+        channel.onNewChannelCreated.members.filter(
+          (m: ChannelMember) => m.member.oid === member.oid
+        ).length > 0
+      ) {
+        dispatch({
+          type: "add-channel",
+          payload: channel.onNewChannelCreated,
+        });
+      }
     }
   }, [channel]);
 
@@ -143,11 +157,14 @@ export function ClassDetailProvider({
     }
   };
 
-  const createChannel = async (data: CreateChannelInput): Promise<void> => {
+  const createChannel = async (data: CreateChannelInput): Promise<Channel> => {
     try {
-      await createChannelAction({ variables: { data } });
+      const res = await createChannelAction({ variables: { data } });
+
+      return res.data.createChannel as Channel;
     } catch (error) {
       console.log(error);
+      return {} as Channel;
     }
   };
 
@@ -228,6 +245,14 @@ export function ClassDetailProvider({
     }
   };
 
+  const inviteMemberChannel = async (data: InviteInput) => {
+    try {
+      await inviteMember({ variables: { data } });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const memoedValue = useMemo(
     () => ({
       classDetail,
@@ -243,6 +268,7 @@ export function ClassDetailProvider({
       changeMemberRole,
       addMemberAsAdmin,
       removeMemberAsAdmin,
+      inviteMemberChannel,
     }),
     [classDetail, loadingClass, errorClass]
   );

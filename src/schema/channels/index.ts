@@ -97,6 +97,38 @@ export const CREATE_CHANNEL = gql`
         id
         name
       }
+      members {
+        member {
+          oid
+        }
+      }
+      channel_granted_role {
+        role {
+          id
+          name
+        }
+      }
+    }
+  }
+`;
+
+export const INVITE_MEMBER = gql`
+  mutation InviteChannelMember($data: InviteInput!) {
+    inviteChannelMember(data: $data) {
+      id
+      created_at
+      name
+      channel_type
+      is_private
+      channel_category {
+        id
+        name
+      }
+      members {
+        member {
+          oid
+        }
+      }
       channel_granted_role {
         role {
           id
@@ -114,9 +146,15 @@ export const ON_NEW_CHANNEL_CREATED = gql`
       created_at
       name
       channel_type
+      is_private
       channel_category {
         id
         name
+      }
+      members {
+        member {
+          oid
+        }
       }
       channel_granted_role {
         role {

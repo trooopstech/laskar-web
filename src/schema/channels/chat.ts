@@ -8,6 +8,22 @@ export const GET_CHAT_GROUP = gql`
       channel {
         id
         name
+        is_private
+        creator {
+          member {
+            name
+            color
+          }
+        }
+        members {
+          member {
+            oid
+            member {
+              name
+              color
+            }
+          }
+        }
         channel_granted_role {
           role {
             name

@@ -2,7 +2,7 @@ import useClassDetail from "hooks/useDetailClass";
 import { useEffect, useState } from "react";
 import MemberSection from "./section";
 
-const filterMemberByRole = (
+export const filterMemberByRole = (
   role: string,
   classMember: ClassMember[]
 ): ClassMember[] => {
@@ -20,7 +20,6 @@ const MemberContainer = () => {
 
   useEffect(() => {
     if (class_member) {
-      console.log("ADA CLASS MEMBER");
       setStudent(filterMemberByRole("STUDENT", class_member as ClassMember[]));
       setAssistant(
         filterMemberByRole("ASSISTANT", class_member as ClassMember[])

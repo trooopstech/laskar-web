@@ -6,7 +6,7 @@ import { Menu, MenuItem } from "@szhsin/react-menu";
 import ClassTokenModal, { useClassTokenModal } from "../Modal/TokenClass";
 import CreateCategoryModal, {
   useCreateCategoryModal,
-} from "../Modal/createCategory.modal";
+} from "../Modal/CreateCategory";
 import useClass from "hooks/useClasses";
 
 const HOMEPAGE_ICON: { [key: string]: JSX.Element } = {

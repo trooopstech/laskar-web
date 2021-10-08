@@ -44,9 +44,15 @@ export const GET_CLASS = gql`
           id
           name
           channel_type
+          is_private
           channel_granted_role {
             role {
               name
+            }
+          }
+          members {
+            member {
+              oid
             }
           }
         }

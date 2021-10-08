@@ -7,6 +7,9 @@ interface InputProps {
   onBlur?: (res: any) => void;
   value?: string;
   name: string;
+  startAddorment?: JSX.Element;
+  endAddorment?: JSX.Element;
+  disabled?: boolean;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -18,19 +21,27 @@ const Input: React.FC<InputProps> = ({
   value,
   className,
   name,
+  startAddorment,
+  endAddorment,
+  disabled,
 }) => {
   return (
     <div className="flex flex-col my-2 w-full">
       <span className="font-bold mb-1">{label}</span>
-      <input
-        type={type}
-        className={`form-input rounded-lg border-0 text-gray-50 bg-gray-700 p-3 ${className}`}
-        placeholder={placeholder}
-        onChange={onChange}
-        onBlur={onBlur}
-        value={value}
-        name={name}
-      />
+      <div className="flex w-full items-center rounded-lg px-2 py-1 bg-gray-700">
+        <div>{startAddorment}</div>
+        <input
+          type={type}
+          className={`form-input text-gray-50 bg-transparent border-0 w-full focus:outline-none focus:ring-0 focus:appearance-none ${className}`}
+          placeholder={placeholder}
+          onChange={onChange}
+          onBlur={onBlur}
+          value={value}
+          name={name}
+          disabled={disabled}
+        />
+        <div>{endAddorment}</div>
+      </div>
     </div>
   );
 };
