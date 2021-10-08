@@ -9,7 +9,7 @@ const Sidebar = () => {
   return (
     <div
       className="h-full px-2 bg-gray-800 border-r border-gray-700 border-l flex flex-col relative"
-      style={{ width: classId ? "450px" : "325px" }}
+      style={{ width: "325px" }}
     >
       {classId ? <ClassSection /> : <HomeSection />}
     </div>
