@@ -69,18 +69,9 @@ export const DELETE_CHANNEL = gql`
   mutation deleteChannel($channelId: String!) {
     deleteChannel(channelId: $channelId) {
       id
-      created_at
-      name
-      channel_type
       channel_category {
         id
         name
-      }
-      channel_granted_role {
-        role {
-          id
-          name
-        }
       }
     }
   }
@@ -170,12 +161,30 @@ export const ON_CHANNEL_DELETED = gql`
   subscription OnChannelDeleted($classId: String!) {
     onChannelDeleted(classId: $classId) {
       id
-      created_at
-      name
-      channel_type
       channel_category {
         id
         name
+      }
+    }
+  }
+`;
+
+export const ON_CHANNEL_UPDATED = gql`
+  subscription OnChannelUpdated($classId: String!) {
+    onChannelUpdated(classId: $classId) {
+      id
+      created_at
+      name
+      channel_type
+      is_private
+      channel_category {
+        id
+        name
+      }
+      members {
+        member {
+          oid
+        }
       }
       channel_granted_role {
         role {

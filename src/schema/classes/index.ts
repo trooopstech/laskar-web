@@ -50,6 +50,9 @@ export const GET_CLASS = gql`
               name
             }
           }
+          creator {
+            oid
+          }
           members {
             member {
               oid

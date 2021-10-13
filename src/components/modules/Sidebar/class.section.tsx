@@ -2,7 +2,13 @@ import useClassDetail from "hooks/useDetailClass";
 import { MdAdd, MdExpandMore, MdExpandLess } from "react-icons/md";
 import { CgFeed } from "react-icons/cg";
 import { FaQuestion, FaHashtag } from "react-icons/fa";
-import { Menu, MenuDivider, MenuItem } from "@szhsin/react-menu";
+import {
+  ControlledMenu,
+  Menu,
+  MenuDivider,
+  MenuItem,
+  useMenuState,
+} from "@szhsin/react-menu";
 import { useState } from "react";
 import CreateChannelModal, {
   useCreateChannelModal,
@@ -17,8 +23,14 @@ interface ChannelMenuProps {
   channels: Channel[];
 }
 
-const ChannelMenu: React.FC<ChannelMenuProps> = ({ channels }) => {
+const ChannelButton = ({ channel }: { channel: Channel }) => {
   const { url } = useRouteMatch();
+  const { isAdministrator, getUserClassMember, deleteClassChannel } =
+    useClassDetail();
+  const member = getUserClassMember();
+  const creator = channel.creator;
+  const { toggleMenu, ...menuProps } = useMenuState();
+  const [anchorPoint, setAnchorPoint] = useState({ x: 0, y: 0 });
 
   const makeRouteByChannelType = (channel: Channel) => {
     switch (channel.channel_type as unknown as string) {
@@ -32,23 +44,58 @@ const ChannelMenu: React.FC<ChannelMenuProps> = ({ channels }) => {
   };
 
   return (
+    <div
+      onContextMenu={(e) => {
+        e.preventDefault();
+        setAnchorPoint({ x: e.clientX, y: e.clientY });
+        toggleMenu(true);
+      }}
+    >
+      <NavLink
+        className="flex items-center cursor-pointer text-gray-400 hover:text-gray-300 my-1 hover:bg-gray-600 rounded-md pl-4"
+        key={channel.id}
+        to={`${url}/${makeRouteByChannelType(channel)}/${channel?.id}`}
+        activeClassName="text-white bg-gray-700"
+      >
+        <p className="text-base text-gray-400 mr-2">
+          {makeRouteByChannelType(channel) === "chat" ? (
+            <FaHashtag />
+          ) : (
+            <FaQuestion />
+          )}
+        </p>
+        <p className="text-base">{channel.name}</p>
+      </NavLink>
+      {(isAdministrator() || creator?.oid === member?.oid) && (
+        <ControlledMenu
+          {...menuProps}
+          menuClassName="bg-gray-700 p-2"
+          anchorPoint={anchorPoint}
+          onClose={() => toggleMenu(false)}
+        >
+          <MenuItem
+            className={({ hover, active }) =>
+              active
+                ? "bg-gray-700 text-white p-2"
+                : hover
+                ? "bg-gray-600 text-white rounded-md p-2"
+                : "bg-gray-700 text-white p-2"
+            }
+            onClick={() => deleteClassChannel(channel.id)}
+          >
+            Hapus
+          </MenuItem>
+        </ControlledMenu>
+      )}
+    </div>
+  );
+};
+
+const ChannelMenu: React.FC<ChannelMenuProps> = ({ channels }) => {
+  return (
     <div className="channel flex flex-col">
       {channels?.map((channel) => (
-        <NavLink
-          className="flex items-center cursor-pointer text-gray-400 hover:text-gray-300 my-1 hover:bg-gray-600 rounded-md pl-4"
-          key={channel.id}
-          to={`${url}/${makeRouteByChannelType(channel)}/${channel?.id}`}
-          activeClassName="text-white bg-gray-700"
-        >
-          <p className="text-base text-gray-400 mr-2">
-            {makeRouteByChannelType(channel) === "chat" ? (
-              <FaHashtag />
-            ) : (
-              <FaQuestion />
-            )}
-          </p>
-          <p className="text-base">{channel.name}</p>
-        </NavLink>
+        <ChannelButton channel={channel} key={channel.id} />
       ))}
     </div>
   );
@@ -60,7 +107,7 @@ interface CategoryMenuProps {
 
 const CategoryMenu: React.FC<CategoryMenuProps> = ({ category }) => {
   const [collapse, setCollapse] = useState(false);
-  const { deleteCategoryChannel, isAdministrator } = useClassDetail();
+  const { deleteCategoryChannel } = useClassDetail();
   const { isChannelOpen, closeChannel, openChannel } = useCreateChannelModal();
   const { isInviteOpen, closeInvite, openInvite } = useInviteChannelModal();
   const [newChannel, setChannel] = useState<Channel>();
@@ -84,42 +131,40 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({ category }) => {
           {collapse ? <MdExpandLess /> : <MdExpandMore />}
           <p className="uppercase noselect">{category.name}</p>
         </div>
-        {isAdministrator() && (
-          <Menu
-            menuButton={
-              <button>
-                <MdAdd style={{ fontWeight: "bold" }} />
-              </button>
+        <Menu
+          menuButton={
+            <button>
+              <MdAdd style={{ fontWeight: "bold" }} />
+            </button>
+          }
+          menuClassName="bg-gray-700 p-2 rounded-md"
+        >
+          <MenuItem
+            className={({ hover, active }) =>
+              active
+                ? "bg-gray-700 text-white p-2"
+                : hover
+                ? "bg-gray-600 text-white rounded-md p-2"
+                : "bg-gray-700 text-white p-2"
             }
-            menuClassName="bg-gray-700 p-2 rounded-md"
+            onClick={openChannel}
           >
-            <MenuItem
-              className={({ hover, active }) =>
-                active
-                  ? "bg-gray-700 text-white p-2"
-                  : hover
-                  ? "bg-gray-600 text-white rounded-md p-2"
-                  : "bg-gray-700 text-white p-2"
-              }
-              onClick={openChannel}
-            >
-              Buat Channel
-            </MenuItem>
-            <MenuDivider className="bg-gray-700" />
-            <MenuItem
-              className={({ hover, active }) =>
-                active
-                  ? "bg-gray-700 text-white p-2"
-                  : hover
-                  ? "bg-gray-600 text-white rounded-md p-2"
-                  : "bg-gray-700 text-white p-2"
-              }
-              onClick={() => deleteCategoryChannel(category.id)}
-            >
-              Hapus Kategori
-            </MenuItem>
-          </Menu>
-        )}
+            Buat Channel
+          </MenuItem>
+          <MenuDivider className="bg-gray-700" />
+          <MenuItem
+            className={({ hover, active }) =>
+              active
+                ? "bg-gray-700 text-white p-2"
+                : hover
+                ? "bg-gray-600 text-white rounded-md p-2"
+                : "bg-gray-700 text-white p-2"
+            }
+            onClick={() => deleteCategoryChannel(category.id)}
+          >
+            Hapus Kategori
+          </MenuItem>
+        </Menu>
       </div>
       {!collapse && <ChannelMenu channels={category.channels} />}
       <CreateChannelModal

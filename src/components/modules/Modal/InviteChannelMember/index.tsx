@@ -45,8 +45,8 @@ const InviteChannelModal: React.FC<InviteChannelModalProps> = ({
     );
 
     const oid = members
-      .filter((classMember) => classMember.oid !== member.oid)
-      .map((classMember) => classMember.oid);
+      ?.filter((classMember) => classMember.oid !== member.oid)
+      ?.map((classMember) => classMember.oid);
 
     const newData = [...memberOids, ...oid];
 
@@ -61,8 +61,8 @@ const InviteChannelModal: React.FC<InviteChannelModalProps> = ({
     );
 
     const oid = members
-      .filter((classMember) => classMember.oid !== member.oid)
-      .map((classMember) => classMember.oid);
+      ?.filter((classMember) => classMember.oid !== member.oid)
+      ?.map((classMember) => classMember.oid);
 
     const newData = memberOids.filter((d) => !oid.includes(d));
 

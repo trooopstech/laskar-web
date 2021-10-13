@@ -26,7 +26,9 @@ import { GET_CLASS } from "schema/classes";
 import { ClassDetailReducer, initialState } from "./reducer";
 import useOnNewMember from "./subscription/onNewMemberJoin";
 import useOnChangedRole from "./subscription/onChangedRole";
+import useOnChannelUpdated from "./subscription/onChannelUpdated";
 import useMemberLeaveClass from "./subscription/onMemberLeaveClass";
+import useOnChannelDeleted from "./subscription/onChannelDeleted";
 
 interface ClassDetailContextType {
   classDetail?: Class;
@@ -67,6 +69,7 @@ export function ClassDetailProvider({
   const { createChannelAction } = useCreateChannel();
   const { category } = useOnNewCategory(id);
   const { channel } = useOnNewChannel(id);
+  const { channelUpdated } = useOnChannelUpdated(id);
   const [deleteCategory] = useMutation(DELETE_CATEGORY);
   const [deleteChannel] = useMutation(DELETE_CHANNEL);
   const [addMemberRole] = useMutation(CHANGE_MEMBER_ROLE);
@@ -75,6 +78,7 @@ export function ClassDetailProvider({
   const [inviteMember] = useMutation(INVITE_MEMBER);
   const { memberWithNewRole } = useOnChangedRole(id);
   useOnCategoryDeleted(id);
+  const { channelDeleted } = useOnChannelDeleted(id);
   const { member } = useOnNewMember(id);
   const { memberLeave } = useMemberLeaveClass(id);
 
@@ -89,6 +93,33 @@ export function ClassDetailProvider({
       dispatch({ type: "leave-member", payload: memberLeave.memberLeaveClass });
     }
   }, [memberLeave]);
+
+  useEffect(() => {
+    if (channelUpdated) {
+      const member = getUserClassMember();
+      if (
+        !channelUpdated.onChannelUpdated.is_private ||
+        channelUpdated.onChannelUpdated.members.filter(
+          (m: ChannelMember) => m.member.oid === member.oid
+        ).length > 0
+      ) {
+        dispatch({
+          type: "add-channel",
+          payload: channelUpdated.onChannelUpdated,
+        });
+      }
+    }
+  }, [channelUpdated]);
+
+  useEffect(() => {
+    if (channelDeleted) {
+      console.log(channelDeleted);
+      dispatch({
+        type: "remove-channel",
+        payload: channelDeleted.onChannelDeleted,
+      });
+    }
+  }, [channelDeleted]);
 
   useEffect(() => {
     if (member) {

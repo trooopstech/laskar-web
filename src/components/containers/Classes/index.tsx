@@ -1,12 +1,4 @@
-import useClassDetail from "hooks/useDetailClass";
-import { useEffect } from "react";
-import {
-  Route,
-  Switch,
-  useHistory,
-  useLocation,
-  useRouteMatch,
-} from "react-router";
+import { Route, Switch, useRouteMatch } from "react-router";
 import ChatContainer from "./Chat";
 import NonChannel from "./nonChannel";
 import MemberContainer from "./Member";
@@ -15,27 +7,7 @@ import PostContainer from "./QnA/Post";
 import MyPostContainer from "./MyPost";
 
 const ClassDetail = () => {
-  const { path, url } = useRouteMatch();
-  const { pathname } = useLocation();
-  const history = useHistory();
-  const { classDetail } = useClassDetail();
-
-  useEffect(() => {
-    const visibleCategory = classDetail?.channel_category.filter(
-      (category) => !category.hidden
-    ) as ChannelCategory[];
-
-    if (!pathname.includes("member")) {
-      if (visibleCategory.length > 0) {
-        if (visibleCategory[0].channels.length > 0) {
-          const firstChannel = visibleCategory[0].channels[0].id;
-          return history.replace(`${url}/chat/${firstChannel}`);
-        }
-      }
-
-      return history.replace(url);
-    }
-  }, [classDetail, history, url]);
+  const { path } = useRouteMatch();
 
   return (
     <Switch>

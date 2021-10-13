@@ -5,6 +5,7 @@ export const ClassDetailReducer = (
       | "initial"
       | "add-category"
       | "add-channel"
+      | "remove-channel"
       | "new-member"
       | "leave-member"
       | "role-changed";
@@ -41,6 +42,19 @@ export const ClassDetailReducer = (
           channels: [...categoryNewChannel.channels, action.payload],
         };
 
+        if (
+          cleanedCategory.channels.filter(
+            (c: Channel) => c.id === action.payload.id
+          ).length > 1
+        ) {
+          cleanedCategory.channels = [
+            ...cleanedCategory.channels.filter(
+              (c: Channel) => c.id !== action.payload.id
+            ),
+            action.payload,
+          ];
+        }
+
         return {
           ...state,
           channel_category: [
@@ -53,6 +67,33 @@ export const ClassDetailReducer = (
       } else {
         return state;
       }
+    case "remove-channel":
+      let categoryDeletedChannel: ChannelCategory =
+        state.channel_category.filter(
+          (category) => category.id === action.payload.channel_category.id
+        )[0];
+
+      if (categoryDeletedChannel) {
+        const cleanedCategory = {
+          ...categoryDeletedChannel,
+          channels: categoryDeletedChannel.channels.filter(
+            (c) => c.id !== action.payload.id
+          ),
+        };
+
+        return {
+          ...state,
+          channel_category: [
+            ...state.channel_category.filter(
+              (category) => category.id !== categoryDeletedChannel.id
+            ),
+            cleanedCategory,
+          ],
+        };
+      } else {
+        return state;
+      }
+
     case "role-changed":
       const targetMember = action.payload as ClassMember;
 
