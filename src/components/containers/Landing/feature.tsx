@@ -1,8 +1,9 @@
 import Button from "components/elements/Button";
 import { FaCheck } from "react-icons/fa";
 import feature from "assets/landing/feature.png";
+import { LandingComponentProps } from ".";
 
-const Feature = () => {
+const Feature: React.FC<LandingComponentProps> = ({ openRegister }) => {
   return (
     <div className="h-screen w-screen bg-gray-800 flex flex-col-reverse md:flex-row lg:px-20 px-4 md:px-15">
       <div className="w-full h-full flex flex-col justify-center">
@@ -41,7 +42,9 @@ const Feature = () => {
           </div>
         </div>
         <div className="w-full my-4 flex justify-center md:justify-start">
-          <Button variant="primary">Daftar Gratis</Button>
+          <Button variant="primary" onClick={openRegister}>
+            Daftar Gratis
+          </Button>
         </div>
       </div>
       <div className="w-full h-full pt-4 flex items-center">

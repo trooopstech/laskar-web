@@ -2,10 +2,10 @@ import { useQuery } from "@apollo/client";
 import Button from "components/elements/Button";
 import LoginModal, {
   useLoginModal,
-} from "components/modules/Modal/login.modal";
+} from "components/modules/Modal/Auth/login.modal";
 import RegisterModal, {
   useRegisterModal,
-} from "components/modules/Modal/register.modal";
+} from "components/modules/Modal/Auth/register.modal";
 import useAuth from "hooks/useAuth";
 import useJoinClass from "hooks/useJoinClass";
 import useQueryParams from "hooks/useQueryParams";

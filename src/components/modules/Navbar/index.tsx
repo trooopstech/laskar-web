@@ -1,7 +1,7 @@
 import Button from "components/elements/Button";
 import useAuth from "hooks/useAuth";
-import LoginModal, { useLoginModal } from "../Modal/login.modal";
-import RegisterModal, { useRegisterModal } from "../Modal/register.modal";
+import LoginModal, { useLoginModal } from "../Modal/Auth/login.modal";
+import RegisterModal, { useRegisterModal } from "../Modal/Auth/register.modal";
 import logo from "assets/full_logo_white.png";
 
 const Navbar = () => {
@@ -10,7 +10,7 @@ const Navbar = () => {
   const { user, logout } = useAuth();
 
   return (
-    <div className="lg:px-20 px-4 md:px-15 bg-transparent bg-gray-800 w-screen fixed top-0 left-0 h-16 flex items-center z-20">
+    <div className="lg:px-20 px-4 md:px-15 bg-transparent bg-gray-800 w-screen fixed top-0 left-0 h-16 flex items-center z-10">
       <div className="w-full">
         <img
           src={logo}

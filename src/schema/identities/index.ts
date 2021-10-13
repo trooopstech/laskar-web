@@ -37,3 +37,22 @@ export const REGISTER = gql`
     }
   }
 `;
+
+export const GOOGLE_LOGIN = gql`
+  mutation GoogleLogin($token: String!) {
+    googleLogin(token: $token) {
+      user {
+        id
+        email
+        photo
+        color
+        name
+      }
+      token
+      error {
+        code
+        message
+      }
+    }
+  }
+`;

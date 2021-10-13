@@ -1,6 +1,7 @@
 import Button from "components/elements/Button";
+import { LandingComponentProps } from ".";
 
-const Hero = () => {
+const Hero: React.FC<LandingComponentProps> = ({ openRegister }) => {
   return (
     <div
       className="bg-gray-800 lg:px-20 px-4 md:px-15 pt-16 h-screen flex flex-col items-center justify-center"
@@ -15,7 +16,7 @@ const Hero = () => {
       <p className="text-xl md:text-3xl font-thin my-2 text-center">
         Bantu Siswa Belajar dengan Kelas Online yang Aktif
       </p>
-      <Button variant="primary" className="mt-4">
+      <Button variant="primary" className="mt-4" onClick={openRegister}>
         Daftar Gratis
       </Button>
     </div>

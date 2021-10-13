@@ -1,3 +1,4 @@
+import useGoogleLogin from "hooks/useGoogleLogin";
 import useLogin from "hooks/useLogin";
 import useRegister from "hooks/useRegister";
 import React, {
@@ -15,6 +16,7 @@ interface AuthContextType {
   error?: string;
   login: (data: UserLoginInput, cb: () => void) => void;
   register: (data: UserCreateInput, cb: () => void) => void;
+  googleLogin: (token: string, cb: () => void) => void;
   logout: () => void;
 }
 
@@ -33,16 +35,28 @@ export function AuthProvider({
   const { loginAction, loginData, loginLoading, loginError } = useLogin();
   const { registerAction, registerData, registerLoading, registerError } =
     useRegister();
-
+  const {
+    googleLoginAction,
+    googleLoginData,
+    googleLoginError,
+    googleLoginLoading,
+  } = useGoogleLogin();
   const history = useHistory();
   const location = useLocation();
 
-  const decideData = (data1: UserWithJWT, data2: UserWithJWT) => {
+  const decideData = (
+    data1: UserWithJWT,
+    data2: UserWithJWT,
+    data3: UserWithJWT
+  ) => {
     if (data1) {
       return data1;
     }
     if (data2) {
       return data2;
+    }
+    if (data3) {
+      return data3;
     }
 
     return undefined;
@@ -69,7 +83,8 @@ export function AuthProvider({
   useEffect(() => {
     const data = decideData(
       loginData?.login,
-      registerData?.register
+      registerData?.register,
+      googleLoginData?.googleLogin
     ) as UserWithJWT;
     if (data) {
       if (data.user === null) {
@@ -80,7 +95,7 @@ export function AuthProvider({
         window.location.href = "/dashboard";
       }
     }
-  }, [loginData, registerData]);
+  }, [loginData, registerData, googleLoginData]);
 
   useEffect(() => {
     setLoading(loginLoading);
@@ -89,6 +104,14 @@ export function AuthProvider({
   useEffect(() => {
     setError(loginError?.message);
   }, [loginError]);
+
+  useEffect(() => {
+    setLoading(googleLoginLoading);
+  }, [googleLoginLoading]);
+
+  useEffect(() => {
+    setError(googleLoginError?.message);
+  }, [googleLoginError]);
 
   useEffect(() => {
     setLoading(registerLoading);
@@ -101,6 +124,12 @@ export function AuthProvider({
   function login(data: UserLoginInput, cb: () => void): void {
     setError(null);
     loginAction({ variables: { data } });
+    cb();
+  }
+
+  function googleLogin(token: string, cb: () => void): void {
+    setError(null);
+    googleLoginAction({ variables: { token } });
     cb();
   }
 
@@ -123,6 +152,7 @@ export function AuthProvider({
       login,
       register,
       logout,
+      googleLogin,
     }),
     [user, loading, error]
   );

@@ -1,29 +1,33 @@
 import Button from "components/elements/Button";
 import Input from "components/elements/Form/input";
-import Modal from ".";
-import useModal from "./useModal";
+import Modal from "..";
 import { Formik } from "formik";
+import useModal from "../useModal";
 import useAuth from "hooks/useAuth";
+import GoogleLogin from "react-google-login";
+import GoogleSection from "./google.section";
+import { FaEye, FaEyeSlash } from "react-icons/fa";
+import { useState } from "react";
 
-export const useLoginModal = () => {
+export const useRegisterModal = () => {
   const { isOpen, closeModal, openModal } = useModal();
 
   return {
-    isLoginOpen: isOpen,
-    closeLogin: closeModal,
-    openLogin: openModal,
+    isRegisterOpen: isOpen,
+    closeRegister: closeModal,
+    openRegister: openModal,
   };
 };
 
-const LoginModal: React.FC<ModalProps> = ({ open, onClose, openOther }) => {
-  const { login, error, loading } = useAuth();
+const RegisterModal: React.FC<ModalProps> = ({ open, onClose, openOther }) => {
+  const { register } = useAuth();
 
-  console.log(error);
+  const [reveal, setReveal] = useState(false);
 
   return (
     <Modal open={open} onClose={onClose}>
       <Formik
-        initialValues={{ email: "", password: "" }}
+        initialValues={{ email: "", password: "", name: "" }}
         validate={(values) => {
           const errors = {};
           if (!values.email) {
@@ -42,7 +46,7 @@ const LoginModal: React.FC<ModalProps> = ({ open, onClose, openOther }) => {
           return errors;
         }}
         onSubmit={(values, { setSubmitting }) => {
-          login(values as UserLoginInput, () => setSubmitting(false));
+          register(values as UserCreateInput, () => setSubmitting(false));
         }}
       >
         {({
@@ -59,7 +63,8 @@ const LoginModal: React.FC<ModalProps> = ({ open, onClose, openOther }) => {
             onSubmit={handleSubmit}
             className="container p-4 flex flex-col items-center justify-center text-gray-50 md:w-96"
           >
-            <p className="text-xl font-bold">Masuk Akun Trooops</p>
+            <p className="text-xl font-bold">Buat Akun Trooops</p>
+            <GoogleSection text="Daftar dengan Google" />
             <Input
               type="email"
               label="Email"
@@ -71,30 +76,47 @@ const LoginModal: React.FC<ModalProps> = ({ open, onClose, openOther }) => {
             />
             {errors.email && touched.email && errors.email}
             <Input
-              type="password"
+              type="text"
+              label="Nama Lengkap"
+              placeholder="tono subejo"
+              name="name"
+              onChange={handleChange}
+              onBlur={handleBlur}
+              value={values.name}
+            />
+            <Input
+              type={reveal ? "text" : "password"}
               label="Password"
               name="password"
               onChange={handleChange}
               onBlur={handleBlur}
               value={values.password}
+              endAddorment={
+                reveal ? (
+                  <FaEyeSlash
+                    onClick={() => setReveal(false)}
+                    className="text-gray-500"
+                  />
+                ) : (
+                  <FaEye
+                    onClick={() => setReveal(true)}
+                    className="text-gray-500"
+                  />
+                )
+              }
             />
             {errors.password && touched.password && errors.password}
-            {error && error}
-            {loading ? (
-              <p>Loading...</p>
-            ) : (
-              <Button
-                variant="primary"
-                className="mt-4 w-full"
-                type="submit"
-                disabled={isSubmitting}
-              >
-                Masuk
-              </Button>
-            )}
+            <Button
+              variant="primary"
+              className="mt-4 w-full"
+              type="submit"
+              disabled={isSubmitting}
+            >
+              Daftar
+            </Button>
             <Button
               variant="text"
-              className="mt=4 w-full text-gray-50"
+              className="mt-2 w-full text-gray-50"
               onClick={() => {
                 onClose();
                 if (openOther) {
@@ -102,7 +124,7 @@ const LoginModal: React.FC<ModalProps> = ({ open, onClose, openOther }) => {
                 }
               }}
             >
-              Belum punya akun? Daftar
+              Sudah punya akun? Masuk
             </Button>
           </form>
         )}
@@ -111,4 +133,4 @@ const LoginModal: React.FC<ModalProps> = ({ open, onClose, openOther }) => {
   );
 };
 
-export default LoginModal;
+export default RegisterModal;
