@@ -8,6 +8,9 @@ export const GET_ALL_CLASS = gql`
       banner
       description
       name
+      creator {
+        id
+      }
     }
   }
 `;
@@ -20,6 +23,9 @@ export const CREATE_CLASS = gql`
       banner
       description
       name
+      creator {
+        id
+      }
     }
   }
 `;

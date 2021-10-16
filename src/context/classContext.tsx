@@ -17,6 +17,7 @@ interface ClassContextType {
   joinByToken: (token: string) => void;
   join: (classId: string, allClass: Class[]) => void;
   leavingClass: (classId: string) => void;
+  seperateMyClassAndOtherClass: (userId: string) => Class[];
 }
 
 const ClassContext = createContext<ClassContextType>({} as ClassContextType);
@@ -121,6 +122,12 @@ export function ClassProvider({
     }
   };
 
+  const seperateMyClassAndOtherClass = (userId: string) => {
+    const myClass = classes.filter((c) => c?.creator?.id === userId);
+
+    return myClass;
+  };
+
   const memoedValue = useMemo(
     () => ({
       classes,
@@ -130,6 +137,7 @@ export function ClassProvider({
       joinByToken,
       join,
       leavingClass,
+      seperateMyClassAndOtherClass,
     }),
     [classes, loadingClass, errorClass]
   );
