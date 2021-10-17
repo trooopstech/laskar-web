@@ -7,7 +7,6 @@ const GoogleSection = ({ text }: { text: string }) => {
   const { googleLogin } = useAuth();
 
   const onGoogleSuccess = (res: any) => {
-    console.log(res);
     googleLogin(res.tokenId, () => console.log("login with google"));
   };
 

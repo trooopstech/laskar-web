@@ -1,3 +1,4 @@
+import { useMutation } from "@apollo/client";
 import useGoogleLogin from "hooks/useGoogleLogin";
 import useLogin from "hooks/useLogin";
 import useRegister from "hooks/useRegister";
@@ -9,6 +10,7 @@ import React, {
   useState,
 } from "react";
 import { useHistory, useLocation } from "react-router-dom";
+import { UPDATE_USER } from "schema/identities";
 
 interface AuthContextType {
   user?: User;
@@ -17,6 +19,7 @@ interface AuthContextType {
   login: (data: UserLoginInput, cb: () => void) => void;
   register: (data: UserCreateInput, cb: () => void) => void;
   googleLogin: (token: string, cb: () => void) => void;
+  updateUser: (data: UserUpdateInput) => Promise<void>;
   logout: () => void;
 }
 
@@ -35,6 +38,7 @@ export function AuthProvider({
   const { loginAction, loginData, loginLoading, loginError } = useLogin();
   const { registerAction, registerData, registerLoading, registerError } =
     useRegister();
+  const [updateUserData] = useMutation(UPDATE_USER);
   const {
     googleLoginAction,
     googleLoginData,
@@ -90,6 +94,7 @@ export function AuthProvider({
       if (data.user === null) {
         setError(data.error.message);
       } else {
+        console.log(data);
         window.localStorage.setItem("token", data.token);
         window.localStorage.setItem("user", JSON.stringify(data.user));
         window.location.href = "/dashboard";
@@ -144,6 +149,12 @@ export function AuthProvider({
     history.push("/");
   }
 
+  const updateUser = async (data: UserUpdateInput): Promise<void> => {
+    const res = await updateUserData({ variables: { data } });
+    setUser(res.data.updateUser);
+    window.localStorage.setItem("user", JSON.stringify(res.data.updateUser));
+  };
+
   const memoedValue = useMemo(
     () => ({
       user,
@@ -153,6 +164,7 @@ export function AuthProvider({
       register,
       logout,
       googleLogin,
+      updateUser,
     }),
     [user, loading, error]
   );

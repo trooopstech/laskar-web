@@ -7,7 +7,6 @@ import JoinClassModal, {
 } from "components/modules/Modal/JoinClass";
 import useAuth from "hooks/useAuth";
 import useClass from "hooks/useClasses";
-import { useEffect, useState } from "react";
 
 const ListClasses = () => {
   const { user } = useAuth();
@@ -18,19 +17,23 @@ const ListClasses = () => {
     useJoinClassModal();
 
   return (
-    <div className="container px-4 py-6 overflow-y-auto">
-      <h1 className="text-xl font-bold">Kelas</h1>
-      <div className="flex flex-wrap -ml-3" style={{ minHeight: "200px" }}>
-        {classes.map((data) => (
-          <ClassCard data={data} />
-        ))}
+    <div className="container p-2 md:p-8 overflow-y-auto">
+      <div className="w-full mb-12">
+        <h1 className="text-xl font-bold">Kelas</h1>
+        <div className="flex flex-wrap -ml-4" style={{ minHeight: "200px" }}>
+          {classes.map((data) => (
+            <ClassCard data={data} />
+          ))}
+        </div>
       </div>
-      <h1 className="text-xl font-bold">Kelas Saya</h1>
-      <div className="flex flex-wrap -ml-3" style={{ minHeight: "200px" }}>
-        {seperateMyClassAndOtherClass(user?.id ?? "").map((data) => (
-          <ClassCard data={data} />
-        ))}
-        <ClassCard isExtra openCreateClass={openCreateClass} />
+      <div className="w-full mb-12">
+        <h1 className="text-xl font-bold">Kelas Saya</h1>
+        <div className="flex flex-wrap -ml-4" style={{ minHeight: "200px" }}>
+          {seperateMyClassAndOtherClass(user?.id ?? "").map((data) => (
+            <ClassCard data={data} />
+          ))}
+          <ClassCard isExtra openCreateClass={openCreateClass} />
+        </div>
       </div>
       <CreateClassModal
         open={isCreateClassOpen}

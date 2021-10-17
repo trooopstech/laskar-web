@@ -27,12 +27,12 @@ const ClassCard: React.FC<ClassCardProps> = ({
     return (
       <Link
         to={`/dashboard/class/${data?.id}`}
-        className="m-2 p-4 bg-gray-700 transform hover:-translate-y-2 cursor-pointer rounded-lg"
+        className="m-4 p-4 bg-gray-700 transform hover:-translate-y-2 cursor-pointer rounded-lg"
       >
         <div
           className="rounded-lg flex items-center justify-center text-black"
           style={{
-            width: "220px",
+            width: "200px",
             height: "180px",
             background: `#${data?.color}`,
           }}
@@ -48,13 +48,13 @@ const ClassCard: React.FC<ClassCardProps> = ({
 
   return (
     <div
-      className="m-2 p-4 bg-gray-700 transform hover:-translate-y-2 cursor-pointer rounded-lg"
+      className="m-4 p-4 bg-gray-700 transform hover:-translate-y-2 cursor-pointer rounded-lg"
       onClick={openCreateClass}
     >
       <div
         className="rounded-lg flex items-center justify-center text-black"
         style={{
-          width: "220px",
+          width: "200px",
           height: "180px",
           background: "#2C2C2E",
         }}

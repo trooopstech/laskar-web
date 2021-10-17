@@ -5,6 +5,9 @@ type User = {
   photo?: string;
   color?: string;
   is_verified?: boolean;
+  birthdate?: string;
+  gender: "MALE" | "FEMALE";
+  phone_number?: string;
 };
 
 interface UserWithJWT {
@@ -22,4 +25,10 @@ interface UserCreateInput {
   email: string;
   name: string;
   password: string;
+}
+
+interface UserUpdateInput {
+  phone_number?: string;
+  gender?: "MALE" | "FEMALE";
+  birthdate?: Date;
 }

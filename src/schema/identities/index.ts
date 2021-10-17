@@ -9,6 +9,9 @@ export const LOGIN = gql`
         photo
         color
         name
+        birthdate
+        gender
+        phone_number
       }
       token
       error {
@@ -28,12 +31,30 @@ export const REGISTER = gql`
         photo
         color
         name
+        birthdate
+        gender
+        phone_number
       }
       token
       error {
         code
         message
       }
+    }
+  }
+`;
+
+export const UPDATE_USER = gql`
+  mutation UpdateUser($data: UserUpdateInput!) {
+    updateUser(data: $data) {
+      id
+      email
+      photo
+      color
+      name
+      birthdate
+      gender
+      phone_number
     }
   }
 `;
@@ -47,6 +68,9 @@ export const GOOGLE_LOGIN = gql`
         photo
         color
         name
+        birthdate
+        gender
+        phone_number
       }
       token
       error {

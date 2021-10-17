@@ -35,6 +35,8 @@ const Input: React.FC<InputProps> = ({
           className={`form-input text-gray-50 bg-transparent border-0 w-full focus:outline-none focus:ring-0 focus:appearance-none ${className}`}
           placeholder={placeholder}
           onChange={onChange}
+          // @ts-ignore
+          onWheel={(e) => e.target.blur()}
           onBlur={onBlur}
           value={value}
           name={name}

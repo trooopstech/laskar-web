@@ -80,16 +80,12 @@ export function QnAProvider({
 
   const votePost = async (data: UpvotePost) => {
     try {
-      const res = await sendUpvote({
+      await sendUpvote({
         variables: {
           channelId: id,
           data,
         },
       });
-
-      if (res) {
-        console.log(res);
-      }
     } catch (error) {
       console.log(error);
     }

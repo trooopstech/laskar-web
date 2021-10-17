@@ -26,12 +26,15 @@ const TitleSection = () => {
     <div className="flex items-center">
       {classDetail?.name ? "" : HOMEPAGE_ICON[headerTitles(pathname)]}
       <p className="ml-2 text-xl overflow-ellipsis">
-        {classDetail?.name ? classDetail?.name : headerTitles(pathname)}
+        {classDetail?.name ? "" : headerTitles(pathname)}
       </p>
       {classDetail?.name && (
         <Menu
           menuButton={
-            <button>
+            <button className="flex items-center">
+              <p className="ml-2 text-xl overflow-ellipsis">
+                {classDetail?.name ? classDetail?.name : headerTitles(pathname)}
+              </p>
               <MdExpandMore
                 className="ml-1 cursor-pointer"
                 style={{ fontSize: "24px" }}
@@ -40,7 +43,7 @@ const TitleSection = () => {
           }
           menuClassName="bg-gray-700 p-2"
         >
-          <MenuItem
+          {/* <MenuItem
             className={({ hover, active }) =>
               active
                 ? "bg-gray-700 text-white p-2"
@@ -50,7 +53,7 @@ const TitleSection = () => {
             }
           >
             Pengaturan
-          </MenuItem>
+          </MenuItem> */}
           <MenuItem
             className={({ hover, active }) =>
               active

@@ -72,9 +72,9 @@ const Button: React.FC<ButtonProps> = ({
           ? `bg-gray-500`
           : // @ts-ignore
             buttonTheme[variant as string]?.base
-      } ${
+      } ${className} ${
         small ? "md:px-8 py-2 px-4" : smaller ? "py-2 px-4" : "px-8 py-2"
-      } ${className}`}
+      }`}
     >
       <p
         className={`text-base font-bold ${

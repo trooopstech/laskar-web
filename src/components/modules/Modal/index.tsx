@@ -1,9 +1,14 @@
-const Modal: React.FC<ModalProps> = ({ open, onClose, children }) => {
+const Modal: React.FC<ModalProps> = ({
+  open,
+  onClose,
+  children,
+  permanent,
+}) => {
   if (open > 0) {
     return (
       <div
         className="fixed h-screen w-screen bg-black bg-opacity-75 flex items-center justify-center top-0 left-0 z-10 shadow-sm"
-        onClick={onClose}
+        onClick={permanent ? undefined : () => onClose()}
       >
         <div
           className="bg-gray-modal rounded-md z-100"

@@ -137,15 +137,14 @@ const PostBubble: React.FC<PostBubbleProps> = React.memo(({ post }) => {
             />
           </div>
         ) : (
-          <>
+          <Link
+            to={`${url.replace(
+              "post",
+              `qna/${post.qna.channel?.id}/${post.id}`
+            )}`}
+          >
             <div className="w-full flex">
-              <Link
-                className="w-full"
-                to={`${url.replace(
-                  "post",
-                  `qna/${post.qna.channel?.id}/${post.id}`
-                )}`}
-              >
+              <div className="w-full">
                 <p className="break-words break-all">
                   <Slate
                     editor={editor}
@@ -159,7 +158,7 @@ const PostBubble: React.FC<PostBubbleProps> = React.memo(({ post }) => {
                     />
                   </Slate>
                 </p>
-              </Link>
+              </div>
             </div>
             <div className="flex items-center">
               <div
@@ -190,7 +189,7 @@ const PostBubble: React.FC<PostBubbleProps> = React.memo(({ post }) => {
                 </h1>
               </div>
             )}
-          </>
+          </Link>
         )}
       </div>
     </div>

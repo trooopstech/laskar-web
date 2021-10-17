@@ -1,15 +1,42 @@
 import Header from "components/modules/Header";
 import Menubar from "components/modules/Menubar";
-import Rightbar from "components/modules/Rightbar";
+import CreateClassModal, {
+  useCreateClassModal,
+} from "components/modules/Modal/CreateClass";
+import JoinClassModal, {
+  useJoinClassModal,
+} from "components/modules/Modal/JoinClass";
+import OnboardingModal, {
+  useOnboardingModal,
+} from "components/modules/Modal/Onboarding";
 import Sidebar from "components/modules/Sidebar";
+import useAuth from "hooks/useAuth";
+import { useEffect } from "react";
 import { useLocation } from "react-router";
 
 const PageLayout: React.FC = ({ children }) => {
   const { pathname } = useLocation();
+  const { user } = useAuth();
+  const { closeOnboarding, isOnboardingOpen, openOnboarding } =
+    useOnboardingModal();
+  const { openCreateClass, isCreateClassOpen, closeCreateClass } =
+    useCreateClassModal();
+  const { openJoinClass, isJoinClassOpen, closeJoinClass } =
+    useJoinClassModal();
 
   const isOnMemberPage = () => {
     return pathname.includes("member");
   };
+
+  useEffect(() => {
+    if (
+      user?.birthdate === null ||
+      user?.gender === null ||
+      user?.phone_number === null
+    ) {
+      openOnboarding();
+    }
+  }, [user]);
 
   return (
     <div className="flex flex-row w-full">
@@ -21,6 +48,22 @@ const PageLayout: React.FC = ({ children }) => {
           {children}
           {/* {!isOnMemberPage() && <Rightbar />} */}
         </div>
+        <OnboardingModal
+          onClose={closeOnboarding}
+          open={isOnboardingOpen}
+          openCreateClass={openCreateClass}
+          openJoinClass={openJoinClass}
+        />
+        <CreateClassModal
+          open={isCreateClassOpen}
+          onClose={closeCreateClass}
+          openOther={openJoinClass}
+        />
+        <JoinClassModal
+          open={isJoinClassOpen}
+          onClose={closeJoinClass}
+          openOther={openCreateClass}
+        />
       </div>
     </div>
   );

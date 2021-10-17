@@ -113,7 +113,6 @@ export function ClassDetailProvider({
 
   useEffect(() => {
     if (channelDeleted) {
-      console.log(channelDeleted);
       dispatch({
         type: "remove-channel",
         payload: channelDeleted.onChannelDeleted,

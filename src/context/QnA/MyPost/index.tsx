@@ -65,20 +65,12 @@ export function MyPostProvider({
 
   const updatingPost = async (data: PostUpdate, channelId: string) => {
     try {
-      const res = await updatePost({
+      await updatePost({
         variables: {
           data,
           channelId,
         },
       });
-      console.log(res);
-      // if (res.data) {
-      //   const newPost = post?.filter(
-      //     (p) => p.id !== res.data.updatePost.id
-      //   ) as Post[];
-
-      //   setPost([...newPost, res.data.updatePost]);
-      // }
     } catch (error) {
       console.log(error);
     }
