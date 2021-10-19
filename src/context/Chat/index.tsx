@@ -1,4 +1,5 @@
 import { useLazyQuery, useQuery } from "@apollo/client";
+import moment from "moment";
 import {
   createContext,
   ReactNode,
@@ -7,7 +8,7 @@ import {
   useMemo,
   useState,
 } from "react";
-import { GET_CHAT_GROUP } from "schema/channels/chat";
+import { GET_CHAT_GROUP, GET_CHAT_GROUP_BY_PAGE } from "schema/channels/chat";
 import { ChatGroup, GroupMessages, GroupMessagesInput } from "types/chat";
 import useSendMessage from "./hooks/useSendMessage";
 import useOnNewMessage from "./subscription/useOnNewMessage";
@@ -19,6 +20,10 @@ interface ChatContextType {
   createMessagesLoading: boolean;
   sendMessages: (data: GroupMessagesInput) => void;
   getSenderRole: (message: GroupMessages) => string;
+  getMessageByPage: () => void;
+  page: number;
+  hasMore: boolean;
+  needScroll: boolean;
 }
 
 const ChatContext = createContext<ChatContextType>({} as ChatContextType);
@@ -31,35 +36,121 @@ export function ChatProvider({
   children: ReactNode;
 }): JSX.Element {
   const [chatGroup, setChatGroup] = useState<ChatGroup>();
-  const { data, loading, error } = useQuery(GET_CHAT_GROUP, {
-    variables: {
-      channelId: id,
-    },
-    fetchPolicy: "cache-and-network",
-  });
+  const [page, setPage] = useState(0);
+  const [hasMore, setHasMore] = useState(true);
+  const [needScroll, setNeedScroll] = useState(true);
+  const [getChat, { data, loading, error }] = useLazyQuery(
+    GET_CHAT_GROUP_BY_PAGE,
+    {
+      fetchPolicy: "network-only",
+    }
+  );
   const { message } = useOnNewMessage(id);
   const { createMessages, createMessagesLoading } = useSendMessage();
 
   useEffect(() => {
+    getChat({
+      variables: {
+        channelId: id,
+        page: 0,
+      },
+    });
+    setPage(0);
+    setChatGroup(undefined);
+    setHasMore(true);
+    setNeedScroll(true);
+  }, [id]);
+
+  useEffect(() => {
     if (data) {
+      if (
+        (data.getChatGroupByMessagePage as ChatGroup).group_messages.length ===
+        0
+      ) {
+        setHasMore(false);
+        if (page > 0) {
+          return;
+        }
+      }
+
+      const dates: string[] = [];
+
+      const oldMessage = (chatGroup?.group_messages as GroupMessages[]) ?? [];
+      const newMessage = [
+        ...(data.getChatGroupByMessagePage as ChatGroup).group_messages,
+      ].reverse();
+
+      const result = [
+        ...newMessage,
+        ...oldMessage.map((message) => ({ ...message, treshold: false })),
+      ] as GroupMessages[];
+
       setChatGroup({
-        ...data.getChatGroup,
-        group_messages: [...data.getChatGroup.group_messages].reverse(),
+        ...(data.getChatGroupByMessagePage as ChatGroup),
+        group_messages: result.map((message) => {
+          const createdAt = moment(new Date(message.created_at)).format(
+            "MMMM Do YYYY"
+          );
+
+          if (dates.indexOf(createdAt) < 0) {
+            dates.push(createdAt);
+            console.log(dates);
+            return {
+              ...message,
+              treshold: true,
+            };
+          }
+
+          return message;
+        }),
       });
+      setPage(page + 1);
+      setNeedScroll(false);
     }
   }, [data]);
 
   useEffect(() => {
     if (message && message.onNewMessage.chat_group_id === chatGroup?.id) {
+      const result = [
+        ...(chatGroup?.group_messages as GroupMessages[]).map((message) => ({
+          ...message,
+          treshold: false,
+        })),
+        message.onNewMessage as GroupMessages,
+      ] as GroupMessages[];
+
+      const dates: string[] = [];
+
       setChatGroup({
         ...(chatGroup as ChatGroup),
-        group_messages: [
-          ...(chatGroup?.group_messages as GroupMessages[]),
-          message.onNewMessage as GroupMessages,
-        ],
+        group_messages: result.map((message) => {
+          const createdAt = moment(new Date(message.created_at)).format(
+            "MMMM Do YYYY"
+          );
+
+          if (dates.indexOf(createdAt) < 0) {
+            dates.push(createdAt);
+            console.log(dates);
+            return {
+              ...message,
+              treshold: true,
+            };
+          }
+
+          return message;
+        }),
       });
     }
   }, [message]);
+
+  const getMessageByPage = () => {
+    getChat({
+      variables: {
+        channelId: id,
+        page: page,
+      },
+    });
+  };
 
   const sendMessages = async (data: GroupMessagesInput): Promise<void> => {
     try {
@@ -102,6 +193,10 @@ export function ChatProvider({
       createMessagesLoading,
       sendMessages,
       getSenderRole,
+      getMessageByPage,
+      page,
+      hasMore,
+      needScroll,
     }),
     [chatGroup, loading, error, createMessagesLoading]
   );

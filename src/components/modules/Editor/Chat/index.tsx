@@ -42,13 +42,13 @@ const serialize = (nodes: any[]) => {
     .replace(/ /g, "");
 };
 
-const ChatEditor = () => {
+const ChatEditor = ({ virtuoso }: { virtuoso: any }) => {
   const [value, setValue] = useState<Descendant[]>(initialValue);
   const [height, setHeight] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
   const [showEmoji, setShowEmoji] = useState(0);
   const { getUserClassMember } = useClassDetail();
-  const { sendMessages, createMessagesLoading } = useChat();
+  const { sendMessages, createMessagesLoading, chatGroup } = useChat();
   const classMember: ClassMember = getUserClassMember();
 
   useEffect(() => {
@@ -90,6 +90,10 @@ const ChatEditor = () => {
         focus: { path: [0, 0], offset: 0 },
       };
       setValue(initialValue);
+      virtuoso.current?.scrollToIndex({
+        index: (chatGroup?.group_messages.length ?? 10) - 1,
+        behavior: "smooth",
+      });
     }
   };
 
@@ -116,6 +120,10 @@ const ChatEditor = () => {
         focus: { path: [0, 0], offset: 0 },
       };
       setValue(initialValue);
+      virtuoso.current?.scrollToIndex({
+        index: (chatGroup?.group_messages.length ?? 10) - 1,
+        behavior: "smooth",
+      });
       return;
     }
 

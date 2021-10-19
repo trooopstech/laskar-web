@@ -14,6 +14,7 @@ type GroupMessages = {
   text: Descendant[];
   html: string;
   sender: ClassMember;
+  treshold: boolean;
 };
 
 enum MessageType {

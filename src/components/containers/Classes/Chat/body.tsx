@@ -53,51 +53,67 @@ const Message: React.FC<MessageProps> = React.memo(({ message }) => {
   };
 
   return (
-    <div className="flex m-2 items-start hover:bg-gray-600 p-2 rounded-md">
-      <div className="w-13">
-        <div
-          className="avatar h-12 w-12 rounded-full mr-2 flex items-center justify-center"
-          style={{ backgroundColor: message.sender.member.color }}
-        >
-          <p className="text-xl uppercase font-bold text-center text-white">
-            {getInitials(message.sender.member.name as string)}
-          </p>
+    <div className="w-full">
+      {message.treshold && (
+        <div className="h-10 w-full flex justify-center items-center">
+          <div className="p-2 rounded-full bg-gray-500">
+            {moment(new Date(message.created_at)).format("MMM D YYYY")}
+          </div>
         </div>
-      </div>
-      <div className="w-full flex flex-col">
-        <div className="flex items-center">
-          <p className={`${getColorByRole()} text-bold`}>
-            {message.sender.member.name}
-          </p>
-          <p className="text-xs text-gray-500 ml-4">
-            {moment(new Date(message.created_at)).format("hh:mm A")}
-          </p>
+      )}
+      <div className="flex m-2 items-start hover:bg-gray-600 p-2 rounded-md">
+        <div className="w-13">
+          <div
+            className="avatar h-12 w-12 rounded-full mr-2 flex items-center justify-center"
+            style={{ backgroundColor: message.sender.member.color }}
+          >
+            <p className="text-xl uppercase font-bold text-center text-white">
+              {getInitials(message.sender.member.name as string)}
+            </p>
+          </div>
         </div>
-        <div className="w-full">
-          <p className="break-words break-all">
-            <Slate
-              editor={editor}
-              value={value}
-              onChange={(value) => setValue(value)}
-            >
-              <Editable
-                readOnly
-                renderElement={renderElement}
-                renderLeaf={renderLeaf}
-              />
-            </Slate>
-          </p>
+        <div className="w-full flex flex-col">
+          <div className="flex items-center">
+            <p className={`${getColorByRole()} text-bold`}>
+              {message.sender.member.name}
+            </p>
+            <p className="text-xs text-gray-500 ml-4">
+              {moment(new Date(message.created_at)).format("hh:mm A")}
+            </p>
+          </div>
+          <div className="w-full">
+            <p className="break-words break-all">
+              <Slate
+                editor={editor}
+                value={value}
+                onChange={(value) => setValue(value)}
+              >
+                <Editable
+                  readOnly
+                  renderElement={renderElement}
+                  renderLeaf={renderLeaf}
+                />
+              </Slate>
+            </p>
+          </div>
         </div>
       </div>
     </div>
   );
 });
 
-const ChatBody = React.memo(() => {
-  const { chatGroup } = useChat();
+const ChatBody = React.memo(({ virtuoso }: { virtuoso: any }) => {
+  const { chatGroup, getMessageByPage, hasMore, loading } = useChat();
   const { getUserClassMember } = useClassDetail();
   const classMember: ClassMember = getUserClassMember();
-  const virtuoso = useRef(null);
+  // const virtuoso = useRef(null);
+
+  const query = (index: number) => {
+    if (loading) return;
+    if (hasMore && !loading) {
+      getMessageByPage();
+    }
+  };
 
   return (
     <div
@@ -108,9 +124,19 @@ const ChatBody = React.memo(() => {
       <Virtuoso
         data={chatGroup?.group_messages}
         ref={virtuoso}
-        initialTopMostItemIndex={(chatGroup?.group_messages.length ?? 1) - 1}
+        initialTopMostItemIndex={(chatGroup?.group_messages.length ?? 10) - 1}
         followOutput="smooth"
-        totalCount={chatGroup?.group_messages.length}
+        startReached={query}
+        atBottomStateChange={(bottom) => {
+          if (bottom) {
+            // @ts-ignore
+            virtuoso.current?.scrollToIndex({
+              index: (chatGroup?.group_messages.length ?? 10) - 1,
+              behavior: "smooth",
+            });
+          }
+        }}
+        firstItemIndex={chatGroup?.group_messages.length as number}
         itemContent={(index, message) => {
           return (
             <Message

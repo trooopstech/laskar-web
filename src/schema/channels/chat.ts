@@ -55,6 +55,61 @@ export const GET_CHAT_GROUP = gql`
   }
 `;
 
+export const GET_CHAT_GROUP_BY_PAGE = gql`
+  query GetChatGroupByPage($channelId: String!, $page: Float!) {
+    getChatGroupByMessagePage(channelId: $channelId, page: $page) {
+      id
+      name
+      channel {
+        id
+        name
+        is_private
+        creator {
+          member {
+            name
+            color
+          }
+        }
+        members {
+          member {
+            oid
+            member {
+              name
+              color
+            }
+          }
+        }
+        channel_granted_role {
+          role {
+            name
+          }
+        }
+      }
+      group_messages {
+        created_at
+        id
+        text
+        html
+        chat_group_id
+        sender {
+          oid
+          member_role {
+            role {
+              name
+            }
+          }
+          member {
+            id
+            name
+            email
+            color
+          }
+        }
+      }
+    }
+  }
+`;
+
 export const CREATE_GROUP_MESSAGE = gql`
   mutation CreateGroupMessages(
     $channelId: String!
