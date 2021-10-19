@@ -45,6 +45,7 @@ interface ClassDetailContextType {
   removeMemberAsAdmin: (data: RoleManagement) => void;
   addMemberAsAdmin: (data: RoleManagement) => void;
   inviteMemberChannel: (data: InviteInput) => void;
+  getFirstCategory: () => ChannelCategory[];
 }
 
 const ClassDetailContext = createContext<ClassDetailContextType>(
@@ -63,7 +64,7 @@ export function ClassDetailProvider({
   const [loadingClass, setLoading] = useState<boolean>(false);
   const { data, loading, error } = useQuery(GET_CLASS, {
     variables: { classId: id },
-    fetchPolicy: "cache-and-network",
+    // fetchPolicy: "cache-and-network",
   });
   const { createCategoryAction } = useCreateCategory();
   const { createChannelAction } = useCreateChannel();
@@ -283,6 +284,12 @@ export function ClassDetailProvider({
     }
   };
 
+  const getFirstCategory = (): ChannelCategory[] => {
+    return classDetail?.channel_category.filter(
+      (category) => !category.hidden
+    ) as ChannelCategory[];
+  };
+
   const memoedValue = useMemo(
     () => ({
       classDetail,
@@ -299,6 +306,7 @@ export function ClassDetailProvider({
       addMemberAsAdmin,
       removeMemberAsAdmin,
       inviteMemberChannel,
+      getFirstCategory,
     }),
     [classDetail, loadingClass, errorClass]
   );

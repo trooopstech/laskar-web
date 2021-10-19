@@ -33,14 +33,7 @@ const ChannelButton = ({ channel }: { channel: Channel }) => {
   const [anchorPoint, setAnchorPoint] = useState({ x: 0, y: 0 });
 
   const makeRouteByChannelType = (channel: Channel) => {
-    switch (channel.channel_type as unknown as string) {
-      case "CHAT":
-        return "chat";
-      case "QNA":
-        return "qna";
-      default:
-        return "chat";
-    }
+    return (channel.channel_type as unknown as string).toLowerCase();
   };
 
   return (
@@ -56,6 +49,7 @@ const ChannelButton = ({ channel }: { channel: Channel }) => {
         key={channel.id}
         to={`${url}/${makeRouteByChannelType(channel)}/${channel?.id}`}
         activeClassName="text-white bg-gray-700"
+        exact
       >
         <p className="text-base text-gray-400 mr-2">
           {makeRouteByChannelType(channel) === "chat" ? (

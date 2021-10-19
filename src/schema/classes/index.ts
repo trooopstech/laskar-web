@@ -57,7 +57,10 @@ export const GET_CLASS = gql`
             }
           }
           creator {
-            oid
+            member {
+              name
+              color
+            }
           }
           members {
             member {
