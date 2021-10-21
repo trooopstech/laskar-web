@@ -21,12 +21,14 @@ import { Slate, Editable, withReact } from "slate-react";
 import { Picker } from "emoji-mart";
 import useChat from "context/Chat";
 import useClassDetail from "hooks/useDetailClass";
-import { withShortcuts } from "../Common/plugin";
+import { insertImage, withImages, withShortcuts } from "../Common/plugin";
 import { isMarkActive, Leaf, toggleMark } from "../Common/toolbar";
 import { Element } from "../Common/element";
 import { MessageType } from "types/chat";
 
 import { Node } from "slate";
+import ImageUploader from "../Common/image.upload";
+import FileUploader from "../Common/file.upload";
 
 const HOTKEYS = {
   "mod+b": "bold",
@@ -36,6 +38,12 @@ const HOTKEYS = {
 };
 
 const serialize = (nodes: any[]) => {
+  const isThereImage = nodes.filter((n) => n.type === "image").length > 0;
+
+  if (isThereImage) {
+    return "yes";
+  }
+
   return nodes
     .map((n) => Node.string(n))
     .join("")
@@ -47,6 +55,7 @@ const ChatEditor = ({ virtuoso }: { virtuoso: any }) => {
   const [height, setHeight] = useState(0);
   const ref = useRef<HTMLDivElement>(null);
   const [showEmoji, setShowEmoji] = useState(0);
+  const [attachmentId, setAttachmentId] = useState<string>();
   const { getUserClassMember } = useClassDetail();
   const { sendMessages, createMessagesLoading, chatGroup } = useChat();
   const classMember: ClassMember = getUserClassMember();
@@ -58,7 +67,7 @@ const ChatEditor = ({ virtuoso }: { virtuoso: any }) => {
   }, [value]);
 
   const editor = useMemo(
-    () => withShortcuts(withReact(withHistory(createEditor()))),
+    () => withImages(withShortcuts(withReact(withHistory(createEditor())))),
     []
   );
 
@@ -77,13 +86,25 @@ const ChatEditor = ({ virtuoso }: { virtuoso: any }) => {
     editor.insertText(emoji);
   };
 
+  const addImage = async (url: string, id: string, key: string) => {
+    Transforms.removeNodes(editor);
+    insertImage(editor, url, key);
+    // set cursor to the end
+    Transforms.select(editor, {
+      anchor: Editor.end(editor, []),
+      focus: Editor.end(editor, []),
+    });
+    setAttachmentId(id);
+  };
+
   const onSend = async () => {
     if (!createMessagesLoading && serialize(value).length > 0) {
-      await sendMessages({
+      sendMessages({
         text: JSON.stringify(value),
         html: ``,
         type: "REGULAR" as unknown as MessageType,
         sender_id: classMember.oid,
+        attachment_id: attachmentId,
       });
       editor.selection = {
         anchor: { path: [0, 0], offset: 0 },
@@ -109,11 +130,12 @@ const ChatEditor = ({ virtuoso }: { virtuoso: any }) => {
       serialize(value).length > 0
     ) {
       event.preventDefault();
-      await sendMessages({
+      sendMessages({
         text: JSON.stringify(value),
         html: ``,
         type: "REGULAR" as unknown as MessageType,
         sender_id: classMember.oid,
+        attachment_id: attachmentId,
       });
       editor.selection = {
         anchor: { path: [0, 0], offset: 0 },
@@ -146,10 +168,10 @@ const ChatEditor = ({ virtuoso }: { virtuoso: any }) => {
     <Slate editor={editor} value={value} onChange={(value) => setValue(value)}>
       <div className="w-full bg-gray-700  px-2 rounded-lg">
         <div
-          className="flex  w-full items-center border-b border-gray-600"
+          className="flex  w-full items-center border-b border-gray-600 py-2"
           style={{
-            maxHeight: "200px",
-            overflowY: height > 200 ? "scroll" : "unset",
+            maxHeight: "450px",
+            overflowY: height > 450 ? "scroll" : "unset",
           }}
         >
           <div className="w-full max-w-full py-2" ref={ref}>
@@ -166,6 +188,9 @@ const ChatEditor = ({ virtuoso }: { virtuoso: any }) => {
         </div>
         <div className="w-full py-2 flex justify-between">
           <div id="toolbar" className="flex items-center">
+            <FileUploader />
+            <ImageUploader setUrl={addImage} />
+            <div className="h-full bg-gray-500 mr-2" style={{ width: "1px" }} />
             <AiOutlineBold
               className={`text-xl ${
                 isMarkActive(editor, "bold") ? "text-gray-100" : "text-gray-500"

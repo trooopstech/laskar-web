@@ -3,6 +3,7 @@ const Modal: React.FC<ModalProps> = ({
   onClose,
   children,
   permanent,
+  noBg,
 }) => {
   if (open > 0) {
     return (
@@ -11,7 +12,7 @@ const Modal: React.FC<ModalProps> = ({
         onClick={permanent ? undefined : () => onClose()}
       >
         <div
-          className="bg-gray-modal rounded-md z-100"
+          className={`${noBg ? "" : "bg-gray-modal"} rounded-md z-100`}
           onClick={(e) => e.stopPropagation()}
         >
           {children}

@@ -5,6 +5,9 @@ import {
   Point,
   Element as SlateElement,
 } from "slate";
+import isUrl from "is-url";
+import { ImageElement, ParagraphElement } from "types/editor";
+import imageExtensions from "image-extensions";
 
 const SHORTCUTS = {
   "*": "list-item",
@@ -17,6 +20,11 @@ const SHORTCUTS = {
   "####": "heading-four",
   "#####": "heading-five",
   "######": "heading-six",
+};
+
+const EMPTY_PARAGRAHP: ParagraphElement = {
+  type: "paragraph",
+  children: [{ text: "" }],
 };
 
 // @ts-ignore
@@ -113,4 +121,55 @@ export const withShortcuts = (editor) => {
   };
 
   return editor;
+};
+
+// @ts-ignore
+export const withImages = (editor) => {
+  const { insertData, isVoid } = editor;
+
+  editor.isVoid = (element: { type: string }) => {
+    return element.type === "image" ? true : isVoid(element);
+  };
+
+  // editor.insertData = (data: { getData?: any; files?: any }) => {
+  //   const text = data.getData("text/plain");
+  //   const { files } = data;
+
+  //   if (files && files.length > 0) {
+  //     for (const file of files) {
+  //       const reader = new FileReader();
+  //       const [mime] = file.type.split("/");
+
+  //       if (mime === "image") {
+  //         reader.addEventListener("load", () => {
+  //           const url = reader.result;
+  //           insertImage(editor, url);
+  //         });
+
+  //         reader.readAsDataURL(file);
+  //       }
+  //     }
+  //   } else if (isImageUrl(text)) {
+  //     insertImage(editor, text);
+  //   } else {
+  //     insertData(data);
+  //   }
+  // };
+
+  return editor;
+};
+
+const isImageUrl = (url: string) => {
+  if (!url) return false;
+  if (!isUrl(url)) return false;
+  const ext = new URL(url).pathname.split(".").pop();
+  return imageExtensions.includes(ext as string);
+};
+
+// @ts-ignore
+export const insertImage = (editor, url, key) => {
+  const text = { text: "" };
+  // @ts-ignore
+  const image: ImageElement = { type: "image", url, key, children: [text] };
+  Transforms.insertNodes(editor, [image, EMPTY_PARAGRAHP]);
 };

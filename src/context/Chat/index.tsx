@@ -1,4 +1,4 @@
-import { useLazyQuery, useQuery } from "@apollo/client";
+import { useLazyQuery } from "@apollo/client";
 import moment from "moment";
 import {
   createContext,
@@ -8,7 +8,7 @@ import {
   useMemo,
   useState,
 } from "react";
-import { GET_CHAT_GROUP, GET_CHAT_GROUP_BY_PAGE } from "schema/channels/chat";
+import { GET_CHAT_GROUP_BY_PAGE } from "schema/channels/chat";
 import { ChatGroup, GroupMessages, GroupMessagesInput } from "types/chat";
 import useSendMessage from "./hooks/useSendMessage";
 import useOnNewMessage from "./subscription/useOnNewMessage";

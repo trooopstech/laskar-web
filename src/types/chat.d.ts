@@ -29,4 +29,5 @@ interface GroupMessagesInput {
   type: MessageType;
   sender_id: string;
   chat_group_id?: string;
+  attachment_id?: string;
 }

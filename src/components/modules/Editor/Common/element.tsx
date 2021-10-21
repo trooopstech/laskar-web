@@ -1,3 +1,33 @@
+import PreviewImageModal, {
+  usePreviewImageModal,
+} from "components/modules/Modal/PreviewImage";
+
+// @ts-ignore
+const Image = ({ attributes, children, element }) => {
+  const { isPreviewOpen, openPreview, closePreview } = usePreviewImageModal();
+
+  return (
+    <>
+      <div {...attributes}>
+        <div contentEditable={false}>
+          <img
+            src={element.url}
+            className="w-1/2 cursor-pointer"
+            alt="attachment"
+            onClick={openPreview}
+          />
+          {children}
+        </div>
+      </div>
+      <PreviewImageModal
+        onClose={closePreview}
+        open={isPreviewOpen}
+        url={element.url}
+      />
+    </>
+  );
+};
+
 // @ts-ignore
 export const Element = ({ attributes, children, element }) => {
   switch (element.type) {
@@ -54,6 +84,12 @@ export const Element = ({ attributes, children, element }) => {
       );
     case "list-item":
       return <li {...attributes}>{children}</li>;
+    case "image":
+      return (
+        <Image element={element} attributes={attributes}>
+          {children}
+        </Image>
+      );
     default:
       return (
         <h5 className="text-base" {...attributes}>
