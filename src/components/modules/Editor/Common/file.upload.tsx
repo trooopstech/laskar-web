@@ -1,3 +1,4 @@
+import useUploadAttachment from "hooks/useUploadAttachment";
 import { useRef } from "react";
 import { MdAttachFile } from "react-icons/md";
 
@@ -5,8 +6,21 @@ export interface UploadProps {
   setUrl: (url: string, id: string, key: string) => void;
 }
 
-const FileUploader = ({}) => {
+const FileUploader = ({ setUrl }: UploadProps) => {
   const fileRef = useRef<HTMLInputElement>(null);
+  const { generatePreSignedUrl } = useUploadAttachment();
+
+  const setUploadedUrl = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const attachment = await generatePreSignedUrl(
+      (e.target.files as FileList)[0] as File
+    );
+
+    setUrl(
+      attachment.url as string,
+      attachment.id as string,
+      attachment.key as string
+    );
+  };
 
   return (
     <>
@@ -15,7 +29,7 @@ const FileUploader = ({}) => {
         hidden
         ref={fileRef}
         accept="application/*,text/*"
-        onChange={(e) => console.log(e.target.files)}
+        onChange={setUploadedUrl}
       />
       <button
         className="p-0 border-0 bg-transparent"

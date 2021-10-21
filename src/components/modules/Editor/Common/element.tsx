@@ -1,6 +1,7 @@
 import PreviewImageModal, {
   usePreviewImageModal,
 } from "components/modules/Modal/PreviewImage";
+import { MdAttachFile } from "react-icons/md";
 
 // @ts-ignore
 const Image = ({ attributes, children, element }) => {
@@ -26,6 +27,44 @@ const Image = ({ attributes, children, element }) => {
       />
     </>
   );
+};
+
+// @ts-ignore
+const Attachment = ({ attributes, children, element }) => {
+  return (
+    <>
+      <div {...attributes}>
+        <div contentEditable={false}>
+          <a
+            href={element.url}
+            download
+            className="w-1/2 lg:w-1/4 bg-gray-700 border border-gray-800 rounded-md flex items-center px-2 py-2 cursor-pointer"
+          >
+            <div className="h-full border-r border-gray-100 pr-2 mr-2">
+              <MdAttachFile className="text-3xl" />
+            </div>
+            <p className="font-thin text-blue-400">
+              {element.key?.split("/")[1]}
+            </p>
+          </a>
+          {children}
+        </div>
+      </div>
+    </>
+  );
+};
+
+export const isUrl = (text: string) => {
+  var pattern = new RegExp(
+    "^(https?:\\/\\/)?" + // protocol
+      "((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|" + // domain name
+      "((\\d{1,3}\\.){3}\\d{1,3}))" + // OR ip (v4) address
+      "(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*" + // port and path
+      "(\\?[;&a-z\\d%_.~+=-]*)?" + // query string
+      "(\\#[-a-z\\d_]*)?$",
+    "i"
+  ); // fragment locator
+  return !!pattern.test(text);
 };
 
 // @ts-ignore
@@ -89,6 +128,12 @@ export const Element = ({ attributes, children, element }) => {
         <Image element={element} attributes={attributes}>
           {children}
         </Image>
+      );
+    case "attachment":
+      return (
+        <Attachment element={element} attributes={attributes}>
+          {children}
+        </Attachment>
       );
     default:
       return (

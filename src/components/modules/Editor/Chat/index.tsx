@@ -21,7 +21,12 @@ import { Slate, Editable, withReact } from "slate-react";
 import { Picker } from "emoji-mart";
 import useChat from "context/Chat";
 import useClassDetail from "hooks/useDetailClass";
-import { insertImage, withImages, withShortcuts } from "../Common/plugin";
+import {
+  insertAttachment,
+  insertImage,
+  withAttachment,
+  withShortcuts,
+} from "../Common/plugin";
 import { isMarkActive, Leaf, toggleMark } from "../Common/toolbar";
 import { Element } from "../Common/element";
 import { MessageType } from "types/chat";
@@ -38,9 +43,11 @@ const HOTKEYS = {
 };
 
 const serialize = (nodes: any[]) => {
-  const isThereImage = nodes.filter((n) => n.type === "image").length > 0;
+  const isThereAttachment =
+    nodes.filter((n) => n.type === "image" || n.type === "attachment").length >
+    0;
 
-  if (isThereImage) {
+  if (isThereAttachment) {
     return "yes";
   }
 
@@ -67,7 +74,7 @@ const ChatEditor = ({ virtuoso }: { virtuoso: any }) => {
   }, [value]);
 
   const editor = useMemo(
-    () => withImages(withShortcuts(withReact(withHistory(createEditor())))),
+    () => withAttachment(withShortcuts(withReact(withHistory(createEditor())))),
     []
   );
 
@@ -97,6 +104,17 @@ const ChatEditor = ({ virtuoso }: { virtuoso: any }) => {
     setAttachmentId(id);
   };
 
+  const addAttachment = async (url: string, id: string, key: string) => {
+    Transforms.removeNodes(editor);
+    insertAttachment(editor, url, key);
+    // set cursor to the end
+    Transforms.select(editor, {
+      anchor: Editor.end(editor, []),
+      focus: Editor.end(editor, []),
+    });
+    setAttachmentId(id);
+  };
+
   const onSend = async () => {
     if (!createMessagesLoading && serialize(value).length > 0) {
       sendMessages({
@@ -115,6 +133,7 @@ const ChatEditor = ({ virtuoso }: { virtuoso: any }) => {
         index: (chatGroup?.group_messages.length ?? 10) - 1,
         behavior: "smooth",
       });
+      setAttachmentId(undefined);
     }
   };
 
@@ -146,6 +165,7 @@ const ChatEditor = ({ virtuoso }: { virtuoso: any }) => {
         index: (chatGroup?.group_messages.length ?? 10) - 1,
         behavior: "smooth",
       });
+      setAttachmentId(undefined);
       return;
     }
 
@@ -188,8 +208,12 @@ const ChatEditor = ({ virtuoso }: { virtuoso: any }) => {
         </div>
         <div className="w-full py-2 flex justify-between">
           <div id="toolbar" className="flex items-center">
-            <FileUploader />
+            <FileUploader setUrl={addAttachment} />
             <ImageUploader setUrl={addImage} />
+            <AiOutlineSmile
+              className="text-xl text-gray-500 hover:text-gray-100 mr-2"
+              onClick={() => setShowEmoji(1)}
+            />
             <div className="h-full bg-gray-500 mr-2" style={{ width: "1px" }} />
             <AiOutlineBold
               className={`text-xl ${
@@ -224,10 +248,6 @@ const ChatEditor = ({ virtuoso }: { virtuoso: any }) => {
             />
           </div>
           <div className="flex items-center">
-            <AiOutlineSmile
-              className="text-xl text-gray-500 hover:text-gray-100 mr-2"
-              onClick={() => setShowEmoji(1)}
-            />
             {createMessagesLoading ? (
               <div className=" flex justify-center items-center">
                 <div className="animate-spin rounded-full h-4 w-4 border-l-2 border-b-2 border-gray-500"></div>
@@ -273,7 +293,7 @@ const EmojiPicker = ({
         onClick={setClose}
       >
         <div
-          className="p-10 rounded-sm z-100 absolute bottom-2 right-10"
+          className="p-10 rounded-sm z-100 absolute bottom-3 left-12"
           onClick={(e) => e.stopPropagation()}
         >
           <Picker

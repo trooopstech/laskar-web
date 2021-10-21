@@ -1,5 +1,6 @@
 import { Editor, Transforms, Element as SlateElement } from "slate";
 import { useSlate } from "slate-react";
+import { isUrl } from "./element";
 
 // @ts-ignore
 export const Leaf = ({ attributes, children, leaf }) => {
