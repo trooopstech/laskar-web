@@ -13,7 +13,7 @@ import { AiOutlineSend, AiOutlineSmile } from "react-icons/ai";
 import { withHistory } from "slate-history";
 import { Slate, Editable, withReact } from "slate-react";
 import { Picker } from "emoji-mart";
-import { withShortcuts } from "../Common/plugin";
+import { insertAttachment, insertImage, withShortcuts } from "../Common/plugin";
 import { Leaf, toggleMark } from "../Common/toolbar";
 import { Element } from "../Common/element";
 
@@ -23,19 +23,15 @@ import useClassDetail from "hooks/useDetailClass";
 import useMyPost from "context/QnA/MyPost";
 import Button from "components/elements/Button";
 import { Post } from "types/post";
+import FileUploader from "../Common/file.upload";
+import ImageUploader from "../Common/image.upload";
+import { serialize } from "../Chat";
 
 const HOTKEYS = {
   "mod+b": "bold",
   "mod+i": "italic",
   "mod+u": "underline",
   "mod+`": "code",
-};
-
-const serialize = (nodes: any[]) => {
-  return nodes
-    .map((n) => Node.string(n))
-    .join("")
-    .replace(/ /g, "");
 };
 
 const QnAEditor = ({
@@ -58,6 +54,7 @@ const QnAEditor = ({
   const [showEmoji, setShowEmoji] = useState(0);
   const member = getUserClassMember();
   const [isAnon, setIsAnon] = useState(false);
+  const [attachmentId, setAttachmentId] = useState<string>();
 
   useEffect(() => {
     if (ref.current) {
@@ -91,12 +88,35 @@ const QnAEditor = ({
     editor.insertText(emoji);
   };
 
+  const addImage = async (url: string, id: string, key: string) => {
+    Transforms.removeNodes(editor);
+    insertImage(editor, url, key);
+    // set cursor to the end
+    Transforms.select(editor, {
+      anchor: Editor.end(editor, []),
+      focus: Editor.end(editor, []),
+    });
+    setAttachmentId(id);
+  };
+
+  const addAttachment = async (url: string, id: string, key: string) => {
+    Transforms.removeNodes(editor);
+    insertAttachment(editor, url, key);
+    // set cursor to the end
+    Transforms.select(editor, {
+      anchor: Editor.end(editor, []),
+      focus: Editor.end(editor, []),
+    });
+    setAttachmentId(id);
+  };
+
   const onSend = async () => {
     if (!createPostLoading && serialize(value).length > 0) {
       sendPost({
         text: JSON.stringify(value),
         sender_id: member.oid,
         is_anon: isAnon,
+        attachment_id: attachmentId,
       });
       editor.selection = {
         anchor: { path: [0, 0], offset: 0 },
@@ -108,14 +128,26 @@ const QnAEditor = ({
 
   const onUpdate = async () => {
     if (!updateLoading && serialize(value).length > 0) {
-      updatingPost(
-        {
-          text: JSON.stringify(value),
-          id: editMode?.id ?? "",
-          is_anon: isAnon,
-        },
-        editMode?.qna.channel?.id ?? ""
-      );
+      if (attachmentId) {
+        updatingPost(
+          {
+            text: JSON.stringify(value),
+            id: editMode?.id ?? "",
+            is_anon: isAnon,
+            attachment_id: attachmentId,
+          },
+          editMode?.qna.channel?.id ?? ""
+        );
+      } else {
+        updatingPost(
+          {
+            text: JSON.stringify(value),
+            id: editMode?.id ?? "",
+            is_anon: isAnon,
+          },
+          editMode?.qna.channel?.id ?? ""
+        );
+      }
       onCancel && onCancel();
     }
   };
@@ -137,6 +169,7 @@ const QnAEditor = ({
           text: JSON.stringify(value),
           sender_id: member.oid,
           is_anon: isAnon,
+          attachment_id: attachmentId,
         });
         editor.selection = {
           anchor: { path: [0, 0], offset: 0 },
@@ -204,6 +237,8 @@ const QnAEditor = ({
         </div>
         <div className="w-full py-2 flex justify-between">
           <div id="toolbar" className="flex items-center">
+            <FileUploader setUrl={addAttachment} />
+            <ImageUploader setUrl={addImage} />
             <AiOutlineSmile
               className="text-xl text-gray-500 hover:text-gray-100 mr-2"
               onClick={() => setShowEmoji(1)}

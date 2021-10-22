@@ -15,6 +15,7 @@ interface CommentInput {
   post_id?: string;
   sender_id: string;
   is_anon: boolean;
+  attachment_id?: string;
 }
 
 interface ApproveCommentInput {

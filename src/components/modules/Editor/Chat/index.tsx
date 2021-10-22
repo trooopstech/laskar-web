@@ -42,7 +42,7 @@ const HOTKEYS = {
   "mod+`": "code",
 };
 
-const serialize = (nodes: any[]) => {
+export const serialize = (nodes: any[]) => {
   const isThereAttachment =
     nodes.filter((n) => n.type === "image" || n.type === "attachment").length >
     0;

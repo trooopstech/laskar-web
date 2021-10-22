@@ -13,7 +13,7 @@ import { AiOutlineSend, AiOutlineSmile } from "react-icons/ai";
 import { withHistory } from "slate-history";
 import { Slate, Editable, withReact } from "slate-react";
 import { Picker } from "emoji-mart";
-import { withShortcuts } from "../Common/plugin";
+import { insertAttachment, insertImage, withShortcuts } from "../Common/plugin";
 import { Leaf, toggleMark } from "../Common/toolbar";
 import { Element } from "../Common/element";
 
@@ -22,19 +22,15 @@ import Button from "components/elements/Button";
 import useQnA from "context/QnA";
 import useClassDetail from "hooks/useDetailClass";
 import usePost from "context/QnA/Post";
+import { serialize } from "../Chat";
+import FileUploader from "../Common/file.upload";
+import ImageUploader from "../Common/image.upload";
 
 const HOTKEYS = {
   "mod+b": "bold",
   "mod+i": "italic",
   "mod+u": "underline",
   "mod+`": "code",
-};
-
-const serialize = (nodes: any[]) => {
-  return nodes
-    .map((n) => Node.string(n))
-    .join("")
-    .replace(/ /g, "");
 };
 
 const CommentEditor = () => {
@@ -46,6 +42,7 @@ const CommentEditor = () => {
   const { sendComment, createCommentLoading } = usePost();
   const member = getUserClassMember();
   const [isAnon, setIsAnon] = useState(false);
+  const [attachmentId, setAttachmentId] = useState<string>();
 
   useEffect(() => {
     if (ref.current) {
@@ -73,12 +70,35 @@ const CommentEditor = () => {
     editor.insertText(emoji);
   };
 
+  const addImage = async (url: string, id: string, key: string) => {
+    Transforms.removeNodes(editor);
+    insertImage(editor, url, key);
+    // set cursor to the end
+    Transforms.select(editor, {
+      anchor: Editor.end(editor, []),
+      focus: Editor.end(editor, []),
+    });
+    setAttachmentId(id);
+  };
+
+  const addAttachment = async (url: string, id: string, key: string) => {
+    Transforms.removeNodes(editor);
+    insertAttachment(editor, url, key);
+    // set cursor to the end
+    Transforms.select(editor, {
+      anchor: Editor.end(editor, []),
+      focus: Editor.end(editor, []),
+    });
+    setAttachmentId(id);
+  };
+
   const onSend = async () => {
     if (!createCommentLoading && serialize(value).length > 0) {
       sendComment({
         text: JSON.stringify(value),
         sender_id: member.oid,
         is_anon: isAnon,
+        attachment_id: attachmentId,
       });
       editor.selection = {
         anchor: { path: [0, 0], offset: 0 },
@@ -103,6 +123,7 @@ const CommentEditor = () => {
         text: JSON.stringify(value),
         sender_id: member.oid,
         is_anon: isAnon,
+        attachment_id: attachmentId,
       });
       editor.selection = {
         anchor: { path: [0, 0], offset: 0 },
@@ -150,6 +171,8 @@ const CommentEditor = () => {
         </div>
         <div className="w-full flex justify-between">
           <div id="toolbar" className="flex pt-2 items-center">
+            <FileUploader setUrl={addAttachment} />
+            <ImageUploader setUrl={addImage} />
             <AiOutlineSmile
               className="text-xl text-gray-500 hover:text-gray-100 mr-2"
               onClick={() => setShowEmoji(1)}
