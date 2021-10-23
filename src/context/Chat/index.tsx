@@ -94,7 +94,6 @@ export function ChatProvider({
 
           if (dates.indexOf(createdAt) < 0) {
             dates.push(createdAt);
-            console.log(dates);
             return {
               ...message,
               treshold: true,
@@ -130,7 +129,6 @@ export function ChatProvider({
 
           if (dates.indexOf(createdAt) < 0) {
             dates.push(createdAt);
-            console.log(dates);
             return {
               ...message,
               treshold: true,

@@ -11,6 +11,8 @@ import React, {
 } from "react";
 import { useHistory, useLocation } from "react-router-dom";
 import { UPDATE_USER } from "schema/identities";
+import { REGISTER_DEVICE_KEY } from "schema/notification";
+import { getToken, onMessageListener } from "utils/firebase";
 
 interface AuthContextType {
   user?: User;
@@ -39,6 +41,7 @@ export function AuthProvider({
   const { registerAction, registerData, registerLoading, registerError } =
     useRegister();
   const [updateUserData] = useMutation(UPDATE_USER);
+  const [registerKey] = useMutation(REGISTER_DEVICE_KEY);
   const {
     googleLoginAction,
     googleLoginData,
@@ -65,6 +68,32 @@ export function AuthProvider({
 
     return undefined;
   };
+
+  onMessageListener()
+    .then((payload) => {
+      console.log(payload);
+      const audio = new Audio("/relentless-572.ogg");
+      audio.play();
+    })
+    .catch((err) => console.log("failed: ", err));
+
+  useEffect(() => {
+    let data;
+
+    async function tokenFunc() {
+      data = await getToken();
+      if (data) {
+        registerKey({
+          variables: {
+            device_key: data,
+          },
+        });
+      }
+      return data;
+    }
+
+    tokenFunc();
+  }, []);
 
   // If we change page, reset the error state.
   useEffect(() => {
@@ -146,6 +175,11 @@ export function AuthProvider({
   function logout() {
     window.localStorage.clear();
     setUser(undefined);
+    navigator.serviceWorker.getRegistrations().then(function (registrations) {
+      for (let registration of registrations) {
+        registration.unregister();
+      }
+    });
     history.push("/");
   }
 
