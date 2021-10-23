@@ -3,20 +3,19 @@ import "firebase/compat/messaging";
 // Your web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyAotMRzlFMLmN-2x5o7G4HWfrWkm7XSMIM",
-  authDomain: "trooops.firebaseapp.com",
-  projectId: "trooops",
-  storageBucket: "trooops.appspot.com",
-  messagingSenderId: "506977849517",
-  appId: "1:506977849517:web:98d563a8e7bf2a6005f624",
-  measurementId: "G-9HNMRY3CX8",
+  apiKey: process.env.REACT_FIREBASE_APIKEY,
+  authDomain: process.env.REACT_FIREBASE_DOMAIN,
+  projectId: process.env.REACT_FIREBASE_PROJECTID,
+  storageBucket: process.env.REACT_FIREBASE_STORAGE,
+  messagingSenderId: process.env.REACT_FIREBASE_MESSAGINGSENDERID,
+  appId: process.env.REACT_FIREBASE_APPID,
+  measurementId: process.env.REACT_FIREBASE_MEASUREMENTID,
 };
 
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
-const VAPID_KEY =
-  "BH5TUY5mDK7oUvPrjC2X2m4IquP7owVbOZ4P4jYXl3rn-UFmILa-_EEwWtnIBwZjIAvKA0khK76ZGwpQYCKM8nE";
+const VAPID_KEY = process.env.REACT_VAPID_KEY;
 
 // @ts-ignore
 const messaging = firebase.messaging();
