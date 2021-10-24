@@ -92,8 +92,10 @@ export function AuthProvider({
       return data;
     }
 
-    tokenFunc();
-  }, []);
+    if (user) {
+      tokenFunc();
+    }
+  }, [user]);
 
   // If we change page, reset the error state.
   useEffect(() => {
