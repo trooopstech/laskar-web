@@ -58,14 +58,14 @@ const ChannelSettingsModal: React.FC<ChannelSettingsModalProps> = ({
             >
               Anggota
             </div>
-            <div
+            {/* <div
               className={`mr-4 cursor-pointer py-2 ${
                 section === 3 ? "border-b-2" : ""
               }`}
               onClick={() => setSection(3)}
             >
               Pengaturan
-            </div>
+            </div> */}
           </div>
         </div>
         <div className="w-full p-4">
