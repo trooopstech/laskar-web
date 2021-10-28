@@ -7,10 +7,22 @@ import { BrowserRouter } from "react-router-dom";
 import * as serviceWorkerRegistration from "./serviceWorkerRegistration";
 import reportWebVitals from "./reportWebVitals";
 import AppRoute from "./pages/app";
+import * as Sentry from "@sentry/react";
+import { Integrations } from "@sentry/tracing";
 import client from "hooks/useApollo";
 import { ApolloProvider } from "@apollo/client";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
+
+Sentry.init({
+  dsn: "https://bb7103eba8cd43d398c1abe6d11cdce8@o1054055.ingest.sentry.io/6039146",
+  integrations: [new Integrations.BrowserTracing()],
+
+  // Set tracesSampleRate to 1.0 to capture 100%
+  // of transactions for performance monitoring.
+  // We recommend adjusting this value in production
+  tracesSampleRate: 1.0,
+});
 
 ReactDOM.render(
   <ApolloProvider client={client}>
