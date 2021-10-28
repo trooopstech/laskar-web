@@ -84,7 +84,7 @@ const MemberCard = ({ member }: { member: ClassMember }) => {
                 }
                 onClick={() =>
                   addMemberAsAdmin({
-                    oid: member.oid,
+                    oid: member?.oid,
                     role_name: "ADMIN",
                     classId: id,
                   })
@@ -104,7 +104,7 @@ const MemberCard = ({ member }: { member: ClassMember }) => {
                 }
                 onClick={() =>
                   removeMemberAsAdmin({
-                    oid: member.oid,
+                    oid: member?.oid,
                     role_name: "ADMIN",
                     classId: id,
                   })
@@ -124,7 +124,7 @@ const MemberCard = ({ member }: { member: ClassMember }) => {
                 className="form-radio"
                 onRadioChange={(e) =>
                   changeMemberRole({
-                    oid: member.oid,
+                    oid: member?.oid,
                     role_name: e.value,
                     classId: id,
                   })
