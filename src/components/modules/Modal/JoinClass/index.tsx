@@ -58,12 +58,12 @@ const JoinClassModal: React.FC<ModalProps> = ({ open, onClose, openOther }) => {
               onChange={handleChange}
               onBlur={handleBlur}
               value={values.token}
+              error={errors.token}
             />
             <span className="text-xs font-thin">
               Gunakan kode kelas berupa 5-7 huruf atau angka, tanpa spasi maupun
               simbol
             </span>
-            {errors.token && touched.token && errors.token}
             <div className="w-full flex justify-end mt-4">
               <Button
                 variant="text"

@@ -84,8 +84,8 @@ const IntroSection: React.FC<IntroSectionProps> = ({ setProgress }) => {
               onBlur={handleBlur}
               startAddorment={<p className="font-bold">+62</p>}
               value={values.phone_number}
+              error={errors.phone_number}
             />
-            {errors.phone_number && touched.phone_number && errors.phone_number}
           </div>
           <div className="w-full p-4 bg-gray-700">
             <Button

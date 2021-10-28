@@ -163,8 +163,8 @@ const CreateChannelModal: React.FC<CreateChannelModalProps> = ({
               onChange={handleChange}
               onBlur={handleBlur}
               value={values.name}
+              error={errors.name}
             />
-            {errors.name && touched.name && errors.name}
             {choice !== "QNA" && (
               <div className="w-full flex justify-between">
                 <div className="flex flex-col justify-start">

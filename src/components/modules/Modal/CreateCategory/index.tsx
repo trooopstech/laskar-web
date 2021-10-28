@@ -62,8 +62,8 @@ const CreateCategoryModal: React.FC<ModalProps> = ({ open, onClose }) => {
               onChange={handleChange}
               onBlur={handleBlur}
               value={values.name}
+              error={errors.name}
             />
-            {errors.name && touched.name && errors.name}
             <div className="w-full flex justify-end">
               <Button
                 className="text-gray-500 hover:text-gray-50"

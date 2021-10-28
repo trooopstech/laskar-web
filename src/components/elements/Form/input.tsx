@@ -10,6 +10,7 @@ interface InputProps {
   startAddorment?: JSX.Element;
   endAddorment?: JSX.Element;
   disabled?: boolean;
+  error?: string;
 }
 
 const Input: React.FC<InputProps> = ({
@@ -24,11 +25,16 @@ const Input: React.FC<InputProps> = ({
   startAddorment,
   endAddorment,
   disabled,
+  error,
 }) => {
   return (
     <div className="flex flex-col my-2 w-full">
       <span className="font-bold mb-1">{label}</span>
-      <div className="flex w-full items-center rounded-lg px-2 py-1 bg-gray-700">
+      <div
+        className={`flex w-full items-center rounded-lg px-2 py-1 bg-gray-700 ${
+          error && "border border-red-500"
+        }`}
+      >
         <div>{startAddorment}</div>
         <input
           type={type}
@@ -44,6 +50,9 @@ const Input: React.FC<InputProps> = ({
         />
         <div>{endAddorment}</div>
       </div>
+      {error && (
+        <span className="font-thin text-red-500 text-sm mt-2">{error}</span>
+      )}
     </div>
   );
 };

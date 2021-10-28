@@ -67,8 +67,8 @@ const FormSection: React.FC<FormSectionProps> = ({
             onChange={handleChange}
             onBlur={handleBlur}
             value={values.name}
+            error={errors.name}
           />
-          {errors.name && touched.name && errors.name}
           <Input
             type="text"
             label="Nama Institusi"
@@ -77,8 +77,8 @@ const FormSection: React.FC<FormSectionProps> = ({
             onChange={handleChange}
             onBlur={handleBlur}
             value={values.institution}
+            error={errors.institution}
           />
-          {errors.name && touched.name && errors.name}
           <Input
             type="text"
             label="Deskripsi (optional)"

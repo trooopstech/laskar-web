@@ -19,7 +19,7 @@ export const useLoginModal = () => {
 };
 
 const LoginModal: React.FC<ModalProps> = ({ open, onClose, openOther }) => {
-  const { login, error, loading } = useAuth();
+  const { login, loading } = useAuth();
   const [reveal, setReveal] = useState(false);
 
   return (
@@ -71,8 +71,8 @@ const LoginModal: React.FC<ModalProps> = ({ open, onClose, openOther }) => {
               onChange={handleChange}
               onBlur={handleBlur}
               value={values.email}
+              error={errors.email}
             />
-            {errors.email && touched.email && errors.email}
             <Input
               type={reveal ? "text" : "password"}
               label="Password"
@@ -80,6 +80,7 @@ const LoginModal: React.FC<ModalProps> = ({ open, onClose, openOther }) => {
               onChange={handleChange}
               onBlur={handleBlur}
               value={values.password}
+              error={errors.password}
               endAddorment={
                 reveal ? (
                   <FaEyeSlash
@@ -94,8 +95,6 @@ const LoginModal: React.FC<ModalProps> = ({ open, onClose, openOther }) => {
                 )
               }
             />
-            {errors.password && touched.password && errors.password}
-            {error && error}
             {loading ? (
               <p>Loading...</p>
             ) : (
