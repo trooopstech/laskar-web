@@ -108,7 +108,7 @@ export function AuthProvider({
     if (token && rawUser) {
       setUser(JSON.parse(rawUser));
     } else {
-      if (location.pathname.includes("dashboard")) {
+      if (location.pathname.includes("dashboard/class")) {
         history.push("/");
       }
     }
@@ -128,7 +128,7 @@ export function AuthProvider({
         console.log(data);
         window.localStorage.setItem("token", data.token);
         window.localStorage.setItem("user", JSON.stringify(data.user));
-        window.location.href = "/dashboard";
+        window.location.href = "/dashboard/class";
       }
     }
   }, [loginData, registerData, googleLoginData]);

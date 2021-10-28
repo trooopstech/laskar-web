@@ -115,7 +115,7 @@ export function ClassProvider({
         setClasses(
           classes.filter((c) => c.id !== res.data.leaveClass.class.id)
         );
-        history.replace(`/dashboard`);
+        history.replace(`/dashboard/class`);
       }
     } catch (error) {
       console.log(error);

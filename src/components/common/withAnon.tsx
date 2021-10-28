@@ -11,7 +11,7 @@ const withAnon = (WrappedComponent: React.ComponentType) => {
     // checks whether we are on client / browser or server.
 
     if (user) {
-      history.replace("/dashboard");
+      history.replace("/dashboard/class");
       return null;
     }
     return <WrappedComponent {...props} />;

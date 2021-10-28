@@ -112,7 +112,7 @@ const JoinClass = () => {
           {isMember ? "Sudah Bergabung" : "Gabung"}
         </Button>
         {isMember && (
-          <Button variant="text" href="/dashboard">
+          <Button variant="text" href="/dashboard/class">
             Kembali
           </Button>
         )}

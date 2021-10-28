@@ -4,7 +4,7 @@ import { MdDashboard, MdClass } from "react-icons/md";
 const HomeSection = () => {
   return (
     <>
-      <NavLink
+      {/* <NavLink
         to="/dashboard"
         className="my-2 p-2 rounded-md"
         isActive={(match, location) => {
@@ -20,7 +20,7 @@ const HomeSection = () => {
           <div className="ml-2" />
           Dashboard
         </p>
-      </NavLink>
+      </NavLink> */}
       <NavLink
         to="/dashboard/class"
         isActive={(match, location) => {
