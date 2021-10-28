@@ -36,7 +36,7 @@ const InviteChannelModal: React.FC<InviteChannelModalProps> = ({
   const [roleData, setRoleData] = useState<Array<string>>([]);
   const ROLE = ["TEACHER", "ASSISTANT", "STUDENT"];
 
-  const channelMembers = channel?.members.map((m) => m.member.oid);
+  const channelMembers = channel?.members.map((m) => m?.member?.oid);
 
   const addMemberViaRole = (role: string, memberOids: string[]) => {
     const members = filterMemberByRole(
@@ -45,12 +45,11 @@ const InviteChannelModal: React.FC<InviteChannelModalProps> = ({
     );
 
     const oid = members
-      ?.filter((classMember) => classMember.oid !== member.oid)
-      ?.map((classMember) => classMember.oid);
+      ?.filter((classMember) => classMember?.oid !== member?.oid)
+      ?.map((classMember) => classMember?.oid);
 
     const newData = [...memberOids, ...oid];
 
-    // setData([...(new Set(newData) as unknown as Array<string>)]);
     return [...(new Set(newData) as unknown as Array<string>)];
   };
 
@@ -61,8 +60,8 @@ const InviteChannelModal: React.FC<InviteChannelModalProps> = ({
     );
 
     const oid = members
-      ?.filter((classMember) => classMember.oid !== member.oid)
-      ?.map((classMember) => classMember.oid);
+      ?.filter((classMember) => classMember?.oid !== member?.oid)
+      ?.map((classMember) => classMember?.oid);
 
     const newData = memberOids.filter((d) => !oid.includes(d));
 
@@ -130,8 +129,8 @@ const InviteChannelModal: React.FC<InviteChannelModalProps> = ({
             {classDetail?.class_member
               ?.filter(
                 (classMember) =>
-                  classMember.oid !== member.oid &&
-                  !channelMembers?.includes(classMember.oid)
+                  classMember?.oid !== member?.oid &&
+                  !channelMembers?.includes(classMember?.oid)
               )
               .map((classMember) => (
                 <FullCheckbox
@@ -142,9 +141,9 @@ const InviteChannelModal: React.FC<InviteChannelModalProps> = ({
                   <div className="w-full flex items-center">
                     <div
                       className="h-8 w-8 rounded-full mr-4"
-                      style={{ backgroundColor: classMember.member.color }}
+                      style={{ backgroundColor: classMember?.member?.color }}
                     />
-                    <h1 className="font-thin">{classMember.member.name}</h1>
+                    <h1 className="font-thin">{classMember?.member?.name}</h1>
                   </div>
                 </FullCheckbox>
               ))}

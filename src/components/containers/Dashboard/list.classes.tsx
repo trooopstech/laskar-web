@@ -18,14 +18,16 @@ const ListClasses = () => {
 
   return (
     <div className="container p-2 md:p-8 overflow-y-auto">
-      <div className="w-full mb-12">
-        <h1 className="text-xl font-bold">Kelas</h1>
-        <div className="flex flex-wrap -ml-4" style={{ minHeight: "200px" }}>
-          {classes.map((data) => (
-            <ClassCard data={data} />
-          ))}
+      {classes.length > 0 && (
+        <div className="w-full mb-12">
+          <h1 className="text-xl font-bold">Kelas</h1>
+          <div className="flex flex-wrap -ml-4" style={{ minHeight: "200px" }}>
+            {classes.map((data) => (
+              <ClassCard data={data} />
+            ))}
+          </div>
         </div>
-      </div>
+      )}
       <div className="w-full mb-12">
         <h1 className="text-xl font-bold">Kelas Saya</h1>
         <div className="flex flex-wrap -ml-4" style={{ minHeight: "200px" }}>

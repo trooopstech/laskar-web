@@ -13,7 +13,7 @@ const Image = ({ attributes, children, element }) => {
         <div contentEditable={false}>
           <img
             src={element.url}
-            className="w-1/2 cursor-pointer"
+            className="w-1/2 md:w-1/4 cursor-pointer"
             alt="attachment"
             onClick={openPreview}
           />

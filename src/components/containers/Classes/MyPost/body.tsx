@@ -201,6 +201,14 @@ const MyPostBody = () => {
 
   return (
     <div className="h-full p-2 w-full overflow-y-auto">
+      {post?.length === 0 && (
+        <div className="w-full rounded-md bg-gray-700 py-16 flex items-center justify-center flex-col">
+          <h1 className="font-bold text-2xl">Edit dan Hapus Pertanyaan</h1>
+          <p className="font-thin">
+            Saat kamu membuat pertanyaan, kamu akan melihatnya disini.{" "}
+          </p>
+        </div>
+      )}
       {post?.map((p: Post) => (
         <PostBubble post={p} key={p.id} />
       ))}
