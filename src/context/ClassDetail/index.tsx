@@ -64,19 +64,32 @@ export function ClassDetailProvider({
   const [loadingClass, setLoading] = useState<boolean>(false);
   const { data, loading, error } = useQuery(GET_CLASS, {
     variables: { classId: id },
-    // fetchPolicy: "cache-and-network",
+    fetchPolicy: "cache-and-network",
+    errorPolicy: "all",
   });
   const { createCategoryAction } = useCreateCategory();
   const { createChannelAction } = useCreateChannel();
   const { category } = useOnNewCategory(id);
   const { channel } = useOnNewChannel(id);
   const { channelUpdated } = useOnChannelUpdated(id);
-  const [deleteCategory] = useMutation(DELETE_CATEGORY);
-  const [deleteChannel] = useMutation(DELETE_CHANNEL);
-  const [addMemberRole] = useMutation(CHANGE_MEMBER_ROLE);
-  const [addMemberAdmin] = useMutation(ADD_ADMIN_ROLE);
-  const [removeMemberAdmin] = useMutation(REMOVE_ADMIN_ROLE);
-  const [inviteMember] = useMutation(INVITE_MEMBER);
+  const [deleteCategory] = useMutation(DELETE_CATEGORY, {
+    errorPolicy: "all",
+  });
+  const [deleteChannel] = useMutation(DELETE_CHANNEL, {
+    errorPolicy: "all",
+  });
+  const [addMemberRole] = useMutation(CHANGE_MEMBER_ROLE, {
+    errorPolicy: "all",
+  });
+  const [addMemberAdmin] = useMutation(ADD_ADMIN_ROLE, {
+    errorPolicy: "all",
+  });
+  const [removeMemberAdmin] = useMutation(REMOVE_ADMIN_ROLE, {
+    errorPolicy: "all",
+  });
+  const [inviteMember] = useMutation(INVITE_MEMBER, {
+    errorPolicy: "all",
+  });
   const { memberWithNewRole } = useOnChangedRole(id);
   useOnCategoryDeleted(id);
   const { channelDeleted } = useOnChannelDeleted(id);

@@ -4,8 +4,12 @@ import { JOIN_CLASS, JOIN_CLASS_BY_TOKEN } from "schema/classes";
 
 const useJoinClass = () => {
   const history = useHistory();
-  const [joinClass] = useMutation(JOIN_CLASS);
-  const [joinClassByToken] = useMutation(JOIN_CLASS_BY_TOKEN);
+  const [joinClass] = useMutation(JOIN_CLASS, {
+    errorPolicy: "all",
+  });
+  const [joinClassByToken] = useMutation(JOIN_CLASS_BY_TOKEN, {
+    errorPolicy: "all",
+  });
 
   const join = async (classId: string) => {
     try {

@@ -32,6 +32,7 @@ const JoinClass = () => {
   const { joinByToken } = useJoinClass();
   const { data } = useQuery(GET_CLASS_BY_TOKEN, {
     variables: { token: query.get("token") },
+    errorPolicy: "all",
   });
   const { user } = useAuth();
 
@@ -112,7 +113,7 @@ const JoinClass = () => {
           {isMember ? "Sudah Bergabung" : "Gabung"}
         </Button>
         {isMember && (
-          <Button variant="text" href="/dashboard">
+          <Button variant="text" href="/dashboard/class">
             Kembali
           </Button>
         )}

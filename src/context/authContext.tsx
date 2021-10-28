@@ -37,17 +37,16 @@ export function AuthProvider({
   const [error, setError] = useState<any>();
   const [loading, setLoading] = useState<boolean>(false);
   const [loadingInitial, setLoadingInitial] = useState<boolean>(true);
-  const { loginAction, loginData, loginLoading, loginError } = useLogin();
-  const { registerAction, registerData, registerLoading, registerError } =
-    useRegister();
-  const [updateUserData] = useMutation(UPDATE_USER);
-  const [registerKey] = useMutation(REGISTER_DEVICE_KEY);
-  const {
-    googleLoginAction,
-    googleLoginData,
-    googleLoginError,
-    googleLoginLoading,
-  } = useGoogleLogin();
+  const { loginAction, loginData, loginLoading } = useLogin();
+  const { registerAction, registerData, registerLoading } = useRegister();
+  const [updateUserData] = useMutation(UPDATE_USER, {
+    errorPolicy: "all",
+  });
+  const [registerKey] = useMutation(REGISTER_DEVICE_KEY, {
+    errorPolicy: "all",
+  });
+  const { googleLoginAction, googleLoginData, googleLoginLoading } =
+    useGoogleLogin();
   const history = useHistory();
   const location = useLocation();
 
@@ -108,7 +107,7 @@ export function AuthProvider({
     if (token && rawUser) {
       setUser(JSON.parse(rawUser));
     } else {
-      if (location.pathname.includes("dashboard")) {
+      if (location.pathname.includes("dashboard/class")) {
         history.push("/");
       }
     }
@@ -128,7 +127,7 @@ export function AuthProvider({
         console.log(data);
         window.localStorage.setItem("token", data.token);
         window.localStorage.setItem("user", JSON.stringify(data.user));
-        window.location.href = "/dashboard";
+        window.location.href = "/dashboard/class";
       }
     }
   }, [loginData, registerData, googleLoginData]);
@@ -138,24 +137,12 @@ export function AuthProvider({
   }, [loginLoading]);
 
   useEffect(() => {
-    setError(loginError?.message);
-  }, [loginError]);
-
-  useEffect(() => {
     setLoading(googleLoginLoading);
   }, [googleLoginLoading]);
 
   useEffect(() => {
-    setError(googleLoginError?.message);
-  }, [googleLoginError]);
-
-  useEffect(() => {
     setLoading(registerLoading);
   }, [registerLoading]);
-
-  useEffect(() => {
-    setError(registerError?.message);
-  }, [registerError]);
 
   function login(data: UserLoginInput, cb: () => void): void {
     setError(null);

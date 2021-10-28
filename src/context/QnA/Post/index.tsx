@@ -44,6 +44,7 @@ export function PostProvider({
       postId: id,
     },
     fetchPolicy: "cache-and-network",
+    errorPolicy: "all",
   });
   const { createComment, createCommentLoading } = useSendComment();
   const { approveComment, approveLoading } = useSendApprove();

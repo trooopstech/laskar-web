@@ -31,10 +31,18 @@ export function ClassProvider({
   const [classes, setClasses] = useState<Class[]>([]);
   const [errorClass, setError] = useState<any>();
   const [loadingClass, setLoading] = useState<boolean>(false);
-  const { data, loading, error } = useQuery(GET_ALL_CLASS);
-  const [joinClassByToken] = useMutation(JOIN_CLASS_BY_TOKEN);
-  const [leaveClass] = useMutation(LEAVE_CLASS);
-  const [joinClass] = useMutation(JOIN_CLASS);
+  const { data, loading, error } = useQuery(GET_ALL_CLASS, {
+    errorPolicy: "all",
+  });
+  const [joinClassByToken] = useMutation(JOIN_CLASS_BY_TOKEN, {
+    errorPolicy: "all",
+  });
+  const [leaveClass] = useMutation(LEAVE_CLASS, {
+    errorPolicy: "all",
+  });
+  const [joinClass] = useMutation(JOIN_CLASS, {
+    errorPolicy: "all",
+  });
   const {
     createClassAction,
     createClassData,
@@ -115,7 +123,7 @@ export function ClassProvider({
         setClasses(
           classes.filter((c) => c.id !== res.data.leaveClass.class.id)
         );
-        history.replace(`/dashboard`);
+        history.replace(`/dashboard/class`);
       }
     } catch (error) {
       console.log(error);
