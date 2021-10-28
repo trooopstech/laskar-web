@@ -40,6 +40,7 @@ export function QnAProvider({
       channelId: id,
     },
     fetchPolicy: "cache-and-network",
+    errorPolicy: "all",
   });
   const { createPost, createPostLoading } = useSendPost();
   const { sendUpvote, voteLoading } = useUpvotePost();

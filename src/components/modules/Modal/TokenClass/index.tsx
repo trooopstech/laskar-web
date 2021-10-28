@@ -37,6 +37,7 @@ const ClassTokenModal: React.FC<ClassTokenModalProps> = ({
       classId: classDetail?.id,
       keyword,
     },
+    errorPolicy: "all",
   });
 
   useEffect(() => {

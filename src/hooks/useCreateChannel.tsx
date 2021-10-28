@@ -2,7 +2,12 @@ import { useMutation } from "@apollo/client";
 import { CREATE_CHANNEL } from "schema/channels";
 
 const useCreateChannel = () => {
-  const [createChannel, { data, loading, error }] = useMutation(CREATE_CHANNEL);
+  const [createChannel, { data, loading, error }] = useMutation(
+    CREATE_CHANNEL,
+    {
+      errorPolicy: "all",
+    }
+  );
 
   return {
     createChannelAction: createChannel,

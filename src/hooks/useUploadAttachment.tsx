@@ -5,8 +5,12 @@ import axios from "axios";
 import { useState } from "react";
 
 const useUploadAttachment = () => {
-  const [getPreSigned] = useMutation(GET_PRE_SIGNED_URL);
-  const [save] = useMutation(SAVE_ATTACHMENT);
+  const [getPreSigned] = useMutation(GET_PRE_SIGNED_URL, {
+    errorPolicy: "all",
+  });
+  const [save] = useMutation(SAVE_ATTACHMENT, {
+    errorPolicy: "all",
+  });
   const [loading, setLoading] = useState(false);
 
   const generatePreSignedUrl = async (file: File): Promise<Attachment> => {
