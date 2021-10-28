@@ -44,7 +44,7 @@ const ClassDetail = () => {
       }
     }
     return history.replace(url);
-  }, [classDetail]);
+  }, [classDetail?.id]);
 
   return (
     <Switch>
