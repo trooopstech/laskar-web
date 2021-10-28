@@ -36,6 +36,7 @@ export function MyPostProvider({
       memberId: id,
     },
     fetchPolicy: "cache-and-network",
+    errorPolicy: "all",
   });
   const { deletePost } = useDeletePost();
   const { updatePost, updateLoading } = useUpdatePost();

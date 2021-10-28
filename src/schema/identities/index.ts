@@ -14,10 +14,6 @@ export const LOGIN = gql`
         phone_number
       }
       token
-      error {
-        code
-        message
-      }
     }
   }
 `;
@@ -36,10 +32,6 @@ export const REGISTER = gql`
         phone_number
       }
       token
-      error {
-        code
-        message
-      }
     }
   }
 `;
@@ -73,10 +65,6 @@ export const GOOGLE_LOGIN = gql`
         phone_number
       }
       token
-      error {
-        code
-        message
-      }
     }
   }
 `;
