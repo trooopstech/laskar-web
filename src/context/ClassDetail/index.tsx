@@ -64,7 +64,7 @@ export function ClassDetailProvider({
   const [loadingClass, setLoading] = useState<boolean>(false);
   const { data, loading, error } = useQuery(GET_CLASS, {
     variables: { classId: id },
-    // fetchPolicy: "cache-and-network",
+    fetchPolicy: "cache-and-network",
   });
   const { createCategoryAction } = useCreateCategory();
   const { createChannelAction } = useCreateChannel();
