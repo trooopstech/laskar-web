@@ -13,6 +13,7 @@ import client from "hooks/useApollo";
 import { ApolloProvider } from "@apollo/client";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
+import ReactGA from "react-ga";
 
 Sentry.init({
   dsn: "https://bb7103eba8cd43d398c1abe6d11cdce8@o1054055.ingest.sentry.io/6039146",
@@ -23,6 +24,8 @@ Sentry.init({
   // We recommend adjusting this value in production
   tracesSampleRate: 1.0,
 });
+
+ReactGA.initialize("G-DVXXV5HTRJ", { standardImplementation: true });
 
 ReactDOM.render(
   <ApolloProvider client={client}>
