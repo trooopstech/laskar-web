@@ -30,7 +30,7 @@ const MemberContainer = () => {
 
   return (
     <div className="w-full flex flex-col items-center py-4">
-      <div className="w-3/4">
+      <div className="w-3/4 overflow-y-scroll">
         <MemberSection section="Guru" classMember={teacher} />
         <MemberSection section="Asisten" classMember={assistant} />
         <MemberSection section="Siswa" classMember={student} />
