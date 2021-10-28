@@ -3,8 +3,10 @@ import {
   createHttpLink,
   InMemoryCache,
   split,
+  from,
 } from "@apollo/client";
 import { WebSocketLink } from "@apollo/client/link/ws";
+import { onError } from "@apollo/client/link/error";
 
 import { setContext } from "@apollo/client/link/context";
 import { getMainDefinition } from "@apollo/client/utilities";
@@ -36,6 +38,17 @@ const authLink = setContext((_, { headers }) => {
   };
 });
 
+const errorLink = onError(({ graphQLErrors, networkError }) => {
+  if (graphQLErrors)
+    graphQLErrors.forEach(({ message, locations, path }) =>
+      console.log(
+        `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+      )
+    );
+
+  if (networkError) console.log(`[Network error]: ${networkError}`);
+});
+
 const splitLink = split(
   ({ query }) => {
     const definition = getMainDefinition(query);
@@ -49,7 +62,7 @@ const splitLink = split(
 );
 
 const client = new ApolloClient({
-  link: splitLink,
+  link: from([splitLink, errorLink]),
   cache: new InMemoryCache(),
 });
 

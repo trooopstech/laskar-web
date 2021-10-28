@@ -38,7 +38,7 @@ const ImageUploader = ({ setUrl }: UploadProps) => {
       >
         <MdImage className="text-xl text-gray-500 hover:text-gray-100 mr-2" />
       </button>
-      <Modal onClose={closeModal} open={loading ? 0 : 1} permanent>
+      <Modal onClose={closeModal} open={loading ? 1 : 0} permanent>
         <div className="py-4 px-16">
           <div className=" flex justify-center items-center">
             <div className="animate-spin rounded-full h-16 w-16 border-l-4 border-b-4 border-blue-500"></div>
