@@ -106,12 +106,16 @@ const ChatBody = React.memo(({ virtuoso }: { virtuoso: any }) => {
   const { chatGroup, getMessageByPage, hasMore, loading } = useChat();
   const { getUserClassMember } = useClassDetail();
   const classMember: ClassMember = getUserClassMember();
-  // const virtuoso = useRef(null);
 
-  const query = (index: number) => {
+  const query = () => {
     if (loading) return;
     if (hasMore && !loading) {
       getMessageByPage();
+      console.log(chatGroup?.group_messages.length);
+      virtuoso.current?.scrollToIndex({
+        index: 2,
+        behavior: "smooth",
+      });
     }
   };
 
@@ -121,10 +125,11 @@ const ChatBody = React.memo(({ virtuoso }: { virtuoso: any }) => {
       key={chatGroup?.id}
       style={{ maxHeight: "calc(100% - 7rem)" }}
     >
+      {loading && <h1 className="text-center">Loading...</h1>}
       <Virtuoso
         data={chatGroup?.group_messages}
         ref={virtuoso}
-        initialTopMostItemIndex={(chatGroup?.group_messages.length ?? 10) - 1}
+        initialTopMostItemIndex={0}
         followOutput="smooth"
         startReached={query}
         atBottomStateChange={(bottom) => {
