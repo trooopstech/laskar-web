@@ -71,7 +71,7 @@ const LoginModal: React.FC<ModalProps> = ({ open, onClose, openOther }) => {
               onChange={handleChange}
               onBlur={handleBlur}
               value={values.email}
-              error={errors.email}
+              error={touched.email && errors.email ? errors.email : undefined}
             />
             <Input
               type={reveal ? "text" : "password"}
@@ -80,7 +80,11 @@ const LoginModal: React.FC<ModalProps> = ({ open, onClose, openOther }) => {
               onChange={handleChange}
               onBlur={handleBlur}
               value={values.password}
-              error={errors.password}
+              error={
+                touched.password && errors.password
+                  ? errors.password
+                  : undefined
+              }
               endAddorment={
                 reveal ? (
                   <FaEyeSlash

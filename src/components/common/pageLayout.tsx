@@ -11,18 +11,27 @@ import OnboardingModal, {
 } from "components/modules/Modal/Onboarding";
 import Sidebar from "components/modules/Sidebar";
 import useAuth from "hooks/useAuth";
-import { useEffect } from "react";
+import useWindowSize from "hooks/useWindowSize";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router";
+import { useSwipeable } from "react-swipeable";
 
 const PageLayout: React.FC = ({ children }) => {
   const { pathname } = useLocation();
   const { user } = useAuth();
+  const [openSidebar, setOpenSidebar] = useState(false);
   const { closeOnboarding, isOnboardingOpen, openOnboarding } =
     useOnboardingModal();
   const { openCreateClass, isCreateClassOpen, closeCreateClass } =
     useCreateClassModal();
   const { openJoinClass, isJoinClassOpen, closeJoinClass } =
     useJoinClassModal();
+  const { width } = useWindowSize();
+  const handlers = useSwipeable({
+    onSwiped: (eventData) => console.log("User Swiped!", eventData),
+    onSwipedRight: () => setOpenSidebar(true),
+    onSwipedLeft: () => setOpenSidebar(false),
+  });
 
   const isOnMemberPage = () => {
     return pathname.includes("member");
@@ -42,9 +51,13 @@ const PageLayout: React.FC = ({ children }) => {
     <div className="flex flex-row w-full">
       <div className="h-full w-full bg-gray-800">
         <Header />
-        <div className="w-full flex" style={{ height: "calc(100% - 4rem)" }}>
+        <div
+          className="w-full flex"
+          style={{ height: "calc(100% - 4rem)" }}
+          {...handlers}
+        >
           <Menubar />
-          {!isOnMemberPage() && <Sidebar />}
+          {((!isOnMemberPage() && width > 640) || openSidebar) && <Sidebar />}
           {children}
           {/* {!isOnMemberPage() && <Rightbar />} */}
         </div>

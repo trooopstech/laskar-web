@@ -17,7 +17,7 @@ const ListClasses = () => {
     useJoinClassModal();
 
   return (
-    <div className="container p-2 md:p-8 overflow-y-auto">
+    <div className="container p-2 md:p-8 overflow-y-auto border-gray-700 border-l sm:border-l-0">
       {classes.length > 0 && (
         <div className="w-full mb-12">
           <h1 className="text-xl font-bold">Kelas</h1>
