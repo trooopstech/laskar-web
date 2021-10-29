@@ -107,16 +107,16 @@ const ChatBody = React.memo(({ virtuoso }: { virtuoso: any }) => {
   const { getUserClassMember } = useClassDetail();
   const classMember: ClassMember = getUserClassMember();
 
-  const query = () => {
+  const query = useCallback(() => {
     if (loading) return;
     if (hasMore && !loading && page > 0) {
       getMessageByPage();
       virtuoso.current?.scrollToIndex({
-        index: 2,
+        index: page > 1 ? 9 : 1,
         behavior: "smooth",
       });
     }
-  };
+  }, [loading, hasMore, page, getMessageByPage, virtuoso]);
 
   return (
     <div
@@ -129,17 +129,7 @@ const ChatBody = React.memo(({ virtuoso }: { virtuoso: any }) => {
         data={chatGroup?.group_messages}
         ref={virtuoso}
         initialTopMostItemIndex={(chatGroup?.group_messages.length ?? 10) - 1}
-        followOutput="smooth"
         startReached={query}
-        atBottomStateChange={(bottom) => {
-          if (bottom) {
-            // @ts-ignore
-            virtuoso.current?.scrollToIndex({
-              index: (chatGroup?.group_messages.length ?? 10) - 1,
-              behavior: "smooth",
-            });
-          }
-        }}
         firstItemIndex={chatGroup?.group_messages.length as number}
         itemContent={(index, message) => {
           return (
