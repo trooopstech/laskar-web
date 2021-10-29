@@ -29,7 +29,7 @@ const MemberContainer = () => {
   }, [class_member]);
 
   return (
-    <div className="w-full flex flex-col items-center py-4">
+    <div className="w-full flex flex-col items-center py-4 border-gray-700 border-l sm:border-l-0">
       <div className="w-3/4 overflow-y-scroll">
         <MemberSection section="Guru" classMember={teacher} />
         <MemberSection section="Asisten" classMember={assistant} />

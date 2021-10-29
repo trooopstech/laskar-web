@@ -1,5 +1,6 @@
 import Classes from "components/elements/Classes";
 import useClass from "hooks/useClasses";
+import useWindowSize from "hooks/useWindowSize";
 import { MdAdd } from "react-icons/md";
 import CreateClassModal, { useCreateClassModal } from "../Modal/CreateClass";
 import JoinClassModal, { useJoinClassModal } from "../Modal/JoinClass";
@@ -12,7 +13,10 @@ const Menubar = () => {
     useJoinClassModal();
 
   return (
-    <div className="px-3 pb-2 h-full bg-gray-800 shadow overflow-y-auto">
+    <div
+      className="px-3 pb-2 h-full bg-gray-800 shadow overflow-y-auto"
+      style={{ width: "80px" }}
+    >
       {classes.map((data) => (
         <Classes
           id={data?.id}

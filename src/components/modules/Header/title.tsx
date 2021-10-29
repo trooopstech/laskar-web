@@ -8,6 +8,7 @@ import CreateCategoryModal, {
   useCreateCategoryModal,
 } from "../Modal/CreateCategory";
 import useClass from "hooks/useClasses";
+import useWindowSize from "hooks/useWindowSize";
 
 const HOMEPAGE_ICON: { [key: string]: JSX.Element } = {
   Kelas: <MdClass style={{ fontSize: "32px" }} />,
@@ -21,6 +22,17 @@ const TitleSection = () => {
   const { isCategoryOpen, closeCategory, openCategory } =
     useCreateCategoryModal();
   const { leavingClass } = useClass();
+  const { width } = useWindowSize();
+
+  const titleMaker = (title: string) => {
+    if (width <= 640) {
+      if (title.length > 8) {
+        return `${title.slice(0, 8)}...`;
+      }
+      return title;
+    }
+    return title;
+  };
 
   return (
     <div className="flex items-center">
@@ -33,7 +45,9 @@ const TitleSection = () => {
           menuButton={
             <button className="flex items-center">
               <p className="ml-2 text-xl overflow-ellipsis">
-                {classDetail?.name ? classDetail?.name : headerTitles(pathname)}
+                {classDetail?.name
+                  ? titleMaker(classDetail?.name)
+                  : headerTitles(pathname)}
               </p>
               <MdExpandMore
                 className="ml-1 cursor-pointer"

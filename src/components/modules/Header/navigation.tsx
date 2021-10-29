@@ -1,15 +1,18 @@
 import useClassDetail from "hooks/useDetailClass";
+import useWindowSize from "hooks/useWindowSize";
+import { MdForum, MdPeople } from "react-icons/md";
 import { NavLink } from "react-router-dom";
 
 const Navigation = () => {
   const { classDetail } = useClassDetail();
+  const { width } = useWindowSize();
 
   if (!classDetail) {
     return <></>;
   }
 
   return (
-    <div className="w-full h-full flex justify-center items-center text-gray-500">
+    <div className="sm:w-1/2 md:w-2/3 h-full flex justify-center items-center text-gray-500">
       <NavLink
         className="h-full px-4 mx-2 flex items-center  hover:text-gray-100"
         to={`/dashboard/class/${classDetail?.id}/member`}
@@ -21,7 +24,7 @@ const Navigation = () => {
           return false;
         }}
       >
-        Anggota
+        {width > 640 ? "Anggota" : <MdPeople />}
       </NavLink>
       <NavLink
         className="h-full px-4 flex items-center mx-2  hover:text-gray-100"
@@ -34,7 +37,7 @@ const Navigation = () => {
           return false;
         }}
       >
-        Forum
+        {width > 640 ? "Forum" : <MdForum />}
       </NavLink>
     </div>
   );

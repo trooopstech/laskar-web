@@ -11,7 +11,7 @@ const QnAContainer = () => {
   return (
     <QnAProvider id={channelId}>
       <div
-        className="w-full h-full relative overflow-hidden flex flex-col"
+        className="w-full h-full relative overflow-hidden flex flex-col border-gray-700 border-l sm:border-l-0"
         key={channelId}
       >
         <QnAHeader />
