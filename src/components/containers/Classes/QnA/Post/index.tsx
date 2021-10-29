@@ -1,4 +1,5 @@
 import { PostProvider } from "context/QnA/Post";
+import useStyle from "context/styleContext";
 import { useParams } from "react-router";
 import PostBody from "./body";
 import PostHeader from "./header";
@@ -8,15 +9,19 @@ import PostSection from "./post";
 const PostContainer = () => {
   // @ts-ignore
   const { postId, channelId } = useParams();
+  const { isSidebarOpen } = useStyle();
 
   return (
     <PostProvider id={postId} channelId={channelId}>
       <div
-        className="w-full h-full relative overflow-hidden flex flex-col"
+        className={`${
+          isSidebarOpen ? "" : "w-full"
+        } h-full relative overflow-hidden flex flex-col`}
         key={postId}
+        style={{ overflowX: "hidden" }}
       >
         <PostHeader />
-        <div className="overflow-y-auto">
+        <div className="overflow-y-auto overflow-x-hidden">
           <PostSection />
           <CommentInput />
           <PostBody />

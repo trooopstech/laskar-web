@@ -1,4 +1,5 @@
 import { ChatProvider } from "context/Chat";
+import useStyle from "context/styleContext";
 import { useRef } from "react";
 import { useParams } from "react-router";
 import ChatBody from "./body";
@@ -9,11 +10,14 @@ const ChatContainer = () => {
   // @ts-ignore
   const { channelId } = useParams();
   const virtuoso = useRef(null);
+  const { isSidebarOpen } = useStyle();
 
   return (
     <ChatProvider id={channelId}>
       <div
-        className="w-full h-full relative overflow-hidden flex flex-col border-gray-700 border-l sm:border-l-0"
+        className={`${
+          isSidebarOpen ? "" : "w-full"
+        } h-full relative overflow-hidden flex flex-col border-gray-700 border-l sm:border-l-0`}
         style={{ overflowX: "hidden" }}
         key={channelId}
       >

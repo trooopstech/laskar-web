@@ -10,6 +10,7 @@ import OnboardingModal, {
   useOnboardingModal,
 } from "components/modules/Modal/Onboarding";
 import Sidebar from "components/modules/Sidebar";
+import useStyle from "context/styleContext";
 import useAuth from "hooks/useAuth";
 import useWindowSize from "hooks/useWindowSize";
 import { useEffect, useState } from "react";
@@ -19,7 +20,7 @@ import { useSwipeable } from "react-swipeable";
 const PageLayout: React.FC = ({ children }) => {
   const { pathname } = useLocation();
   const { user } = useAuth();
-  const [openSidebar, setOpenSidebar] = useState(false);
+  const { isSidebarOpen, setIsSidebarOpen } = useStyle();
   const { closeOnboarding, isOnboardingOpen, openOnboarding } =
     useOnboardingModal();
   const { openCreateClass, isCreateClassOpen, closeCreateClass } =
@@ -29,9 +30,15 @@ const PageLayout: React.FC = ({ children }) => {
   const { width } = useWindowSize();
   const handlers = useSwipeable({
     onSwiped: (eventData) => console.log("User Swiped!", eventData),
-    onSwipedRight: () => setOpenSidebar(true),
-    onSwipedLeft: () => setOpenSidebar(false),
+    onSwipedRight: () => setIsSidebarOpen(true),
+    onSwipedLeft: () => setIsSidebarOpen(false),
   });
+
+  useEffect(() => {
+    if (width > 640) {
+      setIsSidebarOpen(false);
+    }
+  }, [width]);
 
   const isOnMemberPage = () => {
     return pathname.includes("member");
@@ -57,7 +64,7 @@ const PageLayout: React.FC = ({ children }) => {
           {...handlers}
         >
           <Menubar />
-          {((!isOnMemberPage() && width > 640) || openSidebar) && <Sidebar />}
+          {((!isOnMemberPage() && width > 640) || isSidebarOpen) && <Sidebar />}
           {children}
           {/* {!isOnMemberPage() && <Rightbar />} */}
         </div>

@@ -1,4 +1,5 @@
 import AppLayout from "components/common/appLayout";
+import { StyleProvider } from "context/styleContext";
 import { Switch, useRouteMatch, Route } from "react-router";
 import ClassDetailPage from "./class";
 // import HomePage from "./home";
@@ -9,11 +10,13 @@ const DashboardPage = () => {
 
   return (
     <Switch>
-      <AppLayout>
-        {/* <Route path={path} exact component={HomePage} /> */}
-        <Route path={`${path}/class`} exact component={ListClassPage} />
-        <Route path={`${path}/class/:classId`} component={ClassDetailPage} />
-      </AppLayout>
+      <StyleProvider>
+        <AppLayout>
+          {/* <Route path={path} exact component={HomePage} /> */}
+          <Route path={`${path}/class`} exact component={ListClassPage} />
+          <Route path={`${path}/class/:classId`} component={ClassDetailPage} />
+        </AppLayout>
+      </StyleProvider>
     </Switch>
   );
 };

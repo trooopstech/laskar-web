@@ -10,6 +10,7 @@ import usePost from "context/QnA/Post";
 import { BsStar, BsStarFill } from "react-icons/bs";
 import useClassDetail from "hooks/useDetailClass";
 import { FaCheck } from "react-icons/fa";
+import useStyle from "context/styleContext";
 
 interface CommentBubbleProps {
   comment: Comment;
@@ -129,9 +130,15 @@ const CommentBubble: React.FC<CommentBubbleProps> = React.memo(
 
 const PostBody = () => {
   const { post } = usePost();
+  const { isSidebarOpen } = useStyle();
 
   return (
-    <div className="h-full p-2 w-full overflow-y-auto">
+    <div
+      className="h-full p-2 w-full overflow-y-auto"
+      style={{
+        minWidth: isSidebarOpen ? "80vw" : "",
+      }}
+    >
       {post?.comment.map((comment: Comment) => (
         <CommentBubble comment={comment} key={comment.id} />
       ))}
