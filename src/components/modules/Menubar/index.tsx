@@ -1,4 +1,5 @@
 import Classes from "components/elements/Classes";
+import useStyle from "context/styleContext";
 import useClass from "hooks/useClasses";
 import useWindowSize from "hooks/useWindowSize";
 import { MdAdd } from "react-icons/md";
@@ -11,11 +12,13 @@ const Menubar = () => {
     useCreateClassModal();
   const { openJoinClass, isJoinClassOpen, closeJoinClass } =
     useJoinClassModal();
+  const { isSidebarOpen } = useStyle();
+  const { width } = useWindowSize();
 
   return (
     <div
       className="px-3 pb-2 h-full bg-gray-800 shadow overflow-y-auto"
-      style={{ width: "80px" }}
+      style={{ width: isSidebarOpen ? "100px" : width > 640 ? "80px" : "70px" }}
     >
       {classes.map((data) => (
         <Classes

@@ -15,6 +15,7 @@ import useMyPost from "context/QnA/MyPost";
 import { MdDelete, MdEdit, MdMoreHoriz } from "react-icons/md";
 import { Menu, MenuItem, MenuDivider } from "@szhsin/react-menu";
 import QnAEditor from "components/modules/Editor/QnA";
+import useStyle from "context/styleContext";
 
 interface PostBubbleProps {
   post: Post;
@@ -198,9 +199,15 @@ const PostBubble: React.FC<PostBubbleProps> = React.memo(({ post }) => {
 
 const MyPostBody = () => {
   const { post } = useMyPost();
+  const { isSidebarOpen } = useStyle();
 
   return (
-    <div className="h-full p-2 w-full overflow-y-auto">
+    <div
+      className="h-full p-2 w-full overflow-y-auto"
+      style={{
+        minWidth: isSidebarOpen ? "80vw" : "",
+      }}
+    >
       {post?.length === 0 && (
         <div className="w-full rounded-md bg-gray-700 py-16 flex items-center justify-center flex-col">
           <h1 className="font-bold text-2xl">Edit dan Hapus Pertanyaan</h1>

@@ -7,6 +7,7 @@ import { BiComment } from "react-icons/bi";
 import { Descendant, createEditor } from "slate";
 import { withReact, Slate, Editable } from "slate-react";
 import { Element } from "components/modules/Editor/Common/element";
+import useStyle from "context/styleContext";
 
 const initialValue: Descendant[] = [
   {
@@ -19,6 +20,7 @@ const PostSection = () => {
   const { post } = usePost();
   const [value, setValue] = useState<Descendant[]>(initialValue);
   const editor = useMemo(() => withReact(createEditor()), []);
+  const { isSidebarOpen } = useStyle();
 
   useEffect(() => {
     if (post?.id) {
@@ -33,7 +35,12 @@ const PostSection = () => {
   }, []);
 
   return (
-    <div className="flex items-start py-4 px-2 border-b border-gray-700 cursor-pointer">
+    <div
+      className="flex items-start py-4 px-2 border-b border-gray-700 cursor-pointer"
+      style={{
+        minWidth: isSidebarOpen ? "80vw" : "",
+      }}
+    >
       <div
         className="h-full flex items-center justify-center"
         style={{ maxHeight: "64px" }}

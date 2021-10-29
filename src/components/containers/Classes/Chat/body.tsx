@@ -16,6 +16,7 @@ import { Virtuoso } from "react-virtuoso";
 import { Element } from "components/modules/Editor/Common/element";
 import { Leaf } from "components/modules/Editor/Common/toolbar";
 import { getInitials } from "utils/getInitial";
+import useStyle from "context/styleContext";
 
 interface MessageProps {
   message: GroupMessages;
@@ -106,40 +107,34 @@ const ChatBody = React.memo(({ virtuoso }: { virtuoso: any }) => {
   const { chatGroup, getMessageByPage, hasMore, loading, page } = useChat();
   const { getUserClassMember } = useClassDetail();
   const classMember: ClassMember = getUserClassMember();
+  const { isSidebarOpen } = useStyle();
 
-  const query = () => {
+  const query = useCallback(() => {
     if (loading) return;
     if (hasMore && !loading && page > 0) {
       getMessageByPage();
       virtuoso.current?.scrollToIndex({
-        index: 2,
+        index: page > 1 ? 9 : 1,
         behavior: "smooth",
       });
     }
-  };
+  }, [loading, hasMore, page, getMessageByPage, virtuoso]);
 
   return (
     <div
       className="flex-grow overflow-y-scroll overflow-x-hidden w-full py-4 border-gray-700"
       key={chatGroup?.id}
-      style={{ maxHeight: "calc(100% - 7rem)" }}
+      style={{
+        maxHeight: "calc(100% - 7rem)",
+        minWidth: isSidebarOpen ? "80vw" : "",
+      }}
     >
       {loading && <h1 className="text-center">Loading...</h1>}
       <Virtuoso
         data={chatGroup?.group_messages}
         ref={virtuoso}
         initialTopMostItemIndex={(chatGroup?.group_messages.length ?? 10) - 1}
-        followOutput="smooth"
         startReached={query}
-        atBottomStateChange={(bottom) => {
-          if (bottom) {
-            // @ts-ignore
-            virtuoso.current?.scrollToIndex({
-              index: (chatGroup?.group_messages.length ?? 10) - 1,
-              behavior: "smooth",
-            });
-          }
-        }}
         firstItemIndex={chatGroup?.group_messages.length as number}
         itemContent={(index, message) => {
           return (

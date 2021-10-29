@@ -13,6 +13,7 @@ import { useHistory, useRouteMatch } from "react-router";
 import { Link } from "react-router-dom";
 import useClassDetail from "hooks/useDetailClass";
 import { FaCheck } from "react-icons/fa";
+import useStyle from "context/styleContext";
 
 interface PostBubbleProps {
   post: Post;
@@ -23,7 +24,7 @@ const PostBubble: React.FC<PostBubbleProps> = React.memo(({ post }) => {
   const editor = useMemo(() => withReact(createEditor()), []);
   const history = useHistory();
   const { url } = useRouteMatch();
-  const { votePost, voteLoading } = useQnA();
+  const { votePost } = useQnA();
   const { getUserClassMember } = useClassDetail();
   const member = getUserClassMember();
 
@@ -122,9 +123,15 @@ const PostBubble: React.FC<PostBubbleProps> = React.memo(({ post }) => {
 
 const QnABody = () => {
   const { qna } = useQnA();
+  const { isSidebarOpen } = useStyle();
 
   return (
-    <div className="h-full p-2 w-full overflow-y-auto">
+    <div
+      className="h-full p-2 w-full overflow-y-auto"
+      style={{
+        minWidth: isSidebarOpen ? "80vw" : "",
+      }}
+    >
       {qna?.post.map((post: Post) => (
         <PostBubble post={post} key={post.id} />
       ))}

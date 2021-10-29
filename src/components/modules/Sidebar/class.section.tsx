@@ -87,7 +87,7 @@ const ChannelButton = ({ channel }: { channel: Channel }) => {
 
 const ChannelMenu: React.FC<ChannelMenuProps> = ({ channels }) => {
   return (
-    <div className="channel flex flex-col">
+    <div className="channel flex flex-col mb-4">
       {channels?.map((channel) => (
         <ChannelButton channel={channel} key={channel.id} />
       ))}
