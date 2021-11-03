@@ -68,33 +68,33 @@ export function AuthProvider({
     return undefined;
   };
 
-  onMessageListener()
-    .then((payload) => {
-      console.log(payload);
-      const audio = new Audio("/relentless-572.ogg");
-      audio.play();
-    })
-    .catch((err) => console.log("failed: ", err));
+  // onMessageListener()
+  //   .then((payload) => {
+  //     console.log(payload);
+  //     const audio = new Audio("/relentless-572.ogg");
+  //     audio.play();
+  //   })
+  //   .catch((err) => console.log("failed: ", err));
 
-  useEffect(() => {
-    let data;
+  // useEffect(() => {
+  //   let data;
 
-    async function tokenFunc() {
-      data = await getToken();
-      if (data) {
-        registerKey({
-          variables: {
-            device_key: data,
-          },
-        });
-      }
-      return data;
-    }
+  //   async function tokenFunc() {
+  //     data = await getToken();
+  //     if (data) {
+  //       registerKey({
+  //         variables: {
+  //           device_key: data,
+  //         },
+  //       });
+  //     }
+  //     return data;
+  //   }
 
-    if (user) {
-      tokenFunc();
-    }
-  }, [user]);
+  //   if (user) {
+  //     tokenFunc();
+  //   }
+  // }, [user]);
 
   // If we change page, reset the error state.
   useEffect(() => {
