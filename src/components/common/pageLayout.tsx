@@ -29,7 +29,6 @@ const PageLayout: React.FC = ({ children }) => {
     useJoinClassModal();
   const { width } = useWindowSize();
   const handlers = useSwipeable({
-    onSwiped: (eventData) => console.log("User Swiped!", eventData),
     onSwipedRight: () => setIsSidebarOpen(true),
     onSwipedLeft: () => setIsSidebarOpen(false),
   });

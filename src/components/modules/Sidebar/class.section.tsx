@@ -107,7 +107,13 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({ category }) => {
   const [newChannel, setChannel] = useState<Channel>();
 
   if (category.hidden) {
-    return <div />;
+    return (
+      <>
+        {category?.channels?.length > 0 && (
+          <ChannelMenu channels={category?.channels} />
+        )}
+      </>
+    );
   }
 
   const openInviteModal = (channel: Channel) => {
