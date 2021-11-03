@@ -10,7 +10,7 @@ const Navbar = () => {
   const { user, logout } = useAuth();
 
   return (
-    <div className="lg:px-20 px-4 md:px-15 bg-transparent bg-gray-800 w-screen fixed top-0 left-0 h-16 flex items-center z-10">
+    <div className="lg:px-20 px-4 md:px-15 bg-transparent bg-gray-1000 w-screen fixed top-0 left-0 h-16 flex items-center z-10">
       <div className="w-full">
         <img
           src={logo}

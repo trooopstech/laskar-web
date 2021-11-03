@@ -6,6 +6,7 @@ import React, {
   useMemo,
   useState,
 } from "react";
+import { SkeletonTheme } from "react-loading-skeleton";
 
 interface StyleContextType {
   isSidebarOpen: boolean;
@@ -31,7 +32,9 @@ export function StyleProvider({
 
   return (
     <StyleContext.Provider value={memoedValue}>
-      {children}
+      <SkeletonTheme color="#838487" highlightColor="#989898">
+        {children}
+      </SkeletonTheme>
     </StyleContext.Provider>
   );
 }

@@ -31,7 +31,7 @@ const Input: React.FC<InputProps> = ({
     <div className="flex flex-col my-2 w-full">
       <span className="font-bold mb-1">{label}</span>
       <div
-        className={`flex w-full items-center rounded-lg px-2 py-1 bg-gray-700 ${
+        className={`flex w-full items-center rounded-lg px-2 py-1 bg-gray-900 ${
           error && "border border-red-500"
         }`}
       >

@@ -34,6 +34,7 @@ import { MessageType } from "types/chat";
 import { Node } from "slate";
 import ImageUploader from "../Common/image.upload";
 import FileUploader from "../Common/file.upload";
+import EmojiPicker from "../Common/emoji.picker";
 
 const HOTKEYS = {
   "mod+b": "bold",
@@ -186,9 +187,9 @@ const ChatEditor = ({ virtuoso }: { virtuoso: any }) => {
 
   return (
     <Slate editor={editor} value={value} onChange={(value) => setValue(value)}>
-      <div className="w-full bg-gray-700  px-2 rounded-lg">
+      <div className="w-full bg-gray-900  px-2 rounded-lg">
         <div
-          className="flex  w-full items-center border-b border-gray-600 py-2"
+          className="flex  w-full items-center border-b border-gray-400 py-2"
           style={{
             maxHeight: "450px",
             overflowY: height > 450 ? "scroll" : "unset",
@@ -211,13 +212,13 @@ const ChatEditor = ({ virtuoso }: { virtuoso: any }) => {
             <FileUploader setUrl={addAttachment} />
             <ImageUploader setUrl={addImage} />
             <AiOutlineSmile
-              className="text-xl text-gray-500 hover:text-gray-100 mr-2"
+              className="text-xl text-gray-400 hover:text-gray-100 mr-2"
               onClick={() => setShowEmoji(1)}
             />
-            <div className="h-full bg-gray-500 mr-2" style={{ width: "1px" }} />
+            <div className="h-full bg-gray-400 mr-2" style={{ width: "1px" }} />
             <AiOutlineBold
               className={`text-xl ${
-                isMarkActive(editor, "bold") ? "text-gray-100" : "text-gray-500"
+                isMarkActive(editor, "bold") ? "text-gray-100" : "text-gray-400"
               } hover:text-gray-100 mr-2`}
               onMouseDown={(event) => {
                 event.preventDefault();
@@ -228,7 +229,7 @@ const ChatEditor = ({ virtuoso }: { virtuoso: any }) => {
               className={`text-xl ${
                 isMarkActive(editor, "underline")
                   ? "text-gray-100"
-                  : "text-gray-500"
+                  : "text-gray-400"
               } hover:text-gray-100 mr-2`}
               onMouseDown={(event) => {
                 event.preventDefault();
@@ -239,7 +240,7 @@ const ChatEditor = ({ virtuoso }: { virtuoso: any }) => {
               className={`text-xl ${
                 isMarkActive(editor, "italic")
                   ? "text-gray-100"
-                  : "text-gray-500"
+                  : "text-gray-400"
               } hover:text-gray-100 mr-2`}
               onMouseDown={(event) => {
                 event.preventDefault();
@@ -250,11 +251,11 @@ const ChatEditor = ({ virtuoso }: { virtuoso: any }) => {
           <div className="flex items-center">
             {createMessagesLoading ? (
               <div className=" flex justify-center items-center">
-                <div className="animate-spin rounded-full h-4 w-4 border-l-2 border-b-2 border-gray-500"></div>
+                <div className="animate-spin rounded-full h-4 w-4 border-l-2 border-b-2 border-gray-400"></div>
               </div>
             ) : (
               <AiOutlineSend
-                className="text-xl text-gray-500 hover:text-gray-100"
+                className="text-xl text-gray-400 hover:text-gray-100"
                 onClick={onSend}
               />
             )}
@@ -276,37 +277,5 @@ const initialValue: Descendant[] = [
     children: [{ text: "" }],
   },
 ];
-
-const EmojiPicker = ({
-  open,
-  setClose,
-  setMessage,
-}: {
-  open: number;
-  setClose: () => void;
-  setMessage: (val: string) => void;
-}) => {
-  if (open > 0) {
-    return (
-      <div
-        className="fixed h-screen w-screen bg-transparent top-0 left-0 z-10 shadow-sm"
-        onClick={setClose}
-      >
-        <div
-          className="p-10 rounded-sm z-100 absolute bottom-3 left-12"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <Picker
-            // @ts-ignore
-            onSelect={(e) => setMessage(e.native)}
-            theme="dark"
-            emoji=""
-          />
-        </div>
-      </div>
-    );
-  }
-  return null;
-};
 
 export default ChatEditor;

@@ -36,7 +36,7 @@ const PostSection = () => {
 
   return (
     <div
-      className="flex items-start py-4 px-2 border-b border-gray-700 cursor-pointer"
+      className="flex items-start py-4 px-2 border-b border-gray-600 cursor-pointer"
       style={{
         minWidth: isSidebarOpen ? "80vw" : "",
       }}
@@ -81,13 +81,13 @@ const PostSection = () => {
             </Slate>
           </p>
         </div>
-        <div className="w-full border-b border-gray-700">
+        <div className="w-full border-b border-gray-600">
           <p className="text-xs text-gray-500 my-2">
             {post && moment(new Date(post.created_at)).format("ll hh:mm A")}
           </p>
         </div>
         <div className="my-2 flex items-center">
-          <span className="text-sm font-light mr-1 text-gray-500">
+          <span className="text-sm font-light mr-1 text-gray-600">
             {post?.comment.length}
           </span>
           <BiComment />

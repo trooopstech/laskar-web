@@ -5,30 +5,43 @@ import CreateClassModal, {
 import JoinClassModal, {
   useJoinClassModal,
 } from "components/modules/Modal/JoinClass";
-import useAuth from "hooks/useAuth";
+import useStyle from "context/styleContext";
 import useClass from "hooks/useClasses";
+import Skeleton from "react-loading-skeleton";
 
 const ListClasses = () => {
-  const { user } = useAuth();
-  const { classes, seperateMyClassAndOtherClass } = useClass();
+  const { classes, loadingClass } = useClass();
   const { openCreateClass, isCreateClassOpen, closeCreateClass } =
     useCreateClassModal();
   const { openJoinClass, isJoinClassOpen, closeJoinClass } =
     useJoinClassModal();
+  const { isSidebarOpen } = useStyle();
 
   return (
-    <div className="container p-2 md:p-8 overflow-y-auto border-gray-700 border-l sm:border-l-0">
-      {classes.length > 0 && (
-        <div className="w-full mb-12">
-          <h1 className="text-xl font-bold">Kelas</h1>
-          <div className="flex flex-wrap -ml-4" style={{ minHeight: "200px" }}>
-            {classes.map((data) => (
-              <ClassCard data={data} />
-            ))}
-          </div>
-        </div>
-      )}
+    <div
+      className={`${
+        isSidebarOpen ? "w-16" : ""
+      } container p-2 md:p-8 overflow-y-auto border-gray-700 border-l sm:border-l-0`}
+    >
       <div className="w-full mb-12">
+        <h1 className="text-xl font-bold">Kelas</h1>
+        <div className="flex flex-wrap -ml-4" style={{ minHeight: "200px" }}>
+          {loadingClass ? (
+            <Skeleton
+              width={230}
+              height={240}
+              style={{ margin: "1rem" }}
+              count={3}
+            />
+          ) : (
+            classes.map((data) => <ClassCard data={data} />)
+          )}
+          {!loadingClass && (
+            <ClassCard isExtra openCreateClass={openCreateClass} />
+          )}
+        </div>
+      </div>
+      {/* <div className="w-full mb-12">
         <h1 className="text-xl font-bold">Kelas Saya</h1>
         <div className="flex flex-wrap -ml-4" style={{ minHeight: "200px" }}>
           {seperateMyClassAndOtherClass(user?.id ?? "").map((data) => (
@@ -36,7 +49,7 @@ const ListClasses = () => {
           ))}
           <ClassCard isExtra openCreateClass={openCreateClass} />
         </div>
-      </div>
+      </div> */}
       <CreateClassModal
         open={isCreateClassOpen}
         onClose={closeCreateClass}

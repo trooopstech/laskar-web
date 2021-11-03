@@ -1,3 +1,4 @@
+import useStyle from "context/styleContext";
 import useClassDetail from "hooks/useDetailClass";
 import { useEffect, useState } from "react";
 import MemberSection from "./section";
@@ -17,6 +18,7 @@ const MemberContainer = () => {
   const [student, setStudent] = useState<ClassMember[]>([]);
   const [assistant, setAssistant] = useState<ClassMember[]>([]);
   const [teacher, setTeacher] = useState<ClassMember[]>([]);
+  const { isSidebarOpen } = useStyle();
 
   useEffect(() => {
     if (class_member) {
@@ -29,8 +31,12 @@ const MemberContainer = () => {
   }, [class_member]);
 
   return (
-    <div className="w-full flex flex-col items-center py-4 border-gray-700 border-l sm:border-l-0">
-      <div className="w-3/4 overflow-y-scroll">
+    <div
+      className={`${
+        isSidebarOpen ? "w-16" : "w-full"
+      } flex flex-col items-center py-4 border-gray-700 border-l sm:border-l-0`}
+    >
+      <div className="w-3/4 overflow-y-scroll overflow-x-hidden">
         <MemberSection section="Guru" classMember={teacher} />
         <MemberSection section="Asisten" classMember={assistant} />
         <MemberSection section="Siswa" classMember={student} />

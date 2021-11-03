@@ -33,6 +33,7 @@ export function ClassProvider({
   const [loadingClass, setLoading] = useState<boolean>(false);
   const { data, loading, error } = useQuery(GET_ALL_CLASS, {
     errorPolicy: "all",
+    fetchPolicy: "network-only",
   });
   const [joinClassByToken] = useMutation(JOIN_CLASS_BY_TOKEN, {
     errorPolicy: "all",

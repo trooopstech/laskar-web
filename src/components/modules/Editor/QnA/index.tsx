@@ -26,6 +26,7 @@ import { Post } from "types/post";
 import FileUploader from "../Common/file.upload";
 import ImageUploader from "../Common/image.upload";
 import { serialize } from "../Chat";
+import EmojiPicker from "../Common/emoji.picker";
 
 const HOTKEYS = {
   "mod+b": "bold",
@@ -284,9 +285,10 @@ const QnAEditor = ({
               </Button>
             )}
             {!editMode && (
-              <Button variant="primary" onClick={onSend} smaller>
-                Kirim
-              </Button>
+              <AiOutlineSend
+                className="text-xl text-gray-500 hover:text-gray-100"
+                onClick={onSend}
+              />
             )}
           </div>
         </div>
@@ -306,37 +308,5 @@ const initialValue: Descendant[] = [
     children: [{ text: "" }],
   },
 ];
-
-const EmojiPicker = ({
-  open,
-  setClose,
-  setMessage,
-}: {
-  open: number;
-  setClose: () => void;
-  setMessage: (val: string) => void;
-}) => {
-  if (open > 0) {
-    return (
-      <div
-        className="fixed h-screen w-screen bg-transparent top-0 left-0 z-10 shadow-sm"
-        onClick={setClose}
-      >
-        <div
-          className="p-10 rounded-sm z-100 absolute bottom-2 right-10"
-          onClick={(e) => e.stopPropagation()}
-        >
-          <Picker
-            // @ts-ignore
-            onSelect={(e) => setMessage(e.native)}
-            theme="dark"
-            emoji=""
-          />
-        </div>
-      </div>
-    );
-  }
-  return null;
-};
 
 export default QnAEditor;

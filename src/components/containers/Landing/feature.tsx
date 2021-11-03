@@ -5,7 +5,7 @@ import { LandingComponentProps } from ".";
 
 const Feature: React.FC<LandingComponentProps> = ({ openRegister }) => {
   return (
-    <div className="h-screen w-screen bg-gray-800 flex flex-col-reverse md:flex-row lg:px-20 px-4 md:px-15">
+    <div className="h-screen w-screen bg-gray-1000 flex flex-col-reverse md:flex-row lg:px-20 px-4 md:px-15">
       <div className="w-full h-full flex flex-col justify-center">
         <h1 className="text-2xl md:text-5xl my-4 font-bold">
           Kelas, Asistensi, dan Diskusi dalam 1 Platform

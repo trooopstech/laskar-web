@@ -4,7 +4,7 @@ import { LandingComponentProps } from ".";
 
 const Benefit: React.FC<LandingComponentProps> = ({ openRegister }) => {
   return (
-    <div className="w-screen bg-gray-800 flex lg:px-20 px-4 md:px-15 flex-col items-center pb-16 md:pt-0 pt-16">
+    <div className="w-screen bg-gray-1000 flex lg:px-20 px-4 md:px-15 flex-col items-center pb-16 md:pt-0 pt-16">
       <h1 className="text-2xl text-center md:text-left md:text-5xl font-bold">
         Kelas yang Aktif Bermula Dari Kontribusi Siswa.
       </h1>

@@ -15,7 +15,7 @@ const PostContainer = () => {
     <PostProvider id={postId} channelId={channelId}>
       <div
         className={`${
-          isSidebarOpen ? "" : "w-full"
+          isSidebarOpen ? "w-16" : "w-full"
         } h-full relative overflow-hidden flex flex-col`}
         key={postId}
         style={{ overflowX: "hidden" }}

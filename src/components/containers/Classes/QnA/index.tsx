@@ -14,7 +14,7 @@ const QnAContainer = () => {
     <QnAProvider id={channelId}>
       <div
         className={`${
-          isSidebarOpen ? "" : "w-full"
+          isSidebarOpen ? "w-16" : "w-full"
         } h-full relative overflow-hidden flex flex-col border-gray-700 border-l sm:border-l-0`}
         key={channelId}
         style={{ overflowX: "hidden" }}

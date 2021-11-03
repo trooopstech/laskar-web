@@ -6,7 +6,6 @@ import {
   Element as SlateElement,
 } from "slate";
 import { ImageElement, ParagraphElement } from "types/editor";
-import { isUrl } from "./element";
 
 const SHORTCUTS = {
   "*": "list-item",
@@ -32,7 +31,7 @@ export const withShortcuts = (editor) => {
 
   // @ts-ignore
   editor.insertText = (text) => {
-    const { selection, children } = editor;
+    const { selection } = editor;
 
     if (text === " " && selection && Range.isCollapsed(selection)) {
       const { anchor } = selection;

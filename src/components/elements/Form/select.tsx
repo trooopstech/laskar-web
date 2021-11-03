@@ -19,7 +19,7 @@ const Select: React.FC<SelectProps> = ({
     <div className="flex flex-col my-2 w-full">
       <span>{label}</span>
       <select
-        className="form-select rounded-lg border-0 bg-gray-700 text-gray-50"
+        className="form-select rounded-lg border-0 bg-gray-900 text-gray-50"
         onChange={onChange}
         onBlur={onBlur}
         value={value}

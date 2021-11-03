@@ -6,7 +6,7 @@ const MyPostHeader = () => {
 
   return (
     <header
-      className="w-full py-3 px-3 bg-gray-800 flex justify-between items-center shadow-sm border-b border-gray-700"
+      className="w-full py-3 px-3 bg-gray-800 flex justify-between items-center shadow-sm border-b border-gray-600"
       style={{
         minWidth: isSidebarOpen ? "80vw" : "",
       }}

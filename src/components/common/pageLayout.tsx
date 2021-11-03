@@ -29,7 +29,6 @@ const PageLayout: React.FC = ({ children }) => {
     useJoinClassModal();
   const { width } = useWindowSize();
   const handlers = useSwipeable({
-    onSwiped: (eventData) => console.log("User Swiped!", eventData),
     onSwipedRight: () => setIsSidebarOpen(true),
     onSwipedLeft: () => setIsSidebarOpen(false),
   });
@@ -56,6 +55,7 @@ const PageLayout: React.FC = ({ children }) => {
 
   return (
     <div className="flex flex-row w-full">
+      <Menubar />
       <div className="h-full w-full bg-gray-800">
         <Header />
         <div
@@ -63,7 +63,6 @@ const PageLayout: React.FC = ({ children }) => {
           style={{ height: "calc(100% - 4rem)" }}
           {...handlers}
         >
-          <Menubar />
           {((!isOnMemberPage() && width > 640) || isSidebarOpen) && <Sidebar />}
           {children}
           {/* {!isOnMemberPage() && <Rightbar />} */}

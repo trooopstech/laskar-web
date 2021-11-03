@@ -209,9 +209,11 @@ const MyPostBody = () => {
       }}
     >
       {post?.length === 0 && (
-        <div className="w-full rounded-md bg-gray-700 py-16 flex items-center justify-center flex-col">
-          <h1 className="font-bold text-2xl">Edit dan Hapus Pertanyaan</h1>
-          <p className="font-thin">
+        <div className="w-full rounded-md bg-gray-900 py-16 flex items-center justify-center flex-col px-4 sm:px-0">
+          <h1 className="font-bold text-2xl text-center">
+            Edit dan Hapus Pertanyaan
+          </h1>
+          <p className="font-thin text-center">
             Saat kamu membuat pertanyaan, kamu akan melihatnya disini.{" "}
           </p>
         </div>

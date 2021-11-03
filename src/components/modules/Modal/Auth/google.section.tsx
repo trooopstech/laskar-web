@@ -23,7 +23,7 @@ const GoogleSection = ({ text }: { text: string }) => {
           <Button
             onClick={renderProps.onClick}
             disabled={renderProps.disabled}
-            className="w-full bg-gray-800 py-2"
+            className="w-full bg-gray-900 py-2"
           >
             <div className="flex items-center justify-center">
               <img src={google} alt="google-logo" className="mr-4" />

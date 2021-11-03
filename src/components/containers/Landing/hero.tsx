@@ -4,7 +4,7 @@ import { LandingComponentProps } from ".";
 const Hero: React.FC<LandingComponentProps> = ({ openRegister }) => {
   return (
     <div
-      className="bg-gray-800 lg:px-20 px-4 md:px-15 pt-16 h-screen flex flex-col items-center justify-center"
+      className="bg-gray-1000 lg:px-20 px-4 md:px-15 pt-16 h-screen flex flex-col items-center justify-center"
       id="hero-section"
     >
       <h1 className="text-xl md:text-3xl my-2 text-center">
