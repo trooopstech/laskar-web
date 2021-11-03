@@ -36,7 +36,7 @@ const ImageUploader = ({ setUrl }: UploadProps) => {
         className="p-0 border-0 bg-transparent"
         onClick={() => imageRef.current?.click()}
       >
-        <MdImage className="text-xl text-gray-500 hover:text-gray-100 mr-2" />
+        <MdImage className="text-xl text-gray-400 hover:text-gray-100 mr-2" />
       </button>
       <Modal onClose={closeModal} open={loading ? 1 : 0} permanent>
         <div className="py-4 px-16">

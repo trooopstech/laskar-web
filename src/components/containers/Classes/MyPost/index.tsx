@@ -14,7 +14,7 @@ const MyPostContainer = () => {
     <MyPostProvider id={member.oid}>
       <div
         className={`${
-          isSidebarOpen ? "" : "w-full"
+          isSidebarOpen ? "w-16" : "w-full"
         } h-full relative overflow-hidden flex flex-col border-gray-700 border-l sm:border-l-0`}
         style={{ overflowX: "hidden" }}
       >

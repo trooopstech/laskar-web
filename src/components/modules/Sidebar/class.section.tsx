@@ -1,6 +1,6 @@
 import useClassDetail from "hooks/useDetailClass";
 import { MdAdd, MdExpandMore, MdExpandLess } from "react-icons/md";
-import { CgFeed } from "react-icons/cg";
+import { CgFileDocument } from "react-icons/cg";
 import { FaQuestion, FaHashtag } from "react-icons/fa";
 import {
   ControlledMenu,
@@ -45,7 +45,7 @@ const ChannelButton = ({ channel }: { channel: Channel }) => {
       }}
     >
       <NavLink
-        className="flex items-center cursor-pointer text-gray-400 hover:text-gray-300 my-1 hover:bg-gray-600 rounded-md pl-4"
+        className="flex items-center cursor-pointer text-gray-300 hover:text-gray-200 my-1 hover:bg-gray-600 rounded-md pl-4 py-1"
         key={channel.id}
         to={`${url}/${makeRouteByChannelType(channel)}/${channel?.id}`}
         activeClassName="text-white bg-gray-700"
@@ -117,7 +117,11 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({ category }) => {
 
   return (
     <>
-      <div className="category w-full flex items-center justify-between cursor-pointer text-gray-400 hover:text-gray-300 px-1">
+      <div
+        className={`category w-full flex items-center justify-between cursor-pointer text-gray-300 hover:text-gray-200 px-1 ${
+          collapse ? "mb-2" : ""
+        }`}
+      >
         <div
           className="flex items-center w-full cursor-pointer"
           onClick={() => setCollapse(!collapse)}
@@ -184,11 +188,11 @@ const ClassSection = () => {
     <div className="py-2">
       <NavLink
         to={`${url}/post`}
-        activeClassName="text-white bg-gray-700"
+        activeClassName="text-white bg-gray-800"
         className="flex items-center mb-4 mt-2 w-full hover:bg-gray-600 rounded-md px-2 py-1 cursor-pointer"
       >
-        <CgFeed className="mr-3" />
-        <p className="text-gray-400 hover:text-gray-300">halamanku</p>
+        <CgFileDocument className="mr-3 text-gray-300 hover:text-gray-200 text-xl" />
+        <p className="text-gray-300 hover:text-gray-200">halamanku</p>
       </NavLink>
       {classDetail?.channel_category.map((category) => (
         <CategoryMenu category={category} key={category.id} />

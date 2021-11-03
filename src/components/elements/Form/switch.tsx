@@ -23,7 +23,7 @@ const Switch = ({ checked, setChecked, label }: SwitchProps) => {
           className={`absolute left-0 top-0 h-full w-full rounded-full border border-gray-500 ${
             checked
               ? "bg-green-500 border-gray-300"
-              : "bg-gray-800 border-gray-500"
+              : "bg-gray-1000 border-gray-500"
           }`}
         ></span>
         <span

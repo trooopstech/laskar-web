@@ -1,20 +1,27 @@
 import PreviewImageModal, {
   usePreviewImageModal,
 } from "components/modules/Modal/PreviewImage";
+import { useState } from "react";
 import { MdAttachFile } from "react-icons/md";
+import Skeleton from "react-loading-skeleton";
 
 // @ts-ignore
 const Image = ({ attributes, children, element }) => {
   const { isPreviewOpen, openPreview, closePreview } = usePreviewImageModal();
+  const [loaded, setLoaded] = useState(false);
 
   return (
     <>
       <div {...attributes}>
         <div contentEditable={false}>
+          {!loaded && <Skeleton height={200} width={300} />}
           <img
             src={element.url}
-            className="w-1/2 md:w-1/4 cursor-pointer"
+            className={`${
+              loaded ? "" : "hidden"
+            } w-1/2 md:w-1/4 cursor-pointer`}
             alt="attachment"
+            onLoad={() => setLoaded(true)}
             onClick={openPreview}
           />
           {children}

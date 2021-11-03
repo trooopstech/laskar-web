@@ -30,7 +30,7 @@ const HomeSection = () => {
           return false;
         }}
         className="my-2 p-2 rounded-md"
-        activeClassName="bg-gray-600"
+        activeClassName="bg-gray-700"
       >
         <p className="flex">
           <MdClass style={{ fontSize: "24px" }} />
