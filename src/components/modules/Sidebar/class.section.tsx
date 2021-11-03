@@ -18,6 +18,7 @@ import { NavLink } from "react-router-dom";
 import InviteChannelModal, {
   useInviteChannelModal,
 } from "../Modal/InviteChannelMember";
+import { dynamicSort } from "utils/sort";
 
 interface ChannelMenuProps {
   channels: Channel[];
