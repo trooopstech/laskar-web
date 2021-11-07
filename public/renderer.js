@@ -18,7 +18,6 @@ ipcRenderer.on(NOTIFICATION_SERVICE_STARTED, (_, token) => {
 
 // Handle notification errors
 ipcRenderer.on(NOTIFICATION_SERVICE_ERROR, (_, error) => {
-  alert("WKWKWKWKWKWKKW");
   console.log("notification error", error);
 });
 
