@@ -85,6 +85,8 @@ export function AuthProvider({
         registerKey({
           variables: {
             device_key: data,
+            // @ts-ignore
+            device_id: `${navigator.userAgentData.platform}-${window.innerWidth}x${window.innerHeight}`,
           },
         });
       }
