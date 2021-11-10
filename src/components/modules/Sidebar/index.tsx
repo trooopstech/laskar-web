@@ -10,7 +10,7 @@ const Sidebar = () => {
 
   return (
     <div
-      className="h-full px-2 bg-gray-900 border-r border-gray-modal border-l flex flex-col relative transition duration-500 ease-in-out"
+      className="h-full px-2 bg-gray-900 border-r border-gray-modal flex flex-col relative transition duration-500 ease-in-out"
       style={{ width: width > 640 ? "325px" : "100%" }}
     >
       {classId ? <ClassSection /> : <HomeSection />}
