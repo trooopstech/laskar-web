@@ -21,7 +21,7 @@ const ListClasses = () => {
     <div
       className={`${
         isSidebarOpen ? "w-16" : ""
-      } container p-2 md:p-8 overflow-y-auto border-gray-700 border-l sm:border-l-0`}
+      } container p-4 md:p-8 overflow-y-auto border-gray-700 border-l sm:border-l-0`}
     >
       <div className="w-full mb-12">
         <h1 className="text-xl font-bold">Kelas</h1>
