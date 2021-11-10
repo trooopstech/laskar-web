@@ -5,6 +5,7 @@
   "dependencies": {
     "@apollo/client": "^3.4.10",
     "@craco/craco": "^6.2.0",
+    "@getstation/electron-google-oauth2": "^2.1.0",
     "@sentry/react": "^6.13.3",
     "@sentry/tracing": "^6.13.3",
     "@szhsin/react-menu": "^2.0.1",
@@ -60,7 +61,7 @@
     "start": "craco start",
     "build": "craco build && node sentrySourcemap.js",
     "test": "craco test",
-    "electron-dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",
+    "electron:dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {

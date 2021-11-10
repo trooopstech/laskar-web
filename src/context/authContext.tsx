@@ -13,6 +13,7 @@ import { useHistory, useLocation } from "react-router-dom";
 import { UPDATE_USER } from "schema/identities";
 import { REGISTER_DEVICE_KEY } from "schema/notification";
 import { getToken, onMessageListener } from "utils/firebase";
+const { ipcRenderer } = window.require("electron");
 
 interface AuthContextType {
   user?: User;
@@ -68,13 +69,49 @@ export function AuthProvider({
     return undefined;
   };
 
-  // onMessageListener()
-  //   .then((payload) => {
-  //     console.log(payload);
-  //     const audio = new Audio("/relentless-572.ogg");
-  //     audio.play();
-  //   })
-  //   .catch((err) => console.log("failed: ", err));
+  onMessageListener()
+    .then((payload) => {
+      console.log(payload);
+      const audio = new Audio("/relentless-572.ogg");
+      audio.play();
+    })
+    .catch((err) => console.log("failed: ", err));
+
+  useEffect(() => {
+    const sendTokenFromElectron = (data: string) => {
+      registerKey({
+        variables: {
+          device_key: data,
+          // @ts-ignore
+          device_id: `${navigator.userAgentData.platform}-${window.innerWidth}x${window.innerHeight}`,
+        },
+      });
+    };
+
+    // @ts-ignore
+    // window.electron.waitToken(sendTokenFromElectron);
+  }, []);
+
+  useEffect(() => {
+    // @ts-ignore
+    ipcRenderer.on("ping", (event, message) => {
+      console.log(message);
+    });
+  }, []);
+
+  useEffect(() => {
+    if (user) {
+      const token = ipcRenderer.sendSync("user-data", JSON.stringify(user));
+      console.log(token);
+      registerKey({
+        variables: {
+          device_key: token,
+          // @ts-ignore
+          device_id: `${navigator.userAgentData.platform}-${window.innerWidth}x${window.innerHeight}`,
+        },
+      });
+    }
+  }, [user]);
 
   // useEffect(() => {
   //   let data;
@@ -85,6 +122,8 @@ export function AuthProvider({
   //       registerKey({
   //         variables: {
   //           device_key: data,
+  //           // @ts-ignore
+  //           device_id: `${navigator.userAgentData.platform}-${window.innerWidth}x${window.innerHeight}`,
   //         },
   //       });
   //     }

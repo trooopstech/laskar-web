@@ -14,6 +14,7 @@ const {
 // Listen for service successfully started
 ipcRenderer.on(NOTIFICATION_SERVICE_STARTED, (_, token) => {
   console.log("service successfully started", token);
+  ipcRenderer.send("device-token", token);
 });
 
 // Handle notification errors
@@ -24,6 +25,7 @@ ipcRenderer.on(NOTIFICATION_SERVICE_ERROR, (_, error) => {
 // Send FCM token to backend
 ipcRenderer.on(TOKEN_UPDATED, (_, token) => {
   console.log("token updated", token);
+  ipcRenderer.send("device-token", token);
 });
 
 // Display notification

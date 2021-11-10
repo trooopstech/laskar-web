@@ -5,6 +5,7 @@ const BrowserWindow = electron.BrowserWindow;
 const path = require("path");
 const isDev = require("electron-is-dev");
 const { setup: setupPushReceiver } = require("electron-push-receiver");
+const { ipcMain } = require("electron");
 
 // Call it before 'did-finish-load' with mainWindow a reference to your window
 
@@ -17,6 +18,7 @@ function createWindow() {
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
+      enableRemoteModule: true,
     },
   });
   mainWindow.loadURL(
@@ -27,6 +29,19 @@ function createWindow() {
 
   // Initialize electron-push-receiver component. Should be called before 'did-finish-load'
   setupPushReceiver(mainWindow.webContents);
+
+  mainWindow.webContents.on("did-finish-load", () => {
+    mainWindow.webContents.send("ping", "🤘");
+    mainWindow.webContents.send("ping", "🤘");
+    mainWindow.webContents.send("ping", "🤘");
+  });
+
+  ipcMain.on("device-token", (event, token) => {
+    event.returnValue = token;
+    ipcMain.on("user-data", (event, user) => {
+      event.returnValue = token;
+    });
+  });
 
   mainWindow.on("closed", () => (mainWindow = null));
 }
