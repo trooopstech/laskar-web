@@ -122,7 +122,7 @@ const ChatBody = React.memo(({ virtuoso }: { virtuoso: any }) => {
 
   return (
     <div
-      className="flex-grow overflow-y-scroll overflow-x-hidden w-full py-4 border-gray-700"
+      className="flex-grow overflow-y-scroll overflow-x-hidden w-full border-gray-700"
       key={chatGroup?.id}
       style={{
         maxHeight: "calc(100% - 7rem)",
