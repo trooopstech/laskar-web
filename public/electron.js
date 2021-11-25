@@ -1,4 +1,5 @@
 const electron = require("electron");
+var os = require("os");
 const app = electron.app;
 const shell = electron.shell;
 const BrowserWindow = electron.BrowserWindow;
@@ -51,6 +52,13 @@ function createWindow() {
       enableRemoteModule: true,
     },
   });
+
+  var platform = os.platform() + "_" + os.arch();
+  var version = app.getVersion();
+
+  autoUpdater.setFeedURL(
+    "https://trooops-releases.herokuapp.com/update/" + platform + "/" + version
+  );
 
   autoUpdater.checkForUpdatesAndNotify();
 
