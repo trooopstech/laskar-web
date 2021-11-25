@@ -5,6 +5,7 @@ const BrowserWindow = electron.BrowserWindow;
 
 const path = require("path");
 const isDev = require("electron-is-dev");
+const { autoUpdater } = require("electron-updater");
 const { setup: setupPushReceiver } = require("electron-push-receiver");
 const { ipcMain } = require("electron");
 
@@ -43,12 +44,15 @@ function createWindow() {
   mainWindow = new BrowserWindow({
     width: 900,
     height: 680,
+    icon: __dirname + "/icon.png",
     webPreferences: {
       nodeIntegration: true,
       contextIsolation: false,
       enableRemoteModule: true,
     },
   });
+
+  autoUpdater.checkForUpdatesAndNotify();
 
   mainWindow.loadURL(
     isDev
@@ -82,6 +86,19 @@ function createWindow() {
       event.returnValue = token;
     });
   });
+
+  ipcMain.on("new-notif", (_) => {
+    app.setBadgeCount(app.getBadgeCount() + 1);
+  });
+
+  mainWindow.on("close", (event) => {
+    if (!app.quitting) {
+      event.preventDefault();
+      mainWindow.hide();
+      app.setBadgeCount(0);
+    }
+  });
+
   mainWindow.on("closed", () => (mainWindow = null));
 }
 
@@ -96,6 +113,9 @@ app.on("window-all-closed", () => {
 app.on("activate", () => {
   if (mainWindow === null) {
     createWindow();
+  } else {
+    app.setBadgeCount(0);
+    mainWindow.show();
   }
 });
 
@@ -110,11 +130,13 @@ app.on("will-finish-launching", function () {
     event.preventDefault();
     deeplinkingUrl = url;
     logEverywhere("open-url# " + deeplinkingUrl);
+    mainWindow.webContents.send("google-oauth", deeplinkingUrl);
   });
 });
 
+app.on("before-quit", () => (app.quitting = true));
+
 function logEverywhere(s) {
-  console.log(s);
   if (mainWindow && mainWindow.webContents) {
     mainWindow.webContents.executeJavaScript(`console.log("${s}")`);
   }

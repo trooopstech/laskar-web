@@ -33,13 +33,14 @@ ipcRenderer.on(NOTIFICATION_RECEIVED, (_, serverNotificationPayload) => {
   // check to see if payload contains a body string, if it doesn't consider it a silent push
   if (serverNotificationPayload.notification.body) {
     // payload has a body, so show it to the user
-    console.log("display notification", serverNotificationPayload);
     let myNotification = new Notification(
       serverNotificationPayload.notification.title,
       {
         body: serverNotificationPayload.notification.body,
       }
     );
+
+    ipcRenderer.send("new-notif", "new message");
 
     myNotification.onclick = () => {
       console.log("Notification clicked");

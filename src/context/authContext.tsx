@@ -12,7 +12,8 @@ import React, {
 import { useHistory, useLocation } from "react-router-dom";
 import { UPDATE_USER } from "schema/identities";
 import { REGISTER_DEVICE_KEY } from "schema/notification";
-import { getToken, onMessageListener } from "utils/firebase";
+import { onMessageListener } from "utils/firebase";
+import queryString from "query-string";
 const { ipcRenderer } = window.require("electron");
 
 interface AuthContextType {
@@ -77,27 +78,14 @@ export function AuthProvider({
     })
     .catch((err) => console.log("failed: ", err));
 
-  useEffect(() => {
-    const sendTokenFromElectron = (data: string) => {
-      registerKey({
-        variables: {
-          device_key: data,
-          // @ts-ignore
-          device_id: `${navigator.userAgentData.platform}-${window.innerWidth}x${window.innerHeight}`,
-        },
-      });
-    };
-
-    // @ts-ignore
-    // window.electron.waitToken(sendTokenFromElectron);
-  }, []);
-
-  useEffect(() => {
-    // @ts-ignore
-    ipcRenderer.on("ping", (event, message) => {
-      console.log(message);
-    });
-  }, []);
+  // useEffect(() => {
+  // @ts-ignore
+  ipcRenderer.on("google-oauth", (event, message) => {
+    console.log(message);
+    const token = queryString.parse(message)["trooops://google-oauth?token"];
+    googleLoginAction({ variables: { token } });
+  });
+  // }, []);
 
   useEffect(() => {
     if (user) {
@@ -141,7 +129,6 @@ export function AuthProvider({
       if (data.user === null) {
         setError(data.error.message);
       } else {
-        console.log(data);
         window.localStorage.setItem("token", data.token);
         window.localStorage.setItem("user", JSON.stringify(data.user));
         window.location.href = "/dashboard/class";
