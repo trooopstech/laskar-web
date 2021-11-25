@@ -9,6 +9,7 @@ interface ButtonProps {
   disabled?: boolean;
   small?: boolean;
   smaller?: boolean;
+  external?: boolean;
 }
 
 const buttonTheme = {
@@ -36,8 +37,36 @@ const Button: React.FC<ButtonProps> = ({
   small,
   disabled,
   smaller,
+  external,
 }) => {
   if (href) {
+    if (external) {
+      return (
+        <a
+          href={href}
+          target={external ? "_blank" : ""}
+          className={`px-8 py-2 rounded-md ${
+            disabled
+              ? `bg-gray-500`
+              : // @ts-ignore
+                buttonTheme[variant as string]?.base
+          } ${className}`}
+          rel="noreferrer noopener"
+        >
+          <p
+            className={`text-base font-bold text-center ${
+              disabled
+                ? `text-gray-600`
+                : // @ts-ignore
+                  buttonTheme[variant as string]?.text
+            } `}
+          >
+            {children}
+          </p>
+        </a>
+      );
+    }
+
     return (
       <Link
         to={href}

@@ -113,28 +113,6 @@ export function AuthProvider({
     }
   }, [user]);
 
-  // useEffect(() => {
-  //   let data;
-
-  //   async function tokenFunc() {
-  //     data = await getToken();
-  //     if (data) {
-  //       registerKey({
-  //         variables: {
-  //           device_key: data,
-  //           // @ts-ignore
-  //           device_id: `${navigator.userAgentData.platform}-${window.innerWidth}x${window.innerHeight}`,
-  //         },
-  //       });
-  //     }
-  //     return data;
-  //   }
-
-  //   if (user) {
-  //     tokenFunc();
-  //   }
-  // }, [user]);
-
   // If we change page, reset the error state.
   useEffect(() => {
     if (error) setError(null);

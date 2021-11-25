@@ -1,5 +1,5 @@
 {
-  "name": "laskar-web",
+  "name": "trooops",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -62,6 +62,8 @@
     "build": "craco build && node sentrySourcemap.js",
     "test": "craco test",
     "electron:dev": "concurrently \"BROWSER=none yarn start\" \"wait-on http://localhost:3000 && electron .\"",
+    "electron:ship": "./node_modules/.bin/electron-builder -c.extraMetadata.main=build/electron.js",
+    "preelectron:ship": "craco build",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
@@ -109,14 +111,25 @@
   },
   "main": "public/electron.js",
   "homepage": "./",
+  "author": "Trooops Tech",
   "build": {
     "appId": "com.trooops.id",
+    "productName": "Trooops",
     "files": [
-      "build/**/*",
-      "node_modules/**/*"
+      "*.js",
+      "build",
+      "node_modules"
     ],
     "directories": {
       "buildResources": "assets"
-    }
+    },
+    "protocols": [
+      {
+        "name": "trooops",
+        "schemes": [
+          "trooops"
+        ]
+      }
+    ]
   }
 }
