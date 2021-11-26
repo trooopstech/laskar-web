@@ -188,7 +188,7 @@ const CategoryMenu: React.FC<CategoryMenuProps> = ({ category }) => {
 };
 
 const ClassSection = () => {
-  const { classDetail } = useClassDetail();
+  const { classDetail, splitHiddenCategory } = useClassDetail();
   const { url } = useRouteMatch();
 
   return (
@@ -201,9 +201,14 @@ const ClassSection = () => {
         <CgFileDocument className="mr-3 text-gray-300 hover:text-gray-200 text-xl" />
         <p className="text-gray-300 hover:text-gray-200">halamanku</p>
       </NavLink>
-      {classDetail?.channel_category.map((category) => (
-        <CategoryMenu category={category} key={category.id} />
-      ))}
+      {classDetail &&
+        splitHiddenCategory(classDetail?.channel_category, true).map(
+          (category) => <CategoryMenu category={category} key={category.id} />
+        )}
+      {classDetail &&
+        splitHiddenCategory(classDetail?.channel_category, false).map(
+          (category) => <CategoryMenu category={category} key={category.id} />
+        )}
     </div>
   );
 };

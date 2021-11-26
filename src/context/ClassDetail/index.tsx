@@ -46,6 +46,10 @@ interface ClassDetailContextType {
   addMemberAsAdmin: (data: RoleManagement) => void;
   inviteMemberChannel: (data: InviteInput) => void;
   getFirstCategory: () => ChannelCategory[];
+  splitHiddenCategory: (
+    categories: ChannelCategory[],
+    returnHidden: boolean
+  ) => ChannelCategory[];
 }
 
 const ClassDetailContext = createContext<ClassDetailContextType>(
@@ -303,6 +307,20 @@ export function ClassDetailProvider({
     ) as ChannelCategory[];
   };
 
+  const splitHiddenCategory = (
+    categories: ChannelCategory[],
+    returnHidden: boolean
+  ): ChannelCategory[] => {
+    const hiddenCategory = categories.filter((category) => category.hidden);
+    const showedCategory = categories.filter((category) => !category.hidden);
+
+    if (returnHidden) {
+      return hiddenCategory;
+    }
+
+    return showedCategory;
+  };
+
   const memoedValue = useMemo(
     () => ({
       classDetail,
@@ -320,6 +338,7 @@ export function ClassDetailProvider({
       removeMemberAsAdmin,
       inviteMemberChannel,
       getFirstCategory,
+      splitHiddenCategory,
     }),
     [classDetail, loadingClass, errorClass]
   );

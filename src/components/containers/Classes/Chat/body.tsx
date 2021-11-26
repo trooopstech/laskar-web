@@ -56,7 +56,7 @@ const Message: React.FC<MessageProps> = React.memo(({ message }) => {
   return (
     <div className="w-full">
       {message.treshold && (
-        <div className="h-10 w-full flex justify-center items-center">
+        <div className="h-10 w-full flex justify-center items-center my-1">
           <div className="p-2 rounded-full bg-gray-500">
             {moment(new Date(message.created_at)).format("MMM D YYYY")}
           </div>
